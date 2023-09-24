@@ -1,6 +1,6 @@
 from django.db import models
 
-from .constants import WearSex, WearColor, BrandCountry
+from .constants import WearSex, WearColor, BrandCountry, WearSize
 
 
 class Brand(models.Model):
@@ -23,8 +23,8 @@ class Wear(models.Model):
     name = models.CharField(max_length=50,
                             null=True,
                             verbose_name='Название')
-    size = models.CharField(max_length=20,
-                            null=True,
+    size = models.CharField(max_length=2,
+                            choices=WearSize.choices,
                             verbose_name='Размер')
     color = models.CharField(max_length=10,
                              choices=WearColor.choices,
