@@ -2,3 +2,5 @@
 
 .env
 media
+.handler-saves
+venv
