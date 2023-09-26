@@ -54,7 +54,7 @@ class Wear(models.Model):
         upload_to='wear/',
         blank=True,
         null=True,
-        default='media/wear/img.png'
+        default='media/wear/майка.png'
     )
 
     def __str__(self):

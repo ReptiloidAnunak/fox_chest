@@ -115,7 +115,7 @@ class Migration(migrations.Migration):
                     "image",
                     models.ImageField(
                         blank=True,
-                        default="media/wear/img.png",
+                        default="media/wear/майка.png",
                         null=True,
                         upload_to="wear/",
                     ),
