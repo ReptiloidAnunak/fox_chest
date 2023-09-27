@@ -1,5 +1,4 @@
 # https://habr.com/ru/articles/759784/
-#
 
 from django.core.management.base import BaseCommand
 import logging
@@ -8,24 +7,17 @@ from telebot import TeleBot, types
 from fox_shop.settings import BOT_TOKEN
 from bot import messages
 from bot.models import TgUser
-from bot.buttons import MainMenu, ChildWearMenu, WearMenu
-from bot.utils import create_wear_obj_answer, create_wear_request_menu
+from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
+from bot.utils import (BotManager, create_wear_obj_answer,
+                       create_wear_request_menu, create_sex_choice_menu)
 from store import models as wear_models
 
 # python3 manage.py runbot
 
 
-class BotManager:
-    def __init__(self):
-        self.wear_cat = None
-
-
 bot = TeleBot(BOT_TOKEN, threaded=False)
 
 bot_manager = BotManager()
-
-wear_category = None
-
 
 
 class Command(BaseCommand):
@@ -56,30 +48,31 @@ class Command(BaseCommand):
 
         @bot.message_handler(content_types=['text'])
         def route_msg_requests(message):
-            global wear_category
             chat_id = message.chat.id
             if message.text == ChildWearMenu.t_short.text:
-                wear_category = wear_models.TShort
+                bot_manager.wear_cat = wear_models.TShort
                 create_wear_request_menu(bot=bot, message=message,
                                          chat_id=chat_id,
                                          msg_text=messages.tshort_presentation)
-                return wear_category
             else:
                 bot.send_message(chat_id,
                                  text=messages.unknown_command)
 
-
         @bot.callback_query_handler(func=lambda call: True)
         def handle_callbacks(call):
             """Handles all collbacks in the chat"""
-            global wear_category
+
+            wear_category = bot_manager.wear_cat
             chat_id = call.message.chat.id
             if call.data == WearMenu.all.callback_data:
-                bot.send_message(chat_id, text="Ща все покажу")
                 wear_cat_all = wear_category.objects.all()
                 for obj in wear_cat_all:
                     bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
 
+            elif call.data == WearMenu.sex_selection.callback_data:
+                create_sex_choice_menu(bot=bot, message=messages,
+                                         chat_id=chat_id,
+                                         msg_text=messages.sex_choice)
 
         bot.enable_save_next_step_handlers(delay=2)
         bot.load_next_step_handlers()

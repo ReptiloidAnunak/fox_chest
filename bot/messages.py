@@ -13,3 +13,5 @@ tshort_presentation = "Выберите майку"
 
 unknown_command = 'Неизвестная команда'
 
+sex_choice = 'Для мальчика или девочки?'
+

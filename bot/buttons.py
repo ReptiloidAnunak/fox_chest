@@ -1,5 +1,7 @@
 from telebot import types
 
+from store import constants
+
 
 class MainMenu:
     child_wear_btn = types.KeyboardButton("👕 Детская одежда ")
@@ -18,5 +20,15 @@ class WearMenu:
     all = types.InlineKeyboardButton("Все товары категории", callback_data="Все")
     size_selection = types.InlineKeyboardButton("Подобрать по размеру", callback_data="size")
     color_selection = types.InlineKeyboardButton("Подобрать по цвету", callback_data="color")
-    sex_selection = types.InlineKeyboardButton("Подобрать для мальчика или девочки", callback_data="sex")
+    sex_selection = types.InlineKeyboardButton("Мальчик/девочка", callback_data="sex")
     brand_selection = types.InlineKeyboardButton("Подобрать по бренду", callback_data="brand")
+
+
+class WearSexChoice:
+    MALE = types.InlineKeyboardButton(text="Мальчик",
+                                      callback_data=constants.WearSex.MALE)
+    FEMALE = types.InlineKeyboardButton(text="Девочка",
+                                        callback_data=constants.WearSex.FEMALE)
+    UNISEX = types.InlineKeyboardButton(text="Унисекс",
+                                        callback_data=constants.WearSex.UNISEX)
+
