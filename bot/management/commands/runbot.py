@@ -29,8 +29,6 @@ class Command(BaseCommand):
             level=logging.INFO
         )
 
-        wear_category = None
-
         @bot.message_handler(commands=['start'])
         def start(message):
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -60,10 +58,13 @@ class Command(BaseCommand):
 
         @bot.callback_query_handler(func=lambda call: True)
         def handle_callbacks(call):
-            """Handles all collbacks in the chat"""
+            """Handles all callbacks in the chat"""
 
             wear_category = bot_manager.wear_cat
             chat_id = call.message.chat.id
+
+            # Принцип поиска
+
             if call.data == WearMenu.all.callback_data:
                 wear_cat_all = wear_category.objects.all()
                 for obj in wear_cat_all:
@@ -73,6 +74,26 @@ class Command(BaseCommand):
                 create_sex_choice_menu(bot=bot, message=messages,
                                          chat_id=chat_id,
                                          msg_text=messages.sex_choice)
+
+
+
+
+            # Пол
+            elif call.data == WearSexChoice.MALE.callback_data:
+                bot.send_message(chat_id, text='Одежда для мальчика')
+
+            elif call.data == WearSexChoice.FEMALE.callback_data:
+                bot.send_message(chat_id, text='Одежда для девочки')
+
+            elif call.data == WearSexChoice.UNISEX.callback_data:
+                bot.send_message(chat_id, text="Унисекс")
+
+
+            # Цвет
+
+            # Размер
+
+            # Бренд
 
         bot.enable_save_next_step_handlers(delay=2)
         bot.load_next_step_handlers()

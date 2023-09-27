@@ -28,13 +28,23 @@ class WearColor:
     YELLOW = 'Желтый'
     GREEN = 'Зеленый'
     BLUE = 'Синий'
+    BROWN = 'Коричневый'
+    ORANGE = 'Оранжевый'
+    VIOLET = 'Фиолетовый'
+    GRAY = 'Серый'
+    PINK = 'Розовый'
     choices = (
         (WHITE, WHITE),
         (BLACK, BLACK),
         (YELLOW, YELLOW),
         (GREEN, GREEN),
         (BLUE, BLUE),
-        (NONE, NONE)
+        (BROWN, BROWN),
+        (ORANGE, ORANGE),
+        (VIOLET, VIOLET),
+        (GRAY, GRAY),
+        (PINK, PINK),
+        (NONE, NONE),
     )
 
 
