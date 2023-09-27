@@ -1,4 +1,4 @@
-from telebot import TeleBot, types
+from telebot import types
 
 
 class MainMenu:
@@ -14,9 +14,9 @@ class ChildWearMenu:
     bodysuit = types.KeyboardButton("Бодисвиты")
 
 
-class TShortMenu:
-    all_tshorts = types.KeyboardButton("Все майки")
-    size_selection = types.KeyboardButton("Подобрать по размеру")
-    color_selection = types.KeyboardButton("Подобрать по цвету")
-    sex_selection = types.KeyboardButton("Подобрать для мальчика или девочки")
-    brand_selection = types.KeyboardButton("Подобрать по бренду")
+class WearMenu:
+    all = types.InlineKeyboardButton("Все товары категории", callback_data="Все")
+    size_selection = types.InlineKeyboardButton("Подобрать по размеру", callback_data="size")
+    color_selection = types.InlineKeyboardButton("Подобрать по цвету", callback_data="color")
+    sex_selection = types.InlineKeyboardButton("Подобрать для мальчика или девочки", callback_data="sex")
+    brand_selection = types.InlineKeyboardButton("Подобрать по бренду", callback_data="brand")

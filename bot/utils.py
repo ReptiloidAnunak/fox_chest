@@ -1,5 +1,7 @@
+from telebot import types
 
 from store.models import Wear
+from bot.buttons import MainMenu, ChildWearMenu, WearMenu
 
 
 def create_wear_obj_answer(obj: Wear):
@@ -8,11 +10,28 @@ def create_wear_obj_answer(obj: Wear):
 Цвет: {obj.color}
 Материал: {obj.material}
 Пол: {obj.sex}
-Цвет: {obj.age}
+Возраст: {obj.age}
 Марка: {obj.brand}
 Цена: {obj.price}
 Описание: {obj.description}
 """)
 
     return obj_msg
-# \n
+
+
+def create_wear_request_menu(bot, message, chat_id, msg_text):
+    markup = types.InlineKeyboardMarkup()
+    btn1 = WearMenu.all
+    btn2 = WearMenu.sex_selection
+    btn3 = WearMenu.size_selection
+    btn4 = WearMenu.color_selection
+    btn5 = WearMenu.brand_selection
+    # btn6 = MainMenu.question
+    markup.row(btn1, btn2)
+    markup.row(btn3, btn4)
+    markup.row(btn5)
+    bot.send_message(chat_id,
+                     text=msg_text,
+                     reply_markup=markup
+                     )
+
