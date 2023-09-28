@@ -4,8 +4,8 @@ from store import constants
 
 
 class MainMenu:
-    child_wear_btn = types.KeyboardButton("👕 Детская одежда ")
-    macrame_doll_btn = types.KeyboardButton("🧶 Куклы макраме ")
+    child_wear_btn = types.KeyboardButton("Детская одежда ")
+    macrame_doll_btn = types.KeyboardButton("Куклы макраме ")
     question = types.KeyboardButton("❓ Задать вопрос")
 
 

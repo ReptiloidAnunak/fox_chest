@@ -9,7 +9,9 @@ from bot import messages
 from bot.models import TgUser
 from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
 from bot.utils import (BotManager, create_wear_obj_answer,
-                       create_wear_request_menu, create_sex_choice_menu)
+                       create_wear_request_menu, create_sex_choice_menu,
+                       create_brand_menu, create_size_menu, create_color_menu)
+from store.constants import WearSex
 from store import models as wear_models
 
 # python3 manage.py runbot
@@ -63,37 +65,57 @@ class Command(BaseCommand):
             wear_category = bot_manager.wear_cat
             chat_id = call.message.chat.id
 
-            # Принцип поиска
+            # # # Принцип поиска
 
+            # Все товары категории
             if call.data == WearMenu.all.callback_data:
                 wear_cat_all = wear_category.objects.all()
+
                 for obj in wear_cat_all:
                     bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
 
             elif call.data == WearMenu.sex_selection.callback_data:
                 create_sex_choice_menu(bot=bot, message=messages,
-                                         chat_id=chat_id,
-                                         msg_text=messages.sex_choice)
-
-
-
+                                       chat_id=chat_id,
+                                       msg_text=messages.sex_choice)
 
             # Пол
             elif call.data == WearSexChoice.MALE.callback_data:
-                bot.send_message(chat_id, text='Одежда для мальчика')
+                male_wear = wear_category.objects.filter(sex=WearSex.MALE)
+                bot.send_message(chat_id, text='Для мальчика')
+                for obj in male_wear:
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
 
             elif call.data == WearSexChoice.FEMALE.callback_data:
-                bot.send_message(chat_id, text='Одежда для девочки')
+                female_wear = wear_category.objects.filter(sex=WearSex.FEMALE)
+                bot.send_message(chat_id, text='Для девочки')
+                for obj in female_wear:
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
 
             elif call.data == WearSexChoice.UNISEX.callback_data:
-                bot.send_message(chat_id, text="Унисекс")
-
-
-            # Цвет
-
-            # Размер
+                unisex_wear = wear_category.objects.filter(sex=WearSex.UNISEX)
+                bot.send_message(chat_id, text='Унисекс')
+                for obj in unisex_wear:
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
 
             # Бренд
+            elif call.data == WearMenu.brand_selection.callback_data:
+                create_brand_menu(bot=bot, message=messages, chat_id=chat_id)
+
+            # Размер
+            elif call.data == WearMenu.size_selection.callback_data:
+                create_size_menu(bot=bot,
+                                 message=messages,
+                                 chat_id=chat_id,
+                                 row_len=2)
+
+            # Цвет
+            elif call.data == WearMenu.color_selection.callback_data:
+                create_color_menu(bot=bot,
+                                  message=messages,
+                                  chat_id=chat_id,
+                                  row_len=2)
+
 
         bot.enable_save_next_step_handlers(delay=2)
         bot.load_next_step_handlers()
