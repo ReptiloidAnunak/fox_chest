@@ -10,8 +10,9 @@ from bot.models import TgUser
 from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
 from bot.utils import (BotManager, create_wear_obj_answer,
                        create_wear_request_menu, create_sex_choice_menu,
-                       create_brand_menu, create_size_menu, create_color_menu)
-from store.constants import WearSex
+                       create_brand_menu, create_size_menu, create_color_menu,
+                       check_tg_user)
+from store.constants import WearSex, WearColor, WearSize
 from store import models as wear_models
 
 # python3 manage.py runbot
@@ -41,8 +42,11 @@ class Command(BaseCommand):
             btn5 = MainMenu.macrame_doll_btn
             btn6 = MainMenu.question
             markup.add(btn1, btn2, btn3, btn4, btn5, btn6)
+
+            check_tg_user(message, bot_manager)
+
             bot.send_message(message.chat.id,
-                             text=messages.greetings,
+                             text=messages.write_greetings(bot_manager),
                              reply_markup=markup
                              )
 
@@ -62,8 +66,11 @@ class Command(BaseCommand):
         def handle_callbacks(call):
             """Handles all callbacks in the chat"""
 
-            wear_category = bot_manager.wear_cat
             chat_id = call.message.chat.id
+            wear_category = bot_manager.wear_cat
+            color_list = [col[0] for col in WearColor.choices]
+            sizes_list = [i[0] for i in WearSize.choices]
+
 
             # # # Принцип поиска
 
@@ -74,12 +81,12 @@ class Command(BaseCommand):
                 for obj in wear_cat_all:
                     bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
 
+            # Пол
             elif call.data == WearMenu.sex_selection.callback_data:
                 create_sex_choice_menu(bot=bot, message=messages,
                                        chat_id=chat_id,
                                        msg_text=messages.sex_choice)
 
-            # Пол
             elif call.data == WearSexChoice.MALE.callback_data:
                 male_wear = wear_category.objects.filter(sex=WearSex.MALE)
                 bot.send_message(chat_id, text='Для мальчика')
@@ -109,6 +116,13 @@ class Command(BaseCommand):
                                  chat_id=chat_id,
                                  row_len=2)
 
+            elif call.data in sizes_list:
+                wear_by_size = wear_category.objects.filter(size=call.data)
+                for obj in wear_by_size:
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
+
+
+
             # Цвет
             elif call.data == WearMenu.color_selection.callback_data:
                 create_color_menu(bot=bot,
@@ -116,6 +130,10 @@ class Command(BaseCommand):
                                   chat_id=chat_id,
                                   row_len=2)
 
+            elif call.data in color_list:
+                wear_by_color = wear_category.objects.filter(color=call.data)
+                for obj in wear_by_color:
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
 
         bot.enable_save_next_step_handlers(delay=2)
         bot.load_next_step_handlers()

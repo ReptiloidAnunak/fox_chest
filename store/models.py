@@ -23,7 +23,7 @@ class Wear(models.Model):
     name = models.CharField(max_length=50,
                             null=True,
                             verbose_name='Название')
-    size = models.CharField(max_length=2,
+    size = models.CharField(max_length=3,
                             choices=WearSize.choices,
                             verbose_name='Размер')
     color = models.CharField(max_length=10,

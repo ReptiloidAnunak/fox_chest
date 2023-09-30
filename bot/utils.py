@@ -3,11 +3,25 @@ from telebot import types
 from store.models import Wear, Brand
 from store.constants import WearSize, WearColor
 from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
+from bot.models import TgUser
 
 
 class BotManager:
     def __init__(self):
+        self.tg_user: TgUser = None
+        self.is_tg_user_new = False
         self.wear_cat = None
+
+
+def check_tg_user(message, bot_manager: BotManager):
+    tg_user_data = message.from_user
+    tg_uid = tg_user_data.id
+    obj, created = TgUser.objects.get_or_create(tg_user_id=tg_uid,
+                                                  tg_chat_id=message.chat.id,
+                                                  first_name=tg_user_data.first_name,
+                                                  last_name=tg_user_data.last_name,
+                                                  username=tg_user_data.username)
+    bot_manager.tg_user = obj
 
 
 def create_wear_obj_answer(obj: Wear):

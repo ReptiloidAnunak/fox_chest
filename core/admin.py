@@ -1,8 +1,14 @@
 from django.contrib import admin
 
 from core.models import User
+from bot.models import TgUser
 from store.models import Brand, Bodysuit, TShort, Pants, Jacket
 import store.models as store_models
+
+
+class TgUserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'last_name', 'first_name', 'tg_user_id')
+    list_filter = ('username', 'last_name')
 
 
 class BrandAdmin(admin.ModelAdmin):
@@ -36,6 +42,7 @@ class JacketAdmin(admin.ModelAdmin):
 
 
 admin.site.register(User)
+admin.site.register(TgUser, TgUserAdmin)
 admin.site.register(Brand, BrandAdmin)
 admin.site.register(Bodysuit, BodysuitAdmin)
 admin.site.register(TShort, TShortAdmin)
