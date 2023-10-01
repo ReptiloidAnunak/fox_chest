@@ -6,12 +6,12 @@ from telebot import TeleBot, types
 
 from fox_shop.settings import BOT_TOKEN
 from bot import messages
-from bot.models import TgUser
+from bot.models import TgUser, TgUserAction
 from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
-from bot.utils import (BotManager, create_wear_obj_answer,
+from bot.utils import (BotManager, create_wear_obj_answer_txt,
                        create_wear_request_menu, create_sex_choice_menu,
                        create_brand_menu, create_size_menu, create_color_menu,
-                       check_tg_user, get_bands_names_list)
+                       check_tg_user, create_product_obj_menu)
 from bot.messages import WearPresentations
 from store.constants import WearSex, WearColor, WearSize
 from store import models as wear_models
@@ -54,13 +54,14 @@ class Command(BaseCommand):
         @bot.message_handler(content_types=['text'])
         def route_msg_requests(message):
             """ !!! Этот код слишком длинный, надо написать потом нормальную функцию"""
+
             chat_id = message.chat.id
-            # messages.construct_wear_cat_presentation(message, chat_id)
             if message.text == ChildWearMenu.t_short.text:
                 bot_manager.wear_cat = wear_models.TShort
                 create_wear_request_menu(bot=bot, message=message,
                                          chat_id=chat_id,
-                                         msg_text=WearPresentations.tshort_presentation)
+                                         msg_text=WearPresentations.tshort_presentation,
+                                         )
 
             elif message.text == ChildWearMenu.pants.text:
                 bot_manager.wear_cat = wear_models.Pants
@@ -101,7 +102,8 @@ class Command(BaseCommand):
                 wear_cat_all = wear_category.objects.all()
 
                 for obj in wear_cat_all:
-                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer_txt(obj),
+                                   reply_markup=create_product_obj_menu(obj))
 
             # Пол
             elif call.data == WearMenu.sex_selection.callback_data:
@@ -113,19 +115,19 @@ class Command(BaseCommand):
                 male_wear = wear_category.objects.filter(sex=WearSex.MALE)
                 bot.send_message(chat_id, text='Для мальчика')
                 for obj in male_wear:
-                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer_txt(obj))
 
             elif call.data == WearSexChoice.FEMALE.callback_data:
                 female_wear = wear_category.objects.filter(sex=WearSex.FEMALE)
                 bot.send_message(chat_id, text='Для девочки')
                 for obj in female_wear:
-                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer_txt(obj))
 
             elif call.data == WearSexChoice.UNISEX.callback_data:
                 unisex_wear = wear_category.objects.filter(sex=WearSex.UNISEX)
                 bot.send_message(chat_id, text='Унисекс')
                 for obj in unisex_wear:
-                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer_txt(obj))
 
             # Бренд
             elif call.data == WearMenu.brand_selection.callback_data:
@@ -135,7 +137,7 @@ class Command(BaseCommand):
                 brand = wear_models.Brand.objects.get(name=call.data)
                 brand_wear = wear_category.objects.filter(brand=brand)
                 for obj in brand_wear:
-                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer_txt(obj))
 
             # Размер
             elif call.data == WearMenu.size_selection.callback_data:
@@ -147,8 +149,7 @@ class Command(BaseCommand):
             elif call.data in sizes_list:
                 wear_by_size = wear_category.objects.filter(size=call.data)
                 for obj in wear_by_size:
-                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
-
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer_txt(obj))
 
 
             # Цвет
@@ -161,7 +162,24 @@ class Command(BaseCommand):
             elif call.data in color_list:
                 wear_by_color = wear_category.objects.filter(color=call.data)
                 for obj in wear_by_color:
-                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer_txt(obj))
+
+
+            # Обработка действий пользователя
+            elif call.data.startswith(TgUserAction.MARKER):
+                action = TgUserAction(call.data)
+                if action.action_code == TgUserAction.add_to_cart:
+                    print(action.action_code)
+                    print(action.product_id)
+
+                elif action.action_code == TgUserAction.add_to_favorite:
+                    print(action.action_code)
+                    print(action.product_id)
+
+                elif action.action_code == TgUserAction.delete_from_cart:
+                    print(action.action_code)
+                    print(action.product_id)
+
 
         bot.enable_save_next_step_handlers(delay=2)
         bot.load_next_step_handlers()

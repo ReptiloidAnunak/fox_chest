@@ -29,7 +29,7 @@ def check_tg_user(message, bot_manager: BotManager):
     bot_manager.tg_user = obj
 
 
-def create_wear_obj_answer(obj: Wear):
+def create_wear_obj_answer_txt(obj: Wear):
 
     obj_msg = (
                 f"""
@@ -44,6 +44,25 @@ def create_wear_obj_answer(obj: Wear):
 Описание: {obj.description}
                 """)
     return obj_msg
+
+
+
+####################################################################
+
+
+def create_product_obj_menu(product: Wear):
+    prod_id = product.id
+    markup = types.InlineKeyboardMarkup()
+    btn1 = types.InlineKeyboardButton(text="💰✅",
+                                      callback_data=f'act-add:{prod_id}')
+    btn2 = types.InlineKeyboardButton(text="❤️",
+                                      callback_data=f'act-favorite:{prod_id}')
+    btn3 = types.InlineKeyboardButton(text="❌",
+                                      callback_data=f'act-delete:{prod_id}')
+    markup.add(btn1, btn2, btn3)
+    return markup
+
+####################################################################
 
 
 def create_wear_request_menu(bot, message, chat_id, msg_text):
@@ -122,3 +141,5 @@ def create_color_menu(bot, message, chat_id, row_len: int):
         markup.row(*row_buttons)
     bot.send_message(chat_id, text="Выберите цвет",
                      reply_markup=markup)
+
+

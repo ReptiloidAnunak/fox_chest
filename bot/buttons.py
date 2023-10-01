@@ -1,6 +1,6 @@
 from telebot import types
 
-from store import constants
+from store import constants, models
 
 
 class MainMenu:
@@ -31,3 +31,5 @@ class WearSexChoice:
                                         callback_data=constants.WearSex.FEMALE)
     UNISEX = types.InlineKeyboardButton(text="Унисекс",
                                         callback_data=constants.WearSex.UNISEX)
+
+
