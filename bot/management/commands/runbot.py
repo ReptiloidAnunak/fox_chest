@@ -11,7 +11,8 @@ from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
 from bot.utils import (BotManager, create_wear_obj_answer,
                        create_wear_request_menu, create_sex_choice_menu,
                        create_brand_menu, create_size_menu, create_color_menu,
-                       check_tg_user)
+                       check_tg_user, get_bands_names_list)
+from bot.messages import WearPresentations
 from store.constants import WearSex, WearColor, WearSize
 from store import models as wear_models
 
@@ -52,12 +53,33 @@ class Command(BaseCommand):
 
         @bot.message_handler(content_types=['text'])
         def route_msg_requests(message):
+            """ !!! Этот код слишком длинный, надо написать потом нормальную функцию"""
             chat_id = message.chat.id
+            # messages.construct_wear_cat_presentation(message, chat_id)
             if message.text == ChildWearMenu.t_short.text:
                 bot_manager.wear_cat = wear_models.TShort
                 create_wear_request_menu(bot=bot, message=message,
                                          chat_id=chat_id,
-                                         msg_text=messages.tshort_presentation)
+                                         msg_text=WearPresentations.tshort_presentation)
+
+            elif message.text == ChildWearMenu.pants.text:
+                bot_manager.wear_cat = wear_models.Pants
+                create_wear_request_menu(bot=bot, message=message,
+                                         chat_id=chat_id,
+                                         msg_text=WearPresentations.pants_presentation)
+
+            elif message.text == ChildWearMenu.jacket.text:
+                bot_manager.wear_cat = wear_models.Jacket
+                create_wear_request_menu(bot=bot, message=message,
+                                         chat_id=chat_id,
+                                         msg_text=WearPresentations.jacket_presentation)
+
+            elif message.text == ChildWearMenu.bodysuit.text:
+                bot_manager.wear_cat = wear_models.Bodysuit
+                create_wear_request_menu(bot=bot, message=message,
+                                         chat_id=chat_id,
+                                         msg_text=WearPresentations.bodysuit_presentation)
+
             else:
                 bot.send_message(chat_id,
                                  text=messages.unknown_command)
@@ -108,6 +130,12 @@ class Command(BaseCommand):
             # Бренд
             elif call.data == WearMenu.brand_selection.callback_data:
                 create_brand_menu(bot=bot, message=messages, chat_id=chat_id)
+
+            elif call.data in bot_manager.all_brands_names:
+                brand = wear_models.Brand.objects.get(name=call.data)
+                brand_wear = wear_category.objects.filter(brand=brand)
+                for obj in brand_wear:
+                    bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer(obj))
 
             # Размер
             elif call.data == WearMenu.size_selection.callback_data:

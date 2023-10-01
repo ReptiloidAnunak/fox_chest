@@ -1,4 +1,8 @@
-from bot.utils import BotManager
+from bot.buttons import ChildWearMenu
+from bot.utils import BotManager, create_wear_request_menu
+from store import models as wear_models
+
+unknown_command = 'Неизвестная команда'
 
 
 def write_greetings(bot_manager: BotManager):
@@ -11,11 +15,14 @@ def write_greetings(bot_manager: BotManager):
     return greetings
 
 
-wear_presentation = """\nВыберите категорию"""
+class WearPresentations:
+    tshort_presentation = 'Выберите майку'
+    pants_presentation = 'Выберите штаны'
+    jacket_presentation = 'Выберите куртку'
+    bodysuit_presentation = 'Выберите бодисвит'
 
-tshort_presentation = "Выберите майку"
-
-unknown_command = 'Неизвестная команда'
 
 sex_choice = 'Для мальчика или девочки?'
+
+
 

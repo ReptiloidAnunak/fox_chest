@@ -6,11 +6,16 @@ from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
 from bot.models import TgUser
 
 
+def get_bands_names_list():
+    return list(Brand.objects.values_list('name', flat=True))
+
+
 class BotManager:
     def __init__(self):
         self.tg_user: TgUser = None
         self.is_tg_user_new = False
-        self.wear_cat = None
+        self.wear_cat: Wear = None
+        self.all_brands_names = get_bands_names_list()
 
 
 def check_tg_user(message, bot_manager: BotManager):
@@ -26,7 +31,9 @@ def check_tg_user(message, bot_manager: BotManager):
 
 def create_wear_obj_answer(obj: Wear):
 
-    obj_msg = (f"""Товар: {obj.name}
+    obj_msg = (
+                f"""
+Товар: {obj.name}
 Размер: {obj.size}
 Цвет: {obj.color}
 Материал: {obj.material}
@@ -35,8 +42,7 @@ def create_wear_obj_answer(obj: Wear):
 Марка: {obj.brand}
 Цена: {obj.price}
 Описание: {obj.description}
-""")
-
+                """)
     return obj_msg
 
 

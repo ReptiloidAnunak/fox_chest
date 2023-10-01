@@ -31,4 +31,3 @@ class WearSexChoice:
                                         callback_data=constants.WearSex.FEMALE)
     UNISEX = types.InlineKeyboardButton(text="Унисекс",
                                         callback_data=constants.WearSex.UNISEX)
-
