@@ -168,17 +168,7 @@ class Command(BaseCommand):
             # Обработка действий пользователя
             elif call.data.startswith(TgUserAction.MARKER):
                 action = TgUserAction(call.data)
-                if action.action_code == TgUserAction.add_to_cart:
-                    print(action.action_code)
-                    print(action.product_id)
-
-                elif action.action_code == TgUserAction.add_to_favorite:
-                    print(action.action_code)
-                    print(action.product_id)
-
-                elif action.action_code == TgUserAction.delete_from_cart:
-                    print(action.action_code)
-                    print(action.product_id)
+                action.route(bot_manager, bot, chat_id)
 
 
         bot.enable_save_next_step_handlers(delay=2)

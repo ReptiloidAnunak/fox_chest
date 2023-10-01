@@ -39,6 +39,23 @@ class TgUserAction:
         self.product_id = self.action_data[1].split(':')[1]
 
 
+    def route(self, bot_manager, bot, chat_id,):
+        if self.action_code == self.add_to_cart:
+            product = bot_manager.wear_cat.objects.get(id=self.product_id)
+            bot.send_message(chat_id, f"""Товар {product.name} добавлен в корзину! 🦊✅\nХотите оформить заказ или добавите что-то ещё?
+                                            """)
+        elif self.action_code == self.add_to_favorite:
+            product = bot_manager.wear_cat.objects.get(id=self.product_id)
+            bot.send_message(chat_id, f"""Товар {product.name} добавлен в избранное! 🦊❤️\nВ любой момент вы можете посмотреть список заинтересовавших товаров с помощью команды /favorite в Меню
+                                            """)
+
+        elif self.action_code == self.delete_from_cart:
+            product = bot_manager.wear_cat.objects.get(id=self.product_id)
+            bot.send_message(chat_id, f"""Товар {product.name} удален из корзины! 🦊❌️\n Воспользуйтесь Меню, если хотите посмотреть другие товары\n⬇️⬇️⬇️
+                                            """)
+
+
+
 
 
 
