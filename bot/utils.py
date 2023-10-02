@@ -2,7 +2,7 @@ from telebot import types
 
 from store.models import Wear, Brand
 from store.constants import WearSize, WearColor
-from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
+from bot.buttons import WearMenu, WearSexChoice
 from bot.models import TgUser
 
 

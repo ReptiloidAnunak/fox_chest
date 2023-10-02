@@ -31,10 +31,14 @@ class Order(DatesModelMixin):
                                 verbose_name='Пользователь Телеграм')
     executor = models.ForeignKey(User,
                                  on_delete=models.PROTECT,
-                                 verbose_name='Исполнитель'
+                                 verbose_name='Исполнитель',
+                                 blank=True,
+                                 null=True
                                  )
 
-    goods = models.ManyToManyField(Wear, verbose_name='Товары')
+    goods = models.ManyToManyField(Wear,
+                                   blank=True,
+                                   verbose_name='Товары')
 
     status = models.CharField(max_length=20,
                               choices=OrderStatus.choices,
@@ -42,4 +46,4 @@ class Order(DatesModelMixin):
                               verbose_name='Заказ')
 
     def __str__(self):
-        return f"""{self.tg_user.name}: {self.created}"""
+        return f"""{self.tg_user}: {self.created} - {self.status}"""

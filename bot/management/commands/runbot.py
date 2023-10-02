@@ -6,7 +6,7 @@ from telebot import TeleBot, types
 
 from fox_shop.settings import BOT_TOKEN
 from bot import messages
-from bot.models import TgUser, TgUserAction
+from bot.tg_user_actions import TgUserAction
 from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
 from bot.utils import (BotManager, create_wear_obj_answer_txt,
                        create_wear_request_menu, create_sex_choice_menu,
@@ -54,7 +54,7 @@ class Command(BaseCommand):
         @bot.message_handler(content_types=['text'])
         def route_msg_requests(message):
             """ !!! Этот код слишком длинный, надо написать потом нормальную функцию"""
-
+            check_tg_user(message, bot_manager)
             chat_id = message.chat.id
             if message.text == ChildWearMenu.t_short.text:
                 bot_manager.wear_cat = wear_models.TShort
@@ -164,12 +164,10 @@ class Command(BaseCommand):
                 for obj in wear_by_color:
                     bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer_txt(obj))
 
-
             # Обработка действий пользователя
             elif call.data.startswith(TgUserAction.MARKER):
                 action = TgUserAction(call.data)
                 action.route(bot_manager, bot, chat_id)
-
 
         bot.enable_save_next_step_handlers(delay=2)
         bot.load_next_step_handlers()
