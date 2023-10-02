@@ -26,6 +26,9 @@ class TgUser(models.Model):
                                          null=True,
                                          verbose_name="Верифицационный код")
 
+    def __str__(self):
+        return f"""{self.username}: {self.last_name} {self.first_name}"""
+
 
 class TgUserAction:
     MARKER = "act-"

@@ -3,7 +3,7 @@ from django.contrib import admin
 from core.models import User
 from bot.models import TgUser
 from store.models import Brand, Bodysuit, TShort, Pants, Jacket
-import store.models as store_models
+from sales.models import Order
 
 
 class TgUserAdmin(admin.ModelAdmin):
@@ -41,12 +41,21 @@ class JacketAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'tg_user', 'executor', 'status', 'created')
+    list_filter = ('tg_user', 'executor', 'status', 'created')
+    list_per_page = 20
+
+
 admin.site.register(User)
 admin.site.register(TgUser, TgUserAdmin)
+
 admin.site.register(Brand, BrandAdmin)
 admin.site.register(Bodysuit, BodysuitAdmin)
 admin.site.register(TShort, TShortAdmin)
 admin.site.register(Pants, PantsAdmin)
 admin.site.register(Jacket, JacketAdmin)
+
+admin.site.register(Order, OrderAdmin)
 
 
