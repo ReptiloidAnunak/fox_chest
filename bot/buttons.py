@@ -1,6 +1,7 @@
 from telebot import types
 
 from store import constants, models
+from bot.tg_user_actions import TgUserAction
 
 
 class MainMenu:
@@ -33,3 +34,9 @@ class WearSexChoice:
                                         callback_data=constants.WearSex.UNISEX)
 
 
+class OrderMenu:
+    my_cart = types.InlineKeyboardButton("Моя корзина", callback_data=f'{TgUserAction.MARKER}{TgUserAction.see_cart}:order')
+    checkout_order = types.InlineKeyboardButton("Оформить заказ",
+                                                callback_data=f'{TgUserAction.MARKER}{TgUserAction.checkout_order}:order')
+    clear_cart = types.InlineKeyboardButton("Очистить корзину",
+                                            callback_data=f'{TgUserAction.MARKER}{TgUserAction.empty_cart}:order')

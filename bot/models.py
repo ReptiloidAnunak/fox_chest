@@ -22,6 +22,11 @@ class TgUser(models.Model):
     username = models.CharField(max_length=150,
                                 null=True,
                                 verbose_name='Юзернейм в ТГ')
+
+    phone = models.CharField(max_length=30,
+                                   null=True,
+                                   verbose_name="Телефон")
+
     verification_code = models.CharField(max_length=20,
                                          null=True,
                                          verbose_name="Верифицационный код")

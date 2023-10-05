@@ -1,4 +1,3 @@
-from bot.buttons import ChildWearMenu
 from bot.utils import BotManager, create_wear_request_menu
 from store import models as wear_models
 
@@ -23,6 +22,8 @@ class WearPresentations:
 
 
 sex_choice = 'Для мальчика или девочки?'
+
+
 
 
 

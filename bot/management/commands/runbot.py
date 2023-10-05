@@ -5,16 +5,22 @@ import logging
 from telebot import TeleBot, types
 
 from fox_shop.settings import BOT_TOKEN
+
 from bot import messages
 from bot.tg_user_actions import TgUserAction
 from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
 from bot.utils import (BotManager, create_wear_obj_answer_txt,
                        create_wear_request_menu, create_sex_choice_menu,
                        create_brand_menu, create_size_menu, create_color_menu,
-                       check_tg_user, create_product_obj_menu)
+                       check_tg_user, create_product_menu, create_obj_menu_in_favorite,
+                       create_obj_menu_in_cart, create_order_menu)
+
 from bot.messages import WearPresentations
+
 from store.constants import WearSex, WearColor, WearSize
 from store import models as wear_models
+
+from sales.models import Order, OrderStatus, Favorite
 
 # python3 manage.py runbot
 
@@ -50,6 +56,45 @@ class Command(BaseCommand):
                              text=messages.write_greetings(bot_manager),
                              reply_markup=markup
                              )
+
+        #     Сделать получение списка всех товаров из корзины
+
+        @bot.message_handler(commands=['cart'])
+        def get_my_cart(message):
+            chat_id = message.chat.id
+            check_tg_user(message, bot_manager)
+            cart, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
+                                         status=OrderStatus.CREATED)
+
+            goods = list(cart.goods.all())
+
+            if not goods:
+                bot.send_message(chat_id, text="Ваша корзина пуста")
+
+            else:
+                bot.send_message(chat_id, text="Ваша корзина 🛒")
+                for obj in goods:
+                    bot.send_photo(chat_id, obj.image,
+                                   caption=create_wear_obj_answer_txt(obj),
+                                   reply_markup=create_obj_menu_in_cart(obj, bot_manager))
+            bot.send_message(chat_id, text="Хотите оформить заказ?", reply_markup=create_order_menu())
+
+        @bot.message_handler(commands=['favorite'])
+        def get_my_favorite(message):
+            chat_id = message.chat.id
+            check_tg_user(message, bot_manager)
+            fav_lst, created = Favorite.objects.get_or_create(tg_user=bot_manager.tg_user)
+
+            goods = list(fav_lst.goods.all())
+
+            if not goods:
+                bot.send_message(chat_id, text="Ваш список избранного пуст")
+            else:
+                bot.send_message(chat_id, text="Ваши избранные товары: 🛒")
+                for obj in goods:
+                    bot.send_photo(chat_id, obj.image,
+                                   caption=create_wear_obj_answer_txt(obj),
+                                   reply_markup=create_obj_menu_in_favorite(obj, bot_manager))
 
         @bot.message_handler(content_types=['text'])
         def route_msg_requests(message):
@@ -103,7 +148,7 @@ class Command(BaseCommand):
 
                 for obj in wear_cat_all:
                     bot.send_photo(chat_id, obj.image, caption=create_wear_obj_answer_txt(obj),
-                                   reply_markup=create_product_obj_menu(obj))
+                                   reply_markup=create_product_menu(obj))
 
             # Пол
             elif call.data == WearMenu.sex_selection.callback_data:

@@ -1,9 +1,9 @@
 from telebot import types
-
 from store.models import Wear, Brand
 from store.constants import WearSize, WearColor
-from bot.buttons import WearMenu, WearSexChoice
+from bot.buttons import WearMenu, WearSexChoice, OrderMenu
 from bot.models import TgUser
+from bot.tg_user_actions import TgUserAction
 
 
 def get_bands_names_list():
@@ -47,21 +47,55 @@ def create_wear_obj_answer_txt(obj: Wear):
 
 
 
-####################################################################
 
 
-def create_product_obj_menu(product: Wear):
-    prod_id = product.id
+def create_order_menu():
     markup = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton(text="💰✅",
-                                      callback_data=f'act-add:{prod_id}')
-    btn2 = types.InlineKeyboardButton(text="❤️",
-                                      callback_data=f'act-favorite:{prod_id}')
-    btn3 = types.InlineKeyboardButton(text="❌",
-                                      callback_data=f'act-delete:{prod_id}')
+    btn1 = OrderMenu.my_cart
+    btn2 = OrderMenu.checkout_order
+    btn3 = OrderMenu.clear_cart
     markup.add(btn1, btn2, btn3)
     return markup
 
+####################################################################
+
+
+def create_product_menu(product: Wear):
+    prod_id = product.id
+    markup = types.InlineKeyboardMarkup()
+    btn1 = types.InlineKeyboardButton(text="💰✅",
+                                      callback_data=f'{TgUserAction.MARKER}add:{prod_id}')
+    btn2 = types.InlineKeyboardButton(text="❤️",
+                                      callback_data=f'{TgUserAction.MARKER}favorite:{prod_id}')
+    btn3 = types.InlineKeyboardButton(text="❌",
+                                      callback_data=f'{TgUserAction.MARKER}delete:{prod_id}')
+    markup.add(btn1, btn2, btn3)
+    return markup
+
+
+def create_obj_menu_in_favorite(product: Wear, bot_manager: BotManager):
+    prod_id = product.id
+    bot_manager.wear_cat = type(product)
+    markup = types.InlineKeyboardMarkup()
+    btn1 = types.InlineKeyboardButton(text="💰✅",
+                                      callback_data=f'{TgUserAction.MARKER}add:{prod_id}')
+    btn2 = types.InlineKeyboardButton(text="❌",
+                                      callback_data=f'{TgUserAction.MARKER}fav_del:{prod_id}')
+    markup.add(btn1, btn2)
+    return markup
+
+
+def create_obj_menu_in_cart(product: Wear, bot_manager: BotManager):
+    prod_id = product.id
+    bot_manager.wear_cat = type(product)
+    print(type(product))
+    markup = types.InlineKeyboardMarkup()
+    btn1 = types.InlineKeyboardButton(text="❤️",
+                                      callback_data=f'{TgUserAction.MARKER}favorite:{prod_id}')
+    btn2 = types.InlineKeyboardButton(text="❌",
+                                      callback_data=f'{TgUserAction.MARKER}delete:{prod_id}')
+    markup.add(btn1, btn2)
+    return markup
 ####################################################################
 
 

@@ -45,5 +45,34 @@ class Order(DatesModelMixin):
                               default=OrderStatus.CREATED,
                               verbose_name='Заказ')
 
+    def create_order_msg(self):
+        goods_lst = []
+        goods = self.goods.all()
+        count = 0
+        for obj in goods:
+            count += 1
+            obj_str = (
+                f"""
+            {count}.  {obj.name} - {obj.brand} - {obj.size} - {obj.age} лет- {obj.price} р.
+                            """)
+            goods_lst.append(obj_str)
+        goods_lst = "\n".join(goods_lst)
+        result = (f"\n  ВАШ ЗАКАЗ\n\n"
+                  f"Номер заказа:  {self.id}\n{self.created}\n{goods_lst}")
+        return result
+
     def __str__(self):
         return f"""{self.tg_user}: {self.created} - {self.status}"""
+
+
+class Favorite(models.Model):
+    tg_user = models.OneToOneField(TgUser,
+                                on_delete=models.CASCADE,
+                                verbose_name='Пользователь Телеграм')
+
+    goods = models.ManyToManyField(Wear,
+                                   blank=True,
+                                   verbose_name='Товары')
+
+    def __str__(self):
+        return self.tg_user
