@@ -1,7 +1,9 @@
 from telebot import types
 
-from store import constants, models
+from sales.models import Order
+from store import constants
 from bot.tg_user_actions import TgUserAction
+
 
 
 class MainMenu:

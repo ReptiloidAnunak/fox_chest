@@ -4,3 +4,4 @@
 media
 .handler-saves
 venv
+postgres_db

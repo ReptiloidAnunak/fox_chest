@@ -4,6 +4,8 @@ from store.constants import WearSize, WearColor
 from bot.buttons import WearMenu, WearSexChoice, OrderMenu
 from bot.models import TgUser
 from bot.tg_user_actions import TgUserAction
+from sales.models import Order, OrderStatus
+
 
 
 def get_bands_names_list():
@@ -16,6 +18,7 @@ class BotManager:
         self.is_tg_user_new = False
         self.wear_cat: Wear = None
         self.all_brands_names = get_bands_names_list()
+        self.current_order = None
 
 
 def check_tg_user(message, bot_manager: BotManager):
@@ -27,6 +30,12 @@ def check_tg_user(message, bot_manager: BotManager):
                                                   last_name=tg_user_data.last_name,
                                                   username=tg_user_data.username)
     bot_manager.tg_user = obj
+
+
+def get_current_order(bot_manager: BotManager):
+    current_order = Order.objects.filter(tg_user=bot_manager.tg_user,
+                                         status=OrderStatus.CREATED).first()
+    bot_manager.current_order = current_order
 
 
 def create_wear_obj_answer_txt(obj: Wear):
@@ -47,8 +56,6 @@ def create_wear_obj_answer_txt(obj: Wear):
 
 
 
-
-
 def create_order_menu():
     markup = types.InlineKeyboardMarkup()
     btn1 = OrderMenu.my_cart
@@ -56,6 +63,10 @@ def create_order_menu():
     btn3 = OrderMenu.clear_cart
     markup.add(btn1, btn2, btn3)
     return markup
+
+
+
+
 
 ####################################################################
 

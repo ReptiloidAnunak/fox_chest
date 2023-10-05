@@ -13,7 +13,7 @@ from bot.utils import (BotManager, create_wear_obj_answer_txt,
                        create_wear_request_menu, create_sex_choice_menu,
                        create_brand_menu, create_size_menu, create_color_menu,
                        check_tg_user, create_product_menu, create_obj_menu_in_favorite,
-                       create_obj_menu_in_cart, create_order_menu)
+                       create_obj_menu_in_cart, create_order_menu, get_current_order)
 
 from bot.messages import WearPresentations
 
@@ -57,19 +57,18 @@ class Command(BaseCommand):
                              reply_markup=markup
                              )
 
-        #     Сделать получение списка всех товаров из корзины
-
         @bot.message_handler(commands=['cart'])
         def get_my_cart(message):
             chat_id = message.chat.id
             check_tg_user(message, bot_manager)
+            get_current_order(bot_manager)
             cart, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
                                          status=OrderStatus.CREATED)
 
             goods = list(cart.goods.all())
 
             if not goods:
-                bot.send_message(chat_id, text="Ваша корзина пуста")
+                bot.send_message(chat_id, text=messages.cart_is_empty)
 
             else:
                 bot.send_message(chat_id, text="Ваша корзина 🛒")
@@ -77,7 +76,7 @@ class Command(BaseCommand):
                     bot.send_photo(chat_id, obj.image,
                                    caption=create_wear_obj_answer_txt(obj),
                                    reply_markup=create_obj_menu_in_cart(obj, bot_manager))
-            bot.send_message(chat_id, text="Хотите оформить заказ?", reply_markup=create_order_menu())
+                bot.send_message(chat_id, text="Хотите оформить заказ?", reply_markup=create_order_menu())
 
         @bot.message_handler(commands=['favorite'])
         def get_my_favorite(message):
@@ -100,6 +99,7 @@ class Command(BaseCommand):
         def route_msg_requests(message):
             """ !!! Этот код слишком длинный, надо написать потом нормальную функцию"""
             check_tg_user(message, bot_manager)
+            get_current_order(bot_manager)
             chat_id = message.chat.id
             message = message.text
             if message == ChildWearMenu.t_short.text:
@@ -133,6 +133,36 @@ class Command(BaseCommand):
                 bot_manager.tg_user.save()
                 #Сделать нормальную валидацию телефона
                 bot.send_message(chat_id, 'Телефон сохранен')
+
+            # Получение ФИО получателя
+            elif message.startswith(TgUserAction.send_receiver_name):
+                order = bot_manager.current_order
+                name = message.lstrip(TgUserAction.send_receiver_name)
+                order.receiver = name
+                order.save()
+                bot.send_message(chat_id, 'ФИО получателя сохранено')
+                bot.send_message(chat_id, f'Напишите телефон получателя в формате: {TgUserAction.send_receiver_phone}ТЕЛЕФОН')
+
+            # Получение телефона получателя
+            elif message.startswith(TgUserAction.send_receiver_phone):
+                order = bot_manager.current_order
+                phone = message.lstrip(TgUserAction.send_receiver_phone)
+                order.phone_receiver = phone
+                order.save()
+                bot.send_message(chat_id, 'Телефон получателя сохранен')
+                bot.send_message(chat_id,
+                                 f'Напишите адрес доставки в формате: {TgUserAction.send_receiver_address}город, улица, дом, квартира, индекс')
+
+            elif message.startswith(TgUserAction.send_receiver_address):
+                order = bot_manager.current_order
+                address = message.lstrip(TgUserAction.send_receiver_address)
+                order.address = address
+                order.save()
+                bot.send_message(chat_id, 'Адрес получателя сохранен.\nДавайте проверим, правильно ли составлен заказ')
+                bot.send_message(chat_id, order.create_final_order_msg())
+
+
+
 
             else:
                 print(message.text)
@@ -220,6 +250,7 @@ class Command(BaseCommand):
 
             # Обработка действий пользователя
             elif call.data.startswith(TgUserAction.MARKER):
+                get_current_order(bot_manager)
                 action = TgUserAction(call.data)
                 action.route(bot_manager, bot, chat_id)
 
