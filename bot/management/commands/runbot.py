@@ -101,32 +101,41 @@ class Command(BaseCommand):
             """ !!! Этот код слишком длинный, надо написать потом нормальную функцию"""
             check_tg_user(message, bot_manager)
             chat_id = message.chat.id
-            if message.text == ChildWearMenu.t_short.text:
+            message = message.text
+            if message == ChildWearMenu.t_short.text:
                 bot_manager.wear_cat = wear_models.TShort
                 create_wear_request_menu(bot=bot, message=message,
                                          chat_id=chat_id,
                                          msg_text=WearPresentations.tshort_presentation,
                                          )
 
-            elif message.text == ChildWearMenu.pants.text:
+            elif message == ChildWearMenu.pants.text:
                 bot_manager.wear_cat = wear_models.Pants
                 create_wear_request_menu(bot=bot, message=message,
                                          chat_id=chat_id,
                                          msg_text=WearPresentations.pants_presentation)
 
-            elif message.text == ChildWearMenu.jacket.text:
+            elif message == ChildWearMenu.jacket.text:
                 bot_manager.wear_cat = wear_models.Jacket
                 create_wear_request_menu(bot=bot, message=message,
                                          chat_id=chat_id,
                                          msg_text=WearPresentations.jacket_presentation)
 
-            elif message.text == ChildWearMenu.bodysuit.text:
+            elif message == ChildWearMenu.bodysuit.text:
                 bot_manager.wear_cat = wear_models.Bodysuit
                 create_wear_request_menu(bot=bot, message=message,
                                          chat_id=chat_id,
                                          msg_text=WearPresentations.bodysuit_presentation)
+            #     Разобраться с телефоном
+            elif message.startswith(TgUserAction.phone_msg):
+                phone = message.lstrip("tel-")
+                bot_manager.tg_user.phone = phone
+                bot_manager.tg_user.save()
+                #Сделать нормальную валидацию телефона
+                bot.send_message(chat_id, 'Телефон сохранен')
 
             else:
+                print(message.text)
                 bot.send_message(chat_id,
                                  text=messages.unknown_command)
 

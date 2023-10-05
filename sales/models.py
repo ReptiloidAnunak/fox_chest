@@ -45,6 +45,7 @@ class Order(DatesModelMixin):
                               default=OrderStatus.CREATED,
                               verbose_name='Заказ')
 
+    # Сделать рассчет общей стоимости товаров
     def create_order_msg(self):
         goods_lst = []
         goods = self.goods.all()

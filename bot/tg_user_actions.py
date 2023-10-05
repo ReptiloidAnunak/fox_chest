@@ -36,6 +36,7 @@ class TgUserAction:
     see_cart = 'cart'
     checkout_order = 'checkout_order'
     empty_cart = 'empty_cart'
+    phone_msg = 'tel-'
 
     def __init__(self, action_call):
         self.action_data = action_call.split('-')
@@ -71,10 +72,14 @@ class TgUserAction:
             user_order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                            status=OrderStatus.CREATED).first()
 
-
         elif self.action_code == self.checkout_order:
-            user_order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user.id,
-                                                              status=OrderStatus.CREATED)
-            order_msg = user_order.create_order_msg()
-            bot.send_message(chat_id, order_msg)
+            tg_user = bot_manager.tg_user
+            if tg_user.phone is None:
+                bot.send_message(chat_id, "Введите свой телефон для связи в формате tel-ВАШ-НОМЕР-ТЕЛЕФОНА") # Придумать правильный формат
+
+            else:
+                user_order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user.id,
+                                                                  status=OrderStatus.CREATED)
+                order_msg = user_order.create_order_msg()
+                bot.send_message(chat_id, order_msg)
 
