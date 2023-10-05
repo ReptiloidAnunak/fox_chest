@@ -15,3 +15,20 @@ class OrderStatus:
         (CANCELED, CANCELED)
     )
 
+
+class DeliveryMethods:
+    PICKUP = "Самовывоз"
+    POST_OF_RUSSIA = "Почта России"
+    BOXBERRY = "Boxberry"
+    SDEK = "CДЭК"
+    AVITO = "Авито"
+    UNKNOWN = "Неизвестно"
+
+    choices = (
+        (PICKUP, PICKUP),
+        (POST_OF_RUSSIA, POST_OF_RUSSIA),
+        (BOXBERRY, BOXBERRY),
+        (SDEK, SDEK),
+        (AVITO, AVITO),
+        (UNKNOWN, UNKNOWN)
+    )

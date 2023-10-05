@@ -1,10 +1,24 @@
 from django.db import models
 from django.utils import timezone
 
-from .constants import OrderStatus
+from .constants import OrderStatus, DeliveryMethods
 from bot.models import TgUser
 from store.models import Wear
 from core.models import User
+
+
+"""Ну время для самовывоза точно не надо 😂 
+
+А вот почта, боксберри или сдек выбрать или отдельно авито-доставка: 
+
+Информация ℹ️ от пользователя: 
+
+ФИО получателя 
+Адрес (город, ул, дом, кв) 
+Индекс 
+Телефон 📞"""
+
+
 
 
 class DatesModelMixin(models.Model):
@@ -45,6 +59,13 @@ class Order(DatesModelMixin):
                               default=OrderStatus.CREATED,
                               verbose_name='Заказ')
 
+    delivery_method = models.CharField(
+        max_length=20,
+        choices=DeliveryMethods.choices,
+        default=DeliveryMethods.UNKNOWN,
+        verbose_name='Способ доставки'
+    )
+
     # Сделать рассчет общей стоимости товаров
     def create_order_msg(self):
         goods_lst = []
@@ -68,8 +89,8 @@ class Order(DatesModelMixin):
 
 class Favorite(models.Model):
     tg_user = models.OneToOneField(TgUser,
-                                on_delete=models.CASCADE,
-                                verbose_name='Пользователь Телеграм')
+                                   on_delete=models.CASCADE,
+                                   verbose_name='Пользователь Телеграм')
 
     goods = models.ManyToManyField(Wear,
                                    blank=True,
