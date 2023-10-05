@@ -7,18 +7,6 @@ from store.models import Wear
 from core.models import User
 
 
-"""Ну время для самовывоза точно не надо 😂 
-
-А вот почта, боксберри или сдек выбрать или отдельно авито-доставка: 
-
-Информация ℹ️ от пользователя: 
-
-ФИО получателя 
-Адрес (город, ул, дом, кв) 
-Индекс 
-Телефон 📞"""
-
-
 class DatesModelMixin(models.Model):
     class Meta:
         abstract = True  # Абстрактный класс - у него не будет таблицы
@@ -78,12 +66,33 @@ class Order(DatesModelMixin):
 
     total_price = models.IntegerField(default=0)
 
+    final_price = models.IntegerField(default=0)
+
+    discount = models.CharField(max_length=100,
+                                verbose_name='Скидка',
+                                default='Нет')
+
     def get_total_price(self):
         goods = self.goods.all()
         result = 0
         for obj in goods:
             result += obj.price
         return result
+
+    def apply_discount_by_quantity(self):
+        """3 вещи: -7%
+        От 3-х: -10%"""
+        self.final_price = self.total_price
+        discount = 0
+        if len(list(self.goods.all())) < 2:
+            self.discount = "3 вещи: -7%"
+            discount = self.total_price * 0.07
+        elif len(list(self.goods.all())) < 3:
+            self.discount = "От 3-х: -10%"
+            discount = self.total_price * 0.1
+        self.final_price -= discount
+        self.save()
+        return discount
 
     def create_order_msg(self):
         goods_lst = []
@@ -99,9 +108,11 @@ class Order(DatesModelMixin):
                             """)
             goods_lst.append(obj_str)
         goods_lst = "\n".join(goods_lst)
+        self.apply_discount_by_quantity()
         result = (f"\n  ВАШ ЗАКАЗ\n\n"
                   f"Номер заказа:  {self.id}\n{self.created}\n{goods_lst}\n\n"
                   f"Всего: {self.total_price} руб.\n"
+                  f"Всего к оплате: {self.final_price}"
                   f"️⬇️ Выберите способ доставки ️⬇️")
         return result
 
@@ -123,7 +134,7 @@ class Order(DatesModelMixin):
                   f"\n\nНомер заказа:  {self.id}\n{self.created}"
                   f"\n\nФИО получателя: {self.receiver}"
                   f"\n\nТелефон получателя: {self.phone_receiver}"
-                  f"\n\nАдрес доставки:{self.address}"
+                  f"\n\nАдрес доставки: {self.address}"
                   f"\n\nТовары: \n\n{goods_lst}\n"         
                   f"\n\nВсего к оплате: {self.total_price} руб.\n")
         return result
@@ -143,3 +154,4 @@ class Favorite(models.Model):
 
     def __str__(self):
         return self.tg_user
+

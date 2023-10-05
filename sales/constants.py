@@ -32,3 +32,6 @@ class DeliveryMethods:
         (AVITO, AVITO),
         (UNKNOWN, UNKNOWN)
     )
+
+
+OFFICE_ADDRESS = 'м. Сходненская'

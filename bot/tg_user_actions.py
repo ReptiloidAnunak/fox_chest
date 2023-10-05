@@ -1,5 +1,5 @@
 from telebot import types
-from sales.constants import DeliveryMethods
+from sales.constants import DeliveryMethods, OFFICE_ADDRESS
 from sales.models import Order, OrderStatus, Favorite
 
 
@@ -78,6 +78,7 @@ class TgUserAction:
             user_order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                               status=OrderStatus.CREATED).first()
 
+        # Оформить заказ
         elif self.action_code == self.checkout_order:
             tg_user = bot_manager.tg_user
             order = Order.objects.filter(tg_user=bot_manager.tg_user,
@@ -89,8 +90,9 @@ class TgUserAction:
                 user_order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user.id,
                                                                   status=OrderStatus.CREATED)
                 order_msg = user_order.create_order_msg()
-                bot.send_message(chat_id, order_msg, reply_markup=create_delivery_ways_menu(order))
+                bot.send_message(chat_id, order_msg, reply_markup=create_delivery_ways_menu())
 
+        # Выбрать способ доставки
         elif self.action_code == self.get_delivery:
             order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                          status=OrderStatus.CREATED).first()
@@ -99,12 +101,13 @@ class TgUserAction:
 
             if order.delivery_method != DeliveryMethods.PICKUP:
                 bot.send_message(chat_id, f'Напишите ФИО получателя в формате {self.send_receiver_name}Фамилия Имя Отчество')
+            else:
+                bot.send_message(chat_id, f'Вы получите товар по адресу:\n{OFFICE_ADDRESS}. '
+                                          f'\nДля подтверждения заказа с вами свяжутся в ближайшее время в телеграм или по телефону {bot_manager.tg_user.phone}')
 
 
-
-def create_delivery_ways_menu(order):
+def create_delivery_ways_menu():
     "Понять, куда девать эту функцию"
-    order_id = order.id
     markup = types.InlineKeyboardMarkup()
     btn1 = types.InlineKeyboardButton(text=DeliveryMethods.PICKUP,
                                       callback_data=f'{TgUserAction.MARKER}{TgUserAction.get_delivery}:{DeliveryMethods.PICKUP}')
