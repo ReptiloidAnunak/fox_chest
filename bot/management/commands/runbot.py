@@ -161,11 +161,8 @@ class Command(BaseCommand):
                 bot.send_message(chat_id, 'Адрес получателя сохранен.\nДавайте проверим, правильно ли составлен заказ')
                 bot.send_message(chat_id, order.create_final_order_msg())
 
-
-
-
             else:
-                print(message.text)
+                print(message)
                 bot.send_message(chat_id,
                                  text=messages.unknown_command)
 

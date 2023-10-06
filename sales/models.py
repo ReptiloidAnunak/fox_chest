@@ -84,12 +84,15 @@ class Order(DatesModelMixin):
         От 3-х: -10%"""
         self.final_price = self.total_price
         discount = 0
-        if len(list(self.goods.all())) < 2:
+        if len(list(self.goods.all())) == 3:
             self.discount = "3 вещи: -7%"
             discount = self.total_price * 0.07
-        elif len(list(self.goods.all())) < 3:
-            self.discount = "От 3-х: -10%"
+        elif len(list(self.goods.all())) > 3:
+            self.discount = "От 3-х вещи: -10%"
             discount = self.total_price * 0.1
+        else:
+            self.discount = "Нет"
+
         self.final_price -= discount
         self.save()
         return discount
@@ -110,9 +113,11 @@ class Order(DatesModelMixin):
         goods_lst = "\n".join(goods_lst)
         self.apply_discount_by_quantity()
         result = (f"\n  ВАШ ЗАКАЗ\n\n"
-                  f"Номер заказа:  {self.id}\n{self.created}\n{goods_lst}\n\n"
-                  f"Всего: {self.total_price} руб.\n"
-                  f"Всего к оплате: {self.final_price}"
+                  f"Номер заказа:  {self.id}\n{self.created}"
+                  f"\n{goods_lst}\n\n"
+                  f"\nВсего: {self.total_price} руб.\n"
+                  f"\nСкидка: {self.discount}\n"
+                  f"\n\nВсего к оплате: {self.final_price} руб."
                   f"️⬇️ Выберите способ доставки ️⬇️")
         return result
 
@@ -130,13 +135,15 @@ class Order(DatesModelMixin):
                             """)
             goods_lst.append(obj_str)
         goods_lst = "\n".join(goods_lst)
-        result = (f"\n  ВАШ ЗАКАЗ\n\n"
+        result = (f"\n  ВАШ ЗАКАЗ\n"
                   f"\n\nНомер заказа:  {self.id}\n{self.created}"
                   f"\n\nФИО получателя: {self.receiver}"
                   f"\n\nТелефон получателя: {self.phone_receiver}"
                   f"\n\nАдрес доставки: {self.address}"
                   f"\n\nТовары: \n\n{goods_lst}\n"         
-                  f"\n\nВсего к оплате: {self.total_price} руб.\n")
+                  f"Всего: {self.total_price} руб.\n"
+                  f"\nСкидка: {self.discount}"
+                  f"\n\nВсего к оплате: {self.final_price} руб.")
         return result
 
     def __str__(self):
