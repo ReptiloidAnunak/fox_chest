@@ -10,6 +10,8 @@ class MainMenu:
     child_wear_btn = types.KeyboardButton("Детская одежда ")
     macrame_doll_btn = types.KeyboardButton("Куклы макраме ")
     question = types.KeyboardButton("❓ Задать вопрос")
+    checkout_order = types.InlineKeyboardButton('Оформить заказ')
+
 
 
 class ChildWearMenu:

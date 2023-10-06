@@ -7,7 +7,8 @@ from telebot import TeleBot, types
 from fox_shop.settings import BOT_TOKEN
 
 from bot import messages
-from bot.tg_user_actions import TgUserAction
+from bot.tg_user_actions import TgUserAction, create_delivery_ways_menu
+from bot.tg_user_acts_funcs import start_checkout_order
 from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
 from bot.utils import (BotManager, create_wear_obj_answer_txt,
                        create_wear_request_menu, create_sex_choice_menu,
@@ -48,7 +49,8 @@ class Command(BaseCommand):
             btn4 = ChildWearMenu.bodysuit
             btn5 = MainMenu.macrame_doll_btn
             btn6 = MainMenu.question
-            markup.add(btn1, btn2, btn3, btn4, btn5, btn6)
+            btn7 = MainMenu.checkout_order
+            markup.add(btn1, btn2, btn3, btn4, btn5, btn6, btn7)
 
             check_tg_user(message, bot_manager)
 
@@ -102,7 +104,12 @@ class Command(BaseCommand):
             get_current_order(bot_manager)
             chat_id = message.chat.id
             message = message.text
-            if message == ChildWearMenu.t_short.text:
+
+            if message == MainMenu.checkout_order.text:
+                start_checkout_order(bot_manager, bot, chat_id,
+                                     markup=create_delivery_ways_menu())
+
+            elif message == ChildWearMenu.t_short.text:
                 bot_manager.wear_cat = wear_models.TShort
                 create_wear_request_menu(bot=bot, message=message,
                                          chat_id=chat_id,
