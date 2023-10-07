@@ -36,6 +36,7 @@ def get_current_order(bot_manager: BotManager):
     current_order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                          status=OrderStatus.CREATED).first()
     bot_manager.current_order = current_order
+    return current_order
 
 
 def create_wear_obj_answer_txt(obj: Wear):

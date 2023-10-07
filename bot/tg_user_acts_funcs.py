@@ -35,7 +35,7 @@ def start_checkout_order(bot_manager, bot, chat_id, markup):
                          "Введите свой телефон для связи в формате tel-ВАШ-НОМЕР-ТЕЛЕФОНА")  # Придумать правильный формат
 
     else:
-        user_order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user.id,
+        user_order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
                                                           status=OrderStatus.CREATED)
         order_msg = user_order.create_order_msg()
         bot.send_message(chat_id, order_msg, reply_markup=markup)

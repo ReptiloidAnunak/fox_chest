@@ -7,7 +7,7 @@ from telebot import TeleBot, types
 from fox_shop.settings import BOT_TOKEN
 
 from bot import messages
-from bot.tg_user_actions import TgUserAction, create_delivery_ways_menu
+from bot.tg_user_actions import TgUserAction, create_delivery_ways_menu, create_submit_order_menu
 from bot.tg_user_acts_funcs import start_checkout_order
 from bot.buttons import MainMenu, ChildWearMenu, WearMenu, WearSexChoice
 from bot.utils import (BotManager, create_wear_obj_answer_txt,
@@ -160,13 +160,15 @@ class Command(BaseCommand):
                 bot.send_message(chat_id,
                                  f'Напишите адрес доставки в формате: {TgUserAction.send_receiver_address}город, улица, дом, квартира, индекс')
 
+            # Получение адреса получателя
             elif message.startswith(TgUserAction.send_receiver_address):
                 order = bot_manager.current_order
                 address = message.lstrip(TgUserAction.send_receiver_address)
                 order.address = address
                 order.save()
                 bot.send_message(chat_id, 'Адрес получателя сохранен.\nДавайте проверим, правильно ли составлен заказ')
-                bot.send_message(chat_id, order.create_final_order_msg())
+                bot.send_message(chat_id, order.create_final_order_msg(),
+                                 reply_markup=create_submit_order_menu())
 
             else:
                 print(message)
