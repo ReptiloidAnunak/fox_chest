@@ -1,6 +1,6 @@
 from bot import messages
-from bot.buttons import WearMenu, WearSexChoice
-from bot.utils import (create_sex_choice_menu,
+from bot.interface.buttons import WearMenu, WearSexChoice
+from bot.interface.interface_constructors import (create_sex_choice_menu,
                        create_brand_menu, create_size_menu, create_color_menu, create_product_menu)
 
 from store.constants import WearSex, WearColor, WearSize
