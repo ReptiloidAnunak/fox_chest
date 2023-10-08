@@ -1,9 +1,7 @@
 from telebot import types
 
-from sales.models import Order
 from store import constants
 from bot.tg_user_actions import TgUserAction
-
 
 
 class MainMenu:
@@ -11,7 +9,6 @@ class MainMenu:
     macrame_doll_btn = types.KeyboardButton("Куклы макраме ")
     question = types.KeyboardButton("❓ Задать вопрос")
     checkout_order = types.InlineKeyboardButton('Оформить заказ')
-
 
 
 class ChildWearMenu:

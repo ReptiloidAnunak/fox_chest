@@ -1,5 +1,5 @@
-from bot.utils import BotManager, create_wear_request_menu
-from store import models as wear_models
+from bot.utils import BotManager
+from store.models import Wear
 
 unknown_command = 'Неизвестная команда'
 
@@ -12,6 +12,23 @@ def write_greetings(bot_manager: BotManager):
     \n ⬇️ Выберите категорию ⬇️
     """
     return greetings
+
+
+def create_wear_obj_answer_txt(obj: Wear):
+
+    obj_msg = (
+                f"""
+Товар: {obj.name}
+Размер: {obj.size}
+Цвет: {obj.color}
+Материал: {obj.material}
+Пол: {obj.sex}
+Возраст: {obj.age}
+Марка: {obj.brand}
+Цена: {obj.price}
+Описание: {obj.description}
+                """)
+    return obj_msg
 
 
 class WearPresentations:

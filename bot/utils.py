@@ -1,11 +1,10 @@
 from telebot import types
 from store.models import Wear, Brand
 from store.constants import WearSize, WearColor
-from bot.buttons import WearMenu, WearSexChoice, OrderMenu
+from bot.buttons import MainMenu, WearMenu, WearSexChoice, OrderMenu, ChildWearMenu
 from bot.models import TgUser
 from bot.tg_user_actions import TgUserAction
 from sales.models import Order, OrderStatus
-
 
 
 def get_bands_names_list():
@@ -39,22 +38,17 @@ def get_current_order(bot_manager: BotManager):
     return current_order
 
 
-def create_wear_obj_answer_txt(obj: Wear):
-
-    obj_msg = (
-                f"""
-Товар: {obj.name}
-Размер: {obj.size}
-Цвет: {obj.color}
-Материал: {obj.material}
-Пол: {obj.sex}
-Возраст: {obj.age}
-Марка: {obj.brand}
-Цена: {obj.price}
-Описание: {obj.description}
-                """)
-    return obj_msg
-
+def create_main_keyboard():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = ChildWearMenu.t_short
+    btn2 = ChildWearMenu.pants
+    btn3 = ChildWearMenu.jacket
+    btn4 = ChildWearMenu.bodysuit
+    btn5 = MainMenu.macrame_doll_btn
+    btn6 = MainMenu.question
+    btn7 = MainMenu.checkout_order
+    markup.add(btn1, btn2, btn3, btn4, btn5, btn6, btn7)
+    return markup
 
 
 def create_order_menu():
@@ -64,10 +58,6 @@ def create_order_menu():
     btn3 = OrderMenu.clear_cart
     markup.add(btn1, btn2, btn3)
     return markup
-
-
-
-
 
 ####################################################################
 
