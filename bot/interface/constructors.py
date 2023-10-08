@@ -1,6 +1,6 @@
 from telebot import types
 
-from bot.interface.buttons import MainMenu, WearMenu, WearSexChoice, OrderMenu, ChildWearMenu
+from bot.interface.buttons import MainMenu, ChoiceWearMenu, WearSexChoice, OrderMenu, ChildWearMenu
 from bot.tg_user_actions import TgUserAction
 from bot.utils import BotManager
 
@@ -8,17 +8,42 @@ from store.models import Wear, Brand
 from store.constants import WearSize, WearColor
 
 
-def create_main_keyboard():
+def create_start_keyboard():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = MainMenu.child_wear_cats
+    btn2 = MainMenu.macrame_doll
+    btn3 = MainMenu.question
+    btn4 = MainMenu.checkout_order
+    markup.add(btn1, btn2, btn3, btn4)
+    return markup
+
+
+def create_cat_wear_keyboard(bot, chat_id, msg_text):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = ChildWearMenu.t_short
     btn2 = ChildWearMenu.pants
     btn3 = ChildWearMenu.jacket
     btn4 = ChildWearMenu.bodysuit
-    btn5 = MainMenu.macrame_doll_btn
-    btn6 = MainMenu.question
-    btn7 = MainMenu.checkout_order
-    markup.add(btn1, btn2, btn3, btn4, btn5, btn6, btn7)
-    return markup
+    btn5 = ChildWearMenu.overall
+    btn6 = ChildWearMenu.clothing_set
+    btn7 = ChildWearMenu.robe
+    btn8 = ChildWearMenu.long_sleeve
+    btn9 = ChildWearMenu.underwear
+    btn10 = ChildWearMenu.sweatshirt
+    btn11 = ChildWearMenu.socks_tights
+    btn12 = ChildWearMenu.back
+
+    markup.row(btn1, btn2)
+    markup.row(btn3, btn4)
+    markup.row(btn4, btn5)
+    markup.row(btn6, btn7)
+    markup.row(btn8, btn9)
+    markup.row(btn10, btn11)
+    markup.row(btn12)
+    bot.send_message(chat_id,
+                     text=msg_text,
+                     reply_markup=markup
+                     )
 
 
 def create_order_menu():
@@ -70,11 +95,11 @@ def create_obj_menu_in_cart(product: Wear, bot_manager: BotManager):
 
 def create_wear_request_menu(bot, chat_id, msg_text):
     markup = types.InlineKeyboardMarkup()
-    btn1 = WearMenu.all
-    btn2 = WearMenu.sex_selection
-    btn3 = WearMenu.size_selection
-    btn4 = WearMenu.color_selection
-    btn5 = WearMenu.brand_selection
+    btn1 = ChoiceWearMenu.all
+    btn2 = ChoiceWearMenu.sex_selection
+    btn3 = ChoiceWearMenu.size_selection
+    btn4 = ChoiceWearMenu.color_selection
+    btn5 = ChoiceWearMenu.brand_selection
     markup.row(btn1, btn2)
     markup.row(btn3, btn4)
     markup.row(btn5)

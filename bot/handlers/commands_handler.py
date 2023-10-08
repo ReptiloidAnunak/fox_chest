@@ -1,7 +1,7 @@
 
 from bot import messages
 from bot.utils import check_tg_user, get_current_order
-from bot.interface.constructors import create_obj_menu_in_favorite, create_obj_menu_in_cart, create_order_menu, create_main_keyboard
+from bot.interface.constructors import create_start_keyboard, create_obj_menu_in_favorite, create_obj_menu_in_cart, create_order_menu, create_cat_wear_keyboard
 from sales.models import Order, OrderStatus, Favorite
 
 
@@ -12,7 +12,7 @@ def route_commands(bot, message, bot_manager):
         check_tg_user(message, bot_manager)
         bot.send_message(message.chat.id,
                          text=messages.write_greetings(bot_manager),
-                         reply_markup=create_main_keyboard()
+                         reply_markup=create_start_keyboard()
                          )
 
     elif command == '/cart':

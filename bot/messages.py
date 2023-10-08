@@ -32,10 +32,17 @@ def create_wear_obj_answer_txt(obj: Wear):
 
 
 class WearPresentations:
-    tshort_presentation = 'Выберите майку'
-    pants_presentation = 'Выберите штаны'
-    jacket_presentation = 'Выберите куртку'
-    bodysuit_presentation = 'Выберите бодисвит'
+    tshort = 'Выберите майку'
+    pants = 'Выберите штаны'
+    jacket = 'Выберите куртку'
+    bodysuit = 'Выберите бодисвит'
+    overall = 'Выберите комбинезон'
+    clothing_set = 'Выберите комплект'
+    robe = 'Выберите платье'
+    long_sleeve = 'Выберите лонгслив'
+    underwear = 'Выберите нижнее белье'
+    socks_tights = 'Выберите носки или колготки'
+    sweatshirt = 'Выберите свитшот'
 
 
 sex_choice = 'Для мальчика или девочки?'

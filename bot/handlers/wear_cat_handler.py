@@ -1,4 +1,4 @@
-from bot.interface.constructors import create_wear_request_menu
+from bot.interface.constructors import create_start_keyboard, create_cat_wear_keyboard, create_wear_request_menu
 from bot.interface.buttons import MainMenu, ChildWearMenu
 from bot.messages import WearPresentations
 from bot.tg_user_acts_funcs import start_checkout_order
@@ -7,29 +7,83 @@ from store import models as wear_models
 
 
 def handle_wear_cat_request(bot, chat_id, message, bot_manager):
-    if message == ChildWearMenu.t_short.text:
+
+    if message == MainMenu.child_wear_cats.text:
+        create_cat_wear_keyboard(bot,
+                                 chat_id,
+                                 msg_text='Выберите категорию')
+
+    elif message == ChildWearMenu.t_short.text:
         bot_manager.wear_cat = wear_models.TShort
         create_wear_request_menu(bot=bot,
                                  chat_id=chat_id,
-                                 msg_text=WearPresentations.tshort_presentation)
+                                 msg_text=WearPresentations.tshort)
 
     elif message == ChildWearMenu.pants.text:
         bot_manager.wear_cat = wear_models.Pants
         create_wear_request_menu(bot=bot,
                                  chat_id=chat_id,
-                                 msg_text=WearPresentations.pants_presentation)
+                                 msg_text=WearPresentations.pants)
 
     elif message == ChildWearMenu.jacket.text:
         bot_manager.wear_cat = wear_models.Jacket
         create_wear_request_menu(bot=bot,
                                  chat_id=chat_id,
-                                 msg_text=WearPresentations.jacket_presentation)
+                                 msg_text=WearPresentations.jacket)
 
     elif message == ChildWearMenu.bodysuit.text:
         bot_manager.wear_cat = wear_models.Bodysuit
         create_wear_request_menu(bot=bot,
                                  chat_id=chat_id,
-                                 msg_text=WearPresentations.bodysuit_presentation)
+                                 msg_text=WearPresentations.bodysuit)
+
+    elif message == ChildWearMenu.overall.text:
+        bot_manager.wear_cat = wear_models.Overall
+        create_wear_request_menu(bot=bot,
+                                 chat_id=chat_id,
+                                 msg_text=WearPresentations.overall)
+
+    elif message == ChildWearMenu.clothing_set.text:
+        bot_manager.wear_cat = wear_models.ClothingSet
+        create_wear_request_menu(bot=bot,
+                                 chat_id=chat_id,
+                                 msg_text=WearPresentations.clothing_set)
+
+    elif message == ChildWearMenu.robe.text:
+        bot_manager.wear_cat = wear_models.Robe
+        create_wear_request_menu(bot=bot,
+                                 chat_id=chat_id,
+                                 msg_text=WearPresentations.robe)
+
+    elif message == ChildWearMenu.long_sleeve.text:
+        bot_manager.wear_cat = wear_models.Underwear
+        create_wear_request_menu(bot=bot,
+                                 chat_id=chat_id,
+                                 msg_text=WearPresentations.underwear)
+
+    elif message == ChildWearMenu.socks_tights:
+        bot_manager.wear_cat = wear_models.SocksTights
+        create_wear_request_menu(bot=bot,
+                                 chat_id=chat_id,
+                                 msg_text=WearPresentations.socks_tights)
+
+    elif message == ChildWearMenu.sweatshirt.text:
+        bot_manager.wear_cat = wear_models.Sweatshirt
+        create_wear_request_menu(bot=bot,
+                                 chat_id=chat_id,
+                                 msg_text=WearPresentations.sweatshirt)
+
+    # elif message == ChildWearMenu.:
+    #     bot_manager.wear_cat = wear_models.
+    #     create_wear_request_menu(bot=bot,
+    #                              chat_id=chat_id,
+    #                              msg_text=WearPresentations.)
+
+    elif message == ChildWearMenu.back.text:
+        bot.send_message(chat_id=chat_id,
+                         text="Вы вернулись в Главное Меню",
+                         reply_markup=create_start_keyboard()
+                         )
         return True
     else:
         return False

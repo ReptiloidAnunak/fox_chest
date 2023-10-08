@@ -58,7 +58,8 @@ class Wear(models.Model):
         upload_to='wear/',
         blank=True,
         null=True,
-        default='media/wear/майка.png'
+        default='media/wear/майка.png',
+        verbose_name='Фотография'
     )
 
     quantity = models.IntegerField(null=True,
@@ -165,6 +166,7 @@ class Doll(models.Model):
         upload_to='dolls/',
         blank=True,
         null=True,
+        verbose_name='Фотография'
     )
 
 

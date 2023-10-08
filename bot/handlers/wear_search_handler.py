@@ -1,5 +1,5 @@
 from bot import messages
-from bot.interface.buttons import WearMenu, WearSexChoice
+from bot.interface.buttons import ChoiceWearMenu, WearSexChoice
 from bot.interface.constructors import (create_sex_choice_menu,
                                         create_brand_menu, create_size_menu, create_color_menu, create_product_menu)
 
@@ -14,7 +14,7 @@ def handle_wear_search(bot, call, chat_id, bot_manager):
     wear_category = bot_manager.wear_cat
 
     # Все товары категории
-    if call.data == WearMenu.all.callback_data:
+    if call.data == ChoiceWearMenu.all.callback_data:
         wear_cat_all = wear_category.objects.all()
 
         for obj in wear_cat_all:
@@ -22,7 +22,7 @@ def handle_wear_search(bot, call, chat_id, bot_manager):
                            reply_markup=create_product_menu(obj))
 
     # Пол
-    elif call.data == WearMenu.sex_selection.callback_data:
+    elif call.data == ChoiceWearMenu.sex_selection.callback_data:
         create_sex_choice_menu(bot=bot,
                                chat_id=chat_id,
                                msg_text=messages.sex_choice)
@@ -49,7 +49,7 @@ def handle_wear_search(bot, call, chat_id, bot_manager):
                            reply_markup=create_product_menu(obj))
 
     # Бренд
-    elif call.data == WearMenu.brand_selection.callback_data:
+    elif call.data == ChoiceWearMenu.brand_selection.callback_data:
         create_brand_menu(bot=bot, chat_id=chat_id)
 
     elif call.data in bot_manager.all_brands_names:
@@ -60,7 +60,7 @@ def handle_wear_search(bot, call, chat_id, bot_manager):
                            reply_markup=create_product_menu(obj))
 
     # Размер
-    elif call.data == WearMenu.size_selection.callback_data:
+    elif call.data == ChoiceWearMenu.size_selection.callback_data:
         create_size_menu(bot=bot,
                          chat_id=chat_id,
                          row_len=2)
@@ -73,7 +73,7 @@ def handle_wear_search(bot, call, chat_id, bot_manager):
 
 
     # Цвет
-    elif call.data == WearMenu.color_selection.callback_data:
+    elif call.data == ChoiceWearMenu.color_selection.callback_data:
         create_color_menu(bot=bot,
                           chat_id=chat_id,
                           row_len=2)
