@@ -1,7 +1,7 @@
 from bot import messages
 from bot.interface.buttons import WearMenu, WearSexChoice
-from bot.interface.interface_constructors import (create_sex_choice_menu,
-                       create_brand_menu, create_size_menu, create_color_menu, create_product_menu)
+from bot.interface.constructors import (create_sex_choice_menu,
+                                        create_brand_menu, create_size_menu, create_color_menu, create_product_menu)
 
 from store.constants import WearSex, WearColor, WearSize
 from store import models as wear_models
@@ -23,7 +23,7 @@ def handle_wear_search(bot, call, chat_id, bot_manager):
 
     # Пол
     elif call.data == WearMenu.sex_selection.callback_data:
-        create_sex_choice_menu(bot=bot, message=messages,
+        create_sex_choice_menu(bot=bot,
                                chat_id=chat_id,
                                msg_text=messages.sex_choice)
 
@@ -50,7 +50,7 @@ def handle_wear_search(bot, call, chat_id, bot_manager):
 
     # Бренд
     elif call.data == WearMenu.brand_selection.callback_data:
-        create_brand_menu(bot=bot, message=messages, chat_id=chat_id)
+        create_brand_menu(bot=bot, chat_id=chat_id)
 
     elif call.data in bot_manager.all_brands_names:
         brand = wear_models.Brand.objects.get(name=call.data)
@@ -62,7 +62,6 @@ def handle_wear_search(bot, call, chat_id, bot_manager):
     # Размер
     elif call.data == WearMenu.size_selection.callback_data:
         create_size_menu(bot=bot,
-                         message=messages,
                          chat_id=chat_id,
                          row_len=2)
 
@@ -76,7 +75,6 @@ def handle_wear_search(bot, call, chat_id, bot_manager):
     # Цвет
     elif call.data == WearMenu.color_selection.callback_data:
         create_color_menu(bot=bot,
-                          message=messages,
                           chat_id=chat_id,
                           row_len=2)
 

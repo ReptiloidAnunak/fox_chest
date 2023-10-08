@@ -1,4 +1,4 @@
-from bot.interface.interface_constructors import create_wear_request_menu
+from bot.interface.constructors import create_wear_request_menu
 from bot.interface.buttons import MainMenu, ChildWearMenu
 from bot.messages import WearPresentations
 from bot.tg_user_acts_funcs import start_checkout_order
@@ -9,25 +9,25 @@ from store import models as wear_models
 def handle_wear_cat_request(bot, chat_id, message, bot_manager):
     if message == ChildWearMenu.t_short.text:
         bot_manager.wear_cat = wear_models.TShort
-        create_wear_request_menu(bot=bot, message=message,
+        create_wear_request_menu(bot=bot,
                                  chat_id=chat_id,
                                  msg_text=WearPresentations.tshort_presentation)
 
     elif message == ChildWearMenu.pants.text:
         bot_manager.wear_cat = wear_models.Pants
-        create_wear_request_menu(bot=bot, message=message,
+        create_wear_request_menu(bot=bot,
                                  chat_id=chat_id,
                                  msg_text=WearPresentations.pants_presentation)
 
     elif message == ChildWearMenu.jacket.text:
         bot_manager.wear_cat = wear_models.Jacket
-        create_wear_request_menu(bot=bot, message=message,
+        create_wear_request_menu(bot=bot,
                                  chat_id=chat_id,
                                  msg_text=WearPresentations.jacket_presentation)
 
     elif message == ChildWearMenu.bodysuit.text:
         bot_manager.wear_cat = wear_models.Bodysuit
-        create_wear_request_menu(bot=bot, message=message,
+        create_wear_request_menu(bot=bot,
                                  chat_id=chat_id,
                                  msg_text=WearPresentations.bodysuit_presentation)
         return True

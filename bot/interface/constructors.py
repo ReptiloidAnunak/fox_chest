@@ -8,7 +8,6 @@ from store.models import Wear, Brand
 from store.constants import WearSize, WearColor
 
 
-
 def create_main_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = ChildWearMenu.t_short
@@ -69,7 +68,7 @@ def create_obj_menu_in_cart(product: Wear, bot_manager: BotManager):
     return markup
 
 
-def create_wear_request_menu(bot, message, chat_id, msg_text):
+def create_wear_request_menu(bot, chat_id, msg_text):
     markup = types.InlineKeyboardMarkup()
     btn1 = WearMenu.all
     btn2 = WearMenu.sex_selection
@@ -85,7 +84,7 @@ def create_wear_request_menu(bot, message, chat_id, msg_text):
                      )
 
 
-def create_sex_choice_menu(bot, message, chat_id, msg_text):
+def create_sex_choice_menu(bot, chat_id, msg_text):
     markup = types.InlineKeyboardMarkup()
     btn1 = WearSexChoice.MALE
     btn2 = WearSexChoice.FEMALE
@@ -98,7 +97,7 @@ def create_sex_choice_menu(bot, message, chat_id, msg_text):
                      )
 
 
-def create_brand_menu(bot, message, chat_id):
+def create_brand_menu(bot, chat_id):
     markup = types.InlineKeyboardMarkup()
     brands = Brand.objects.all()
     brand_buttons = []
@@ -113,7 +112,7 @@ def create_brand_menu(bot, message, chat_id):
                      reply_markup=markup)
 
 
-def create_size_menu(bot, message, chat_id, row_len: int):
+def create_size_menu(bot, chat_id, row_len: int):
     markup = types.InlineKeyboardMarkup()
     sizes = WearSize.choices
     size_buttons = []
@@ -130,7 +129,7 @@ def create_size_menu(bot, message, chat_id, row_len: int):
                      reply_markup=markup)
 
 
-def create_color_menu(bot, message, chat_id, row_len: int):
+def create_color_menu(bot, chat_id, row_len: int):
     markup = types.InlineKeyboardMarkup()
     colors = WearColor.choices
     size_buttons = []

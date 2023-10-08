@@ -1,7 +1,7 @@
 
 from bot import messages
 from bot.utils import check_tg_user, get_current_order
-from bot.interface.interface_constructors import create_obj_menu_in_favorite, create_obj_menu_in_cart, create_order_menu, create_main_keyboard
+from bot.interface.constructors import create_obj_menu_in_favorite, create_obj_menu_in_cart, create_order_menu, create_main_keyboard
 from sales.models import Order, OrderStatus, Favorite
 
 
