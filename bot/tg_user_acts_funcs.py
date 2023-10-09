@@ -2,6 +2,9 @@ from sales.models import Order, OrderStatus, Favorite
 
 
 def add_to_cart(bot_manager, product):
+    product.quantity -= 1
+    product.save()
+
     order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
                                                  status=OrderStatus.CREATED)
     order.goods.add(product)
@@ -9,6 +12,9 @@ def add_to_cart(bot_manager, product):
 
 
 def delete_from_cart(bot_manager, product): # Команда выполняется только когда я нажимаю "/start". Надо ИСПРВИТЬ!
+    product.quantity += 1
+    product.save()
+
     order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                  status=OrderStatus.CREATED).first()
     order.goods.remove(product)

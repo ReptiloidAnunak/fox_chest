@@ -55,6 +55,9 @@ def create_order_menu():
     return markup
 
 
+
+
+
 def create_product_menu(product: Wear):
     prod_id = product.id
     markup = types.InlineKeyboardMarkup()
@@ -66,7 +69,6 @@ def create_product_menu(product: Wear):
                                       callback_data=f'{TgUserAction.MARKER}delete:{prod_id}')
     markup.add(btn1, btn2, btn3)
     return markup
-
 
 def create_obj_menu_in_favorite(product: Wear, bot_manager: BotManager):
     prod_id = product.id
@@ -173,3 +175,5 @@ def create_color_menu(bot, chat_id, row_len: int):
         markup.row(*row_buttons)
     bot.send_message(chat_id, text="Выберите цвет",
                      reply_markup=markup)
+
+

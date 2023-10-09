@@ -1,6 +1,8 @@
 from telebot import types
+
 from sales.constants import DeliveryMethods, OFFICE_ADDRESS
 from sales.models import Order, OrderStatus
+
 from bot.tg_user_acts_funcs import (start_checkout_order, add_to_cart, delete_from_cart, add_to_favorite,
                                     delete_from_favorite)
 
@@ -37,12 +39,24 @@ class TgUserAction:
         self.action_code = self.action_data[1].split(':')[0]
         self.product_id = self.action_data[1].split(':')[1]
 
+
+    def create_checkout_order_btn(self, product):
+        prod_id = product.id
+        markup = types.InlineKeyboardMarkup()
+        btn1 = types.InlineKeyboardButton(text="Оформить заказ",
+                                          callback_data=f'{self.MARKER}{self.checkout_order}:order')
+        markup.add(btn1)
+        return markup
+
     def route(self, bot_manager, bot, chat_id):
         if self.action_code == self.add_to_cart:
             product = bot_manager.wear_cat.objects.get(id=self.product_id)
             add_to_cart(bot_manager, product)
-            bot.send_message(chat_id, f"""Товар {product.name} добавлен в корзину! 🦊✅\nХотите оформить заказ или добавите что-то ещё?
-                                            """)
+            bot.send_message(chat_id,
+                             f"""Товар {product.name} добавлен в корзину! 🦊✅\nХотите оформить заказ или добавите что-то ещё?
+                                            """,
+                             reply_markup=self.create_checkout_order_btn(product)
+                             )
 
         elif self.action_code == self.delete_from_cart:
             product = bot_manager.wear_cat.objects.get(id=self.product_id)

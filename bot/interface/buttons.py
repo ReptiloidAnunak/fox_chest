@@ -27,8 +27,6 @@ class ChildWearMenu:
     sweatshirt = types.KeyboardButton("Cвитшоты")
     back = types.KeyboardButton("Назад")
 
-# Inline` buttons
-
 
 class SearchWearMenu:
     all = types.KeyboardButton("Все товары категории")
@@ -40,6 +38,14 @@ class SearchWearMenu:
     back_main_menu = types.KeyboardButton("Главное меню")
 
 
+class DollsMenu:
+    all_dolls = types.KeyboardButton('Все куклы')
+    angels = types.KeyboardButton('Ангелы')
+    families = types.KeyboardButton('Семьи кукол')
+
+
+# Inline` buttons
+
 class WearSexChoice:
     MALE = types.InlineKeyboardButton(text="Мальчик",
                                       callback_data=constants.WearSex.MALE)
@@ -47,12 +53,6 @@ class WearSexChoice:
                                         callback_data=constants.WearSex.FEMALE)
     UNISEX = types.InlineKeyboardButton(text="Унисекс",
                                         callback_data=constants.WearSex.UNISEX)
-
-
-class DollsMenu:
-    all_dolls = types.KeyboardButton('Все куклы')
-    angels = types.KeyboardButton('Ангелы')
-    families = types.KeyboardButton('Семьи кукол')
 
 
 class OrderMenu:

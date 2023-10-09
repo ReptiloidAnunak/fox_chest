@@ -25,6 +25,7 @@ def create_wear_obj_answer_txt(obj: Wear):
 Пол: {obj.sex}
 Возраст: {obj.age}
 Марка: {obj.brand}
+В наличии: {obj.quantity} шт.
 Цена: {obj.price}
 Описание: {obj.description}
                 """)
