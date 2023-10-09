@@ -12,7 +12,7 @@ def handle_wear_search(bot, chat_id, message, bot_manager):
         wear_cat_all = wear_category.objects.all()
 
         for obj in wear_cat_all:
-            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_answer_txt(obj),
+            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_txt(obj),
                            reply_markup=create_product_menu(obj))
 
     # Пол

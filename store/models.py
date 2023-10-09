@@ -62,9 +62,19 @@ class Wear(models.Model):
         verbose_name='Фотография'
     )
 
-    quantity = models.IntegerField(null=True,
+    quantity = models.PositiveIntegerField(null=True,
                                    default=0,
                                    verbose_name='Количество')
+
+    def add_to_cart(self):
+        pass
+
+    def create_str_in_order(self, number):
+        # - {amount_bought}
+        f"""
+        {number}.  {self.name} - {self.brand} - {self.size} - {self.age} лет - {self.price} р. 
+                        """
+
 
     def __str__(self):
         return self.name

@@ -14,7 +14,7 @@ def write_greetings(bot_manager: BotManager):
     return greetings
 
 
-def create_wear_obj_answer_txt(obj: Wear):
+def create_wear_obj_txt(obj: Wear):
 
     obj_msg = (
                 f"""
@@ -26,6 +26,24 @@ def create_wear_obj_answer_txt(obj: Wear):
 Возраст: {obj.age}
 Марка: {obj.brand}
 В наличии: {obj.quantity} шт.
+Цена: {obj.price}
+Описание: {obj.description}
+                """)
+    return obj_msg
+
+
+def create_wear_obj_txt_in_cart(obj: Wear):
+
+    obj_msg = (
+                f"""
+Товар: {obj.name}
+Размер: {obj.size}
+Цвет: {obj.color}
+Материал: {obj.material}
+Пол: {obj.sex}
+Возраст: {obj.age}
+Марка: {obj.brand}
+Количество: ???? шт.
 Цена: {obj.price}
 Описание: {obj.description}
                 """)

@@ -18,21 +18,21 @@ def handle_user_callback(bot, chat_id, call, bot_manager):
         male_wear = wear_category.objects.filter(sex=WearSex.MALE)
         bot.send_message(chat_id, text='Для мальчика')
         for obj in male_wear:
-            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_answer_txt(obj),
+            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_txt(obj),
                            reply_markup=create_product_menu(obj))
 
     elif call.data == WearSexChoice.FEMALE.callback_data:
         female_wear = wear_category.objects.filter(sex=WearSex.FEMALE)
         bot.send_message(chat_id, text='Для девочки')
         for obj in female_wear:
-            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_answer_txt(obj),
+            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_txt(obj),
                            reply_markup=create_product_menu(obj))
 
     elif call.data == WearSexChoice.UNISEX.callback_data:
         unisex_wear = wear_category.objects.filter(sex=WearSex.UNISEX)
         bot.send_message(chat_id, text='Унисекс')
         for obj in unisex_wear:
-            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_answer_txt(obj),
+            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_txt(obj),
                            reply_markup=create_product_menu(obj))
 
     # Бренд
@@ -41,20 +41,20 @@ def handle_user_callback(bot, chat_id, call, bot_manager):
         brand = wear_models.Brand.objects.get(name=call.data)
         brand_wear = wear_category.objects.filter(brand=brand)
         for obj in brand_wear:
-            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_answer_txt(obj),
+            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_txt(obj),
                            reply_markup=create_product_menu(obj))
 
     # Размер
     elif call.data in sizes_list:
         wear_by_size = wear_category.objects.filter(size=call.data)
         for obj in wear_by_size:
-            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_answer_txt(obj),
+            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_txt(obj),
                            reply_markup=create_product_menu(obj))
 
     # Цвет
     elif call.data in color_list:
         wear_by_color = wear_category.objects.filter(color=call.data)
         for obj in wear_by_color:
-            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_answer_txt(obj),
+            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_txt(obj),
                            reply_markup=create_product_menu(obj))
 

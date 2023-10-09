@@ -58,6 +58,12 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
                                  msg_text=WearPresentations.robe)
 
     elif message == ChildWearMenu.long_sleeve.text:
+        bot_manager.wear_cat = wear_models.LongSleeve
+        create_wear_request_menu(bot=bot,
+                                 chat_id=chat_id,
+                                 msg_text=WearPresentations.long_sleeve)
+
+    elif message == ChildWearMenu.underwear.text:
         bot_manager.wear_cat = wear_models.Underwear
         create_wear_request_menu(bot=bot,
                                  chat_id=chat_id,

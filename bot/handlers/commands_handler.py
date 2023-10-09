@@ -31,7 +31,7 @@ def route_commands(bot, message, bot_manager):
             bot.send_message(chat_id, text="Ваша корзина 🛒")
             for obj in goods:
                 bot.send_photo(chat_id, obj.image,
-                               caption=messages.create_wear_obj_answer_txt(obj),
+                               caption=messages.create_wear_obj_txt_in_cart(obj),
                                reply_markup=create_obj_menu_in_cart(obj, bot_manager))
             bot.send_message(chat_id, text="Хотите оформить заказ?", reply_markup=create_order_menu())
 
@@ -48,5 +48,5 @@ def route_commands(bot, message, bot_manager):
             bot.send_message(chat_id, text="Ваши избранные товары: 🛒")
             for obj in goods:
                 bot.send_photo(chat_id, obj.image,
-                               caption=messages.create_wear_obj_answer_txt(obj),
+                               caption=messages.create_wear_obj_txt(obj),
                                reply_markup=create_obj_menu_in_favorite(obj, bot_manager))

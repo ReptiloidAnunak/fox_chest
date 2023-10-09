@@ -39,7 +39,6 @@ class TgUserAction:
         self.action_code = self.action_data[1].split(':')[0]
         self.product_id = self.action_data[1].split(':')[1]
 
-
     def create_checkout_order_btn(self, product):
         prod_id = product.id
         markup = types.InlineKeyboardMarkup()

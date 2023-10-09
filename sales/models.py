@@ -82,7 +82,7 @@ class Order(DatesModelMixin):
     def apply_discount_by_quantity(self):
         """3 вещи: -7%
         От 3-х: -10%"""
-        self.final_price = self.total_price
+        self.final_price = self.get_total_price()
         discount = 0
         if len(list(self.goods.all())) == 3:
             self.discount = "3 вещи: -7%"
@@ -105,10 +105,7 @@ class Order(DatesModelMixin):
         self.save()
         for obj in goods:
             count += 1
-            obj_str = (
-                f"""
-            {count}.  {obj.name} - {obj.brand} - {obj.size} - {obj.age} лет- {obj.price} р.
-                            """)
+            obj_str = obj.create_str_in_order(count)
             goods_lst.append(obj_str)
         goods_lst = "\n".join(goods_lst)
         self.apply_discount_by_quantity()
