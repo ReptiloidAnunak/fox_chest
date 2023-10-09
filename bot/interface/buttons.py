@@ -30,12 +30,14 @@ class ChildWearMenu:
 # Inline` buttons
 
 
-class ChoiceWearMenu:
-    all = types.InlineKeyboardButton("Все товары категории", callback_data="Все")
-    size_selection = types.InlineKeyboardButton("Подобрать по размеру", callback_data="size")
-    color_selection = types.InlineKeyboardButton("Подобрать по цвету", callback_data="color")
-    sex_selection = types.InlineKeyboardButton("Мальчик/девочка", callback_data="sex")
-    brand_selection = types.InlineKeyboardButton("Подобрать по бренду", callback_data="brand")
+class SearchWearMenu:
+    all = types.KeyboardButton("Все товары категории")
+    size_selection = types.KeyboardButton("Подобрать по размеру")
+    color_selection = types.KeyboardButton("Подобрать по цвету")
+    sex_selection = types.KeyboardButton("Мальчик/девочка")
+    brand_selection = types.KeyboardButton("Подобрать по бренду")
+    back_cat_menu = types.KeyboardButton("Назад")
+    back_main_menu = types.KeyboardButton("Главное меню")
 
 
 class WearSexChoice:

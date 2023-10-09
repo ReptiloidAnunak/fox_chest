@@ -10,6 +10,7 @@ from bot.handlers.wear_cat_handler import handle_wear_cat_request, accept_order
 from bot.handlers.tg_user_info_handler import get_customer_info
 from bot.handlers.commands_handler import route_commands
 from bot.handlers.wear_search_handler import handle_wear_search
+from bot.handlers.search_callback_handler import handle_user_callback
 from bot.tg_user_actions import TgUserAction
 from bot.utils import (BotManager, check_tg_user, get_current_order)
 
@@ -43,6 +44,7 @@ class Command(BaseCommand):
             message = message.text
             try:
                 handle_wear_cat_request(bot, chat_id, message, bot_manager)
+                handle_wear_search(bot, chat_id, message, bot_manager)
                 get_customer_info(bot, chat_id, message, bot_manager)
                 accept_order(bot, chat_id, message, bot_manager)
             except:
@@ -53,7 +55,8 @@ class Command(BaseCommand):
         def handle_callbacks(call):
             """Handles all callbacks in the chat"""
             chat_id = call.message.chat.id
-
+            # check_tg_user(message, bot_manager)
+            get_current_order(bot_manager)
             # Обработка действий пользователя
             if call.data.startswith(TgUserAction.MARKER):
                 get_current_order(bot_manager)
@@ -62,7 +65,7 @@ class Command(BaseCommand):
 
             # Обработка поиска одежды по параметрам
             else:
-                handle_wear_search(bot, call, chat_id, bot_manager)
+                handle_user_callback(bot, chat_id, call, bot_manager)
 
         bot.enable_save_next_step_handlers(delay=2)
         bot.load_next_step_handlers()

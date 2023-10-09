@@ -1,6 +1,6 @@
 from telebot import types
 
-from bot.interface.buttons import MainMenu, ChoiceWearMenu, WearSexChoice, OrderMenu, ChildWearMenu
+from bot.interface.buttons import MainMenu, SearchWearMenu, WearSexChoice, OrderMenu, ChildWearMenu
 from bot.tg_user_actions import TgUserAction
 from bot.utils import BotManager
 
@@ -94,15 +94,19 @@ def create_obj_menu_in_cart(product: Wear, bot_manager: BotManager):
 
 
 def create_wear_request_menu(bot, chat_id, msg_text):
-    markup = types.InlineKeyboardMarkup()
-    btn1 = ChoiceWearMenu.all
-    btn2 = ChoiceWearMenu.sex_selection
-    btn3 = ChoiceWearMenu.size_selection
-    btn4 = ChoiceWearMenu.color_selection
-    btn5 = ChoiceWearMenu.brand_selection
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = SearchWearMenu.all
+    btn2 = SearchWearMenu.sex_selection
+    btn3 = SearchWearMenu.size_selection
+    btn4 = SearchWearMenu.color_selection
+    btn5 = SearchWearMenu.brand_selection
+    btn6 = SearchWearMenu.back_cat_menu
+    btn7 = SearchWearMenu.back_main_menu
     markup.row(btn1, btn2)
     markup.row(btn3, btn4)
     markup.row(btn5)
+    markup.row(btn6)
+    markup.row(btn7)
     bot.send_message(chat_id,
                      text=msg_text,
                      reply_markup=markup

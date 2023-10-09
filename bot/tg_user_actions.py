@@ -79,7 +79,7 @@ class TgUserAction:
             order.save()
 
             if order.delivery_method != DeliveryMethods.PICKUP:
-                bot.send_message(chat_id, f'Напишите ФИО получателя в формате {self.send_receiver_name}Фамилия Имя Отчество')
+                bot.send_message(chat_id, f'Напишите ФИО получателя в формате {self.send_receiver_name} Фамилия Имя Отчество')
             else:
                 bot.send_message(chat_id, f'Вы получите товар по адресу:\n{OFFICE_ADDRESS}. '
                                           f'\nДля подтверждения заказа с вами свяжутся в ближайшее время в телеграм или по телефону {bot_manager.tg_user.phone}')
