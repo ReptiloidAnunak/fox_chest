@@ -1,5 +1,5 @@
 from telebot import types
-
+from store.models import Wear
 from sales.constants import DeliveryMethods, OFFICE_ADDRESS
 from sales.models import Order, OrderStatus
 
@@ -58,7 +58,7 @@ class TgUserAction:
                              )
 
         elif self.action_code == self.delete_from_cart:
-            product = bot_manager.wear_cat.objects.get(id=self.product_id)
+            product = Wear.objects.get(id=self.product_id)
             delete_from_cart(bot_manager, product)
             bot.send_message(chat_id, f"""Товар {product.name} удален из корзины! 🦊❌️\n Воспользуйтесь Меню, если хотите посмотреть другие товары\n⬇️⬇️⬇️
                                             """)

@@ -71,9 +71,10 @@ class Wear(models.Model):
 
     def create_str_in_order(self, number):
         # - {amount_bought}
-        f"""
+        str_in_order = f"""
         {number}.  {self.name} - {self.brand} - {self.size} - {self.age} лет - {self.price} р. 
                         """
+        return str_in_order
 
 
     def __str__(self):
