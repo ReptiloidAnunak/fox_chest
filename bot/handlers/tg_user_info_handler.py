@@ -2,7 +2,6 @@ from bot.tg_user_actions import TgUserAction, create_submit_order_menu
 
 
 def get_customer_info(bot, chat_id, message, bot_manager):
-    order = bot_manager.current_order
     #  Получение телефона пользователя
     if message.startswith(TgUserAction.phone_msg):
         phone = message.lstrip("tel-")
@@ -10,7 +9,6 @@ def get_customer_info(bot, chat_id, message, bot_manager):
         bot_manager.tg_user.save()
         # Сделать нормальную валидацию телефона
         bot.send_message(chat_id, 'Ваш телефон сохранен')
-        # bot.send_message(chat_id, f'Пришлите ФИО полуателя в формате {TgUserAction.edit_receiver_name}name-')#Вот тут косяк
         return True
 
     # Получение ФИО получателя
@@ -20,7 +18,6 @@ def get_customer_info(bot, chat_id, message, bot_manager):
         order.receiver = name
         order.save()
         bot.send_message(chat_id, 'ФИО получателя сохранено')
-        # bot.send_message(chat_id, f'Напишите телефон получателя в формате: {TgUserAction.send_receiver_phone}ТЕЛЕФОН')
         return True
 
     # Получение телефона получателя
@@ -30,8 +27,6 @@ def get_customer_info(bot, chat_id, message, bot_manager):
         order.phone_receiver = phone
         order.save()
         bot.send_message(chat_id, 'Телефон получателя сохранен')
-        # bot.send_message(chat_id,
-        #                  f'Напишите адрес доставки в формате: {TgUserAction.send_receiver_address}город, улица, дом, квартира, индекс')
         return True
 
     # Получение адреса получателя

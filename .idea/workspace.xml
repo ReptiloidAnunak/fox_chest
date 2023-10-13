@@ -8,8 +8,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/handlers/handlers_funcs.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/handlers/handlers_funcs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/handlers/tg_user_info_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/handlers/tg_user_info_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/handlers/wear_search_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/handlers/wear_search_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/interface/buttons.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/interface/buttons.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/tg_user_actions.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/tg_user_actions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -15,6 +15,7 @@ class BotManager:
         self.wear_cat: Wear = None
         self.all_brands_names = get_bands_names_list()
         self.current_order = None
+        self.is_rec_info_submit = False
 
 
 def check_tg_user(message, bot_manager: BotManager):

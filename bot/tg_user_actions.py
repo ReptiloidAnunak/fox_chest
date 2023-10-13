@@ -27,6 +27,7 @@ class TgUserAction:
     edit_receiver_name = 'edit_receiver_name'
     edit_receiver_phone = 'edit_receiver_phone'
     edit_receiver_address = 'edit_receiver_adrs'
+    submit_receiver_info = 'rec_info_ok'
     edit_cart = 'edit_cart'
 
     phone_msg = 'tel-'
@@ -34,6 +35,7 @@ class TgUserAction:
     send_receiver_name = 'name-'
     send_receiver_phone = 'tr-'
     send_receiver_address = 'rad-'
+
 
     def __init__(self, action_call):
         self.action_data = action_call.split('-')
@@ -49,6 +51,7 @@ class TgUserAction:
         return markup
 
     def route(self, bot_manager, bot, chat_id):
+        print(self.action_code)
         if self.action_code == self.add_to_cart:
             product = bot_manager.wear_cat.objects.get(id=self.product_id)
             add_to_cart(bot_manager, product)
@@ -83,11 +86,12 @@ class TgUserAction:
 
         # Оформить заказ
         elif self.action_code == self.checkout_order:
-            if check_receiver_info(chat_id, bot,
+            if check_receiver_info(chat_id, bot, bot_manager,
                                        order=bot_manager.current_order,
                                        code_rec_phone=self.send_receiver_phone,
                                        code_edit_rec_name=self.send_receiver_name,
-                                       code_send_rec_address=self.send_receiver_address
+                                       code_send_rec_address=self.send_receiver_address,
+                                       markup=create_receiver_info_menu()
                                        ):
                 start_checkout_order(bot_manager, bot, chat_id, create_delivery_ways_menu())
 
@@ -104,14 +108,19 @@ class TgUserAction:
                 bot.send_message(chat_id, f'Вы получите товар по адресу:\n{OFFICE_ADDRESS}. '
                                           f'\nДля подтверждения заказа с вами свяжутся в ближайшее время в телеграм или по телефону {bot_manager.tg_user.phone}')
 
-        # Выбор параметра заказа для изменения
-        elif self.action_code == self.edit_order:
+        # Выбор параметров заказа для изменения
+        elif self.action_code == self.edit_order and bot_manager.is_rec_info_submit is False:
             bot.send_message(chat_id, text="Какой параметр вашего заказа хотите изменить?",
                              reply_markup=create_edit_order_menu())
 
         # Обработка изменений в заказе
 
 
+        # Оставить сохраненную информацию о получателе без изменений
+        elif self.action_code == self.submit_receiver_info:
+            bot_manager.is_rec_info_submit = True
+            bot.send_message(chat_id, f'Вы получите товар по адресу:\n{OFFICE_ADDRESS}. '
+                                      f'\nДля подтверждения заказа с вами свяжутся в ближайшее время в телеграм или по телефону {bot_manager.tg_user.phone}')
 
         #Оставить заказ без изменений
         elif self.action_code == self.submit_order:
@@ -149,6 +158,30 @@ def create_submit_order_menu():
                                           callback_data=
                                           f'{TgUserAction.MARKER}{TgUserAction.edit_order}:order')
     markup.add(btn_submit, btn_edit)
+    return markup
+
+
+def create_receiver_info_menu():
+    markup = types.InlineKeyboardMarkup()
+    btn_submit_info = types.InlineKeyboardButton('Все верно',
+                                                 callback_data=f'{TgUserAction.MARKER}{TgUserAction.submit_receiver_info}:order')
+    btn_receiver_name = types.InlineKeyboardButton('Изменить имя',
+                                                   callback_data=
+                                                   f'{TgUserAction.MARKER}{TgUserAction.edit_order}:{TgUserAction.edit_receiver_name}'
+                                                   )
+
+    btn_receiver_phone = types.InlineKeyboardButton('Изменить телефон',
+                                                    callback_data=
+                                                    f'{TgUserAction.MARKER}{TgUserAction.edit_order}:{TgUserAction.edit_receiver_phone}'
+                                                    )
+    btn_receiver_address = types.InlineKeyboardButton('Изменить адрес',
+                                                      callback_data=
+                                                      f'{TgUserAction.MARKER}{TgUserAction.edit_order}:{TgUserAction.edit_receiver_address}'
+                                                      )
+    markup.row(btn_submit_info)
+    markup.row(btn_receiver_name)
+    markup.row(btn_receiver_phone)
+    markup.row(btn_receiver_address)
     return markup
 
 

@@ -44,7 +44,7 @@ class DollsMenu:
     families = types.KeyboardButton('Семьи кукол')
 
 
-# Inline` buttons
+# Inline buttons
 
 class WearSexChoice:
     MALE = types.InlineKeyboardButton(text="Мальчик",
