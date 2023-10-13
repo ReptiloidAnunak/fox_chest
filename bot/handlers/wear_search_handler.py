@@ -1,7 +1,8 @@
 from bot import messages
 from bot.interface.buttons import SearchWearMenu
 from bot.interface.constructors import (create_sex_choice_menu,
-                                        create_brand_menu, create_size_menu, create_color_menu, create_product_menu, create_wear_request_menu)
+                                        create_brand_menu, create_size_menu, create_color_menu, create_product_menu)
+from bot.handlers.handlers_funcs import check_availability
 
 
 def handle_wear_search(bot, chat_id, message, bot_manager):
@@ -10,10 +11,10 @@ def handle_wear_search(bot, chat_id, message, bot_manager):
     # Все товары категории
     if message == SearchWearMenu.all.text:
         wear_cat_all = wear_category.objects.all()
-
-        for obj in wear_cat_all:
-            bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_txt(obj),
-                           reply_markup=create_product_menu(obj))
+        if check_availability(chat_id, bot, wear_cat_all):
+            for obj in wear_cat_all:
+                bot.send_photo(chat_id, obj.image, caption=messages.create_wear_obj_txt(obj),
+                               reply_markup=create_product_menu(obj))
 
     # Пол
     elif message == SearchWearMenu.sex_selection.text:

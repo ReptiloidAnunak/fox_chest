@@ -1,11 +1,12 @@
 from telebot import types
+
 from store.models import Wear
 from sales.constants import DeliveryMethods, OFFICE_ADDRESS
 from sales.models import Order, OrderStatus
 
 from bot.tg_user_acts_funcs import (start_checkout_order, add_to_cart, delete_from_cart, add_to_favorite,
                                     delete_from_favorite)
-
+from bot.handlers.handlers_funcs import check_receiver_info
 
 class TgUserAction:
     MARKER = "act-"
@@ -82,7 +83,13 @@ class TgUserAction:
 
         # Оформить заказ
         elif self.action_code == self.checkout_order:
-            start_checkout_order(bot_manager, bot, chat_id, create_delivery_ways_menu())
+            if check_receiver_info(chat_id, bot,
+                                       order=bot_manager.current_order,
+                                       code_rec_phone=self.send_receiver_phone,
+                                       code_edit_rec_name=self.send_receiver_name,
+                                       code_send_rec_address=self.send_receiver_address
+                                       ):
+                start_checkout_order(bot_manager, bot, chat_id, create_delivery_ways_menu())
 
         # Выбрать способ доставки
         elif self.action_code == self.get_delivery:
@@ -179,4 +186,3 @@ def create_edit_order_menu():
                )
 
     return markup
-
