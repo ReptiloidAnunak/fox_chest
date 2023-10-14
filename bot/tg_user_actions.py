@@ -54,12 +54,7 @@ class TgUserAction:
         print(self.action_code)
         if self.action_code == self.add_to_cart:
             product = bot_manager.wear_cat.objects.get(id=self.product_id)
-            add_to_cart(bot_manager, product)
-            bot.send_message(chat_id,
-                             f"""Товар {product.name} добавлен в корзину! 🦊✅\nХотите оформить заказ или добавите что-то ещё?
-                                            """,
-                             reply_markup=self.create_checkout_order_btn(product)
-                             )
+            add_to_cart(bot, chat_id, bot_manager, product, action=self)
 
         elif self.action_code == self.delete_from_cart:
             product = Wear.objects.get(id=self.product_id)

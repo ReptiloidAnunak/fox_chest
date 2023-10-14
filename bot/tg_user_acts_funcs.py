@@ -1,16 +1,34 @@
-from sales.models import Order, OrderStatus, Favorite
+from sales.models import Order, OrderStatus, Favorite, OrderWearItem
 
 
-def add_to_cart(bot_manager, product):
-    quantity_in_cart = 0
-    product.quantity -= 1
-    quantity_in_cart += 1
-    product.save()
+def add_to_cart(bot, chat_id, bot_manager, product, action):
+    if product.quantity > 0:
+        product.quantity -= 1
+        product.save()
 
-    order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
-                                                 status=OrderStatus.CREATED)
-    order.goods.add(product)
-    order.save()
+        order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
+                                                     status=OrderStatus.CREATED)
+
+        wear_item, created = OrderWearItem.objects.get_or_create(order=order,
+                                                        wear=product)
+
+        wear_item.quantity += 1
+        wear_item.save()
+
+        order.goods.add(product)
+        order.save()
+
+        bot.send_message(chat_id,
+                         f"""Товар {product.name} (1 ед.) добавлен в корзину! 🦊✅\nХотите оформить заказ или добавите что-то ещё?
+                                        """,
+                         reply_markup=action.create_checkout_order_btn(product)
+                         )
+
+    else:
+        bot.send_message(chat_id,
+                         f"""Товар {product.name} раскупили! 🦊✅\nПосмотрите наши другие товары\n⬇️⬇️⬇️
+                                        """
+                         )
 
 
 def delete_from_cart(bot_manager, product): # Команда выполняется только когда я нажимаю "/start". Надо ИСПРВИТЬ!

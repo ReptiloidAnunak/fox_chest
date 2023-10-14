@@ -38,7 +38,8 @@ class Order(DatesModelMixin):
 
     goods = models.ManyToManyField(Wear,
                                    blank=True,
-                                   verbose_name='Товары')
+                                   through='OrderWearItem',
+                                   verbose_name='Товары в корзине')
 
     status = models.CharField(max_length=20,
                               choices=OrderStatus.choices,
@@ -161,3 +162,11 @@ class Favorite(models.Model):
     def __str__(self):
         return self.tg_user
 
+
+class OrderWearItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    wear = models.ForeignKey(Wear, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=0)
+
+    def total_price(self):
+        return self.wear.price * self.quantity
