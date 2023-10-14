@@ -1,6 +1,6 @@
 from telebot import types
 
-from bot.interface.buttons import MainMenu, SearchWearMenu, WearSexChoice, OrderMenu, ChildWearMenu
+from bot.interface.buttons import MainMenu, SearchWearMenu, WearSexChoice, OrderMenu, ChildWearMenu, ContinueCheckoutOrder
 from bot.tg_user_actions import TgUserAction
 from bot.bot_manager import BotManager
 
@@ -55,7 +55,11 @@ def create_order_menu():
     return markup
 
 
-
+def create_continue_checkout_menu():
+    markup = types.InlineKeyboardMarkup()
+    continue_btn = ContinueCheckoutOrder.continue_checkout
+    markup.add(continue_btn)
+    return markup
 
 
 def create_product_menu(product: Wear):

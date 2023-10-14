@@ -61,3 +61,7 @@ class OrderMenu:
                                                 callback_data=f'{TgUserAction.MARKER}{TgUserAction.checkout_order}:order')
     clear_cart = types.InlineKeyboardButton("Очистить корзину",
                                             callback_data=f'{TgUserAction.MARKER}{TgUserAction.empty_cart}:order')
+
+
+class ContinueCheckoutOrder:
+    continue_checkout = types.InlineKeyboardButton('Продложить', callback_data=f'{TgUserAction.MARKER}{TgUserAction.checkout_order}:order')

@@ -1,4 +1,5 @@
 from bot.tg_user_actions import TgUserAction, create_submit_order_menu
+from bot.interface.constructors import create_continue_checkout_menu
 
 
 def get_customer_info(bot, chat_id, message, bot_manager):
@@ -17,7 +18,8 @@ def get_customer_info(bot, chat_id, message, bot_manager):
         name = message.lstrip(TgUserAction.send_receiver_name)
         order.receiver = name
         order.save()
-        bot.send_message(chat_id, 'ФИО получателя сохранено')
+        bot.send_message(chat_id, 'ФИО получателя сохранено',
+                         reply_markup=create_continue_checkout_menu())
         return True
 
     # Получение телефона получателя
@@ -26,7 +28,8 @@ def get_customer_info(bot, chat_id, message, bot_manager):
         phone = message.lstrip(TgUserAction.send_receiver_phone)
         order.phone_receiver = phone
         order.save()
-        bot.send_message(chat_id, 'Телефон получателя сохранен')
+        bot.send_message(chat_id, 'Телефон получателя сохранен',
+                         reply_markup=create_continue_checkout_menu())
         return True
 
     # Получение адреса получателя

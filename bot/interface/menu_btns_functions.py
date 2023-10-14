@@ -13,4 +13,3 @@ def back_to_wear_cat_menu(bot, chat_id):
                      reply_markup=create_cat_wear_keyboard(bot, chat_id,
                                                            msg_text="Вы вернулись к выбору категорий")
                      )
-
