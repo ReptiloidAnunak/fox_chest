@@ -2,7 +2,9 @@ from sales.models import Order, OrderStatus, Favorite
 
 
 def add_to_cart(bot_manager, product):
+    quantity_in_cart = 0
     product.quantity -= 1
+    quantity_in_cart += 1
     product.save()
 
     order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,

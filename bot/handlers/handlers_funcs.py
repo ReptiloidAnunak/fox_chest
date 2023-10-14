@@ -17,7 +17,7 @@ def check_receiver_info(chat_id, bot, bot_manager,
         bot.send_message(chat_id, f'Напишите телефон получателя в формате: {code_rec_phone}ТЕЛЕФОН')
         return False
     elif not order.receiver:
-        bot.send_message(chat_id, f'Пришлите ФИО полуателя в формате {code_edit_rec_name}') #Вот тут косяк
+        bot.send_message(chat_id, f'Пришлите ФИО полуателя в формате {code_edit_rec_name}Фамилия Имя Отчество')
         return False
     elif not order.address:
         bot.send_message(chat_id,
@@ -33,7 +33,6 @@ def check_receiver_info(chat_id, bot, bot_manager,
                              f'\nВсе верно?',
                              reply_markup=markup)
             return False
-        # Сделать кнопки подтверждения данных пользователя
         else:
             return True
 

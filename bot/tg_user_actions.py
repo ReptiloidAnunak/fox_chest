@@ -114,7 +114,16 @@ class TgUserAction:
                              reply_markup=create_edit_order_menu())
 
         # Обработка изменений в заказе
+        elif self.action_code == self.edit_receiver_name:
+            bot.send_message(chat_id,
+                             f'Напишите ФИО получателя в формате: {self.send_receiver_name} Фамилия Имя Отчество')
 
+        elif self.action_code == self.send_receiver_phone:
+            bot.send_message(chat_id, f'Напишите телефон получателя в формате: {self.send_receiver_phone}ТЕЛЕФОН')
+
+        elif self.action_code == self.edit_receiver_address:
+            bot.send_message(chat_id,
+                             f'Напишите адрес доставки в формате: {self.edit_receiver_address}город, улица, дом, квартира, индекс')
 
         # Оставить сохраненную информацию о получателе без изменений
         elif self.action_code == self.submit_receiver_info:

@@ -1,4 +1,4 @@
-from bot.utils import BotManager
+from bot.bot_manager import BotManager
 from store.models import Wear
 
 unknown_command = 'Неизвестная команда'
