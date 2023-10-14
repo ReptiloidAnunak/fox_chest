@@ -1,6 +1,7 @@
 from django.db import models
 
-from .constants import WearSex, WearColor, BrandCountry, WearSize
+from store.constants import WearSex, WearColor, BrandCountry, WearSize
+# from sales.models import OrderWearItem
 
 
 # ############################### Brand ##################################################
@@ -69,10 +70,11 @@ class Wear(models.Model):
     def add_to_cart(self):
         pass
 
-    def create_str_in_order(self, number):
-        # - {amount_bought}
+    def create_str_in_order(self, number, item_in_cart):
+        item_in_cart.total_price = self.price * item_in_cart.quantity
+        item_in_cart.save()
         str_in_order = f"""
-        {number}.  {self.name} - {self.brand} - {self.size} - {self.age} лет - {self.price} р. 
+{number}.  {self.name} - {self.brand} - {self.size} - {item_in_cart.quantity} шт. - {item_in_cart.total_price} р.
                         """
         return str_in_order
 

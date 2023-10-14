@@ -12,10 +12,15 @@ class BotManager:
     def __init__(self):
         self.tg_user: TgUser = None
         self.is_tg_user_new = False
+
         self.wear_cat: Wear = None
         self.all_brands_names = get_bands_names_list()
+
         self.current_order = None
+        self.order_total_price = 0
+
         self.is_rec_info_submit = False
+
 
 
 def check_tg_user(message, bot_manager: BotManager):

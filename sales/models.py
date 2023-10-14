@@ -98,17 +98,19 @@ class Order(DatesModelMixin):
         self.save()
         return discount
 
-    def create_order_msg(self):
+    def create_order_msg(self, item_cart_class):
         goods_lst = []
         goods = self.goods.all()
-        print(goods)
-        print(goods.all())
         count = 0
-        self.total_price = self.get_total_price()
         self.save()
         for obj in goods:
+            item_in_cart = item_cart_class.objects.filter(order=self,
+                                                          wear=obj).first()
             count += 1
-            obj_str = obj.create_str_in_order(count)
+            obj_str = obj.create_str_in_order(number=count,
+                                              item_in_cart=item_in_cart)
+            self.total_price += item_in_cart.total_price
+            self.save()
             goods_lst.append(obj_str)
         goods_lst = "\n".join(goods_lst)
         self.apply_discount_by_quantity()
@@ -125,8 +127,6 @@ class Order(DatesModelMixin):
         goods_lst = []
         goods = self.goods.all()
         count = 0
-        self.total_price = self.get_total_price()
-        self.save()
         for obj in goods:
             count += 1
             obj_str = (
@@ -167,6 +167,4 @@ class OrderWearItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     wear = models.ForeignKey(Wear, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
-
-    def total_price(self):
-        return self.wear.price * self.quantity
+    total_price = models.PositiveIntegerField(default=0)

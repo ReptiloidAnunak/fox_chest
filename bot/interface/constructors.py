@@ -61,7 +61,7 @@ def create_order_menu():
 def create_product_menu(product: Wear):
     prod_id = product.id
     markup = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton(text="💰✅",
+    btn1 = types.InlineKeyboardButton(text="✅🛒",
                                       callback_data=f'{TgUserAction.MARKER}add:{prod_id}')
     btn2 = types.InlineKeyboardButton(text="❤️",
                                       callback_data=f'{TgUserAction.MARKER}favorite:{prod_id}')
@@ -74,7 +74,7 @@ def create_obj_menu_in_favorite(product: Wear, bot_manager: BotManager):
     prod_id = product.id
     bot_manager.wear_cat = type(product)
     markup = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton(text="💰✅",
+    btn1 = types.InlineKeyboardButton(text="✅🛒",
                                       callback_data=f'{TgUserAction.MARKER}add:{prod_id}')
     btn2 = types.InlineKeyboardButton(text="❌",
                                       callback_data=f'{TgUserAction.MARKER}fav_del:{prod_id}')

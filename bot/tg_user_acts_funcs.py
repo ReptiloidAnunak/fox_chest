@@ -19,14 +19,15 @@ def add_to_cart(bot, chat_id, bot_manager, product, action):
         order.save()
 
         bot.send_message(chat_id,
-                         f"""Товар {product.name} (1 ед.) добавлен в корзину! 🦊✅\nХотите оформить заказ или добавите что-то ещё?
+                         f"""Товар {product.name} (1 ед. - {product.price} р.) добавлен в корзину! Всего в корзине {wear_item.quantity} шт.
+                         \n🦊✅\nХотите оформить заказ или добавите что-то ещё?
                                         """,
                          reply_markup=action.create_checkout_order_btn(product)
                          )
 
     else:
         bot.send_message(chat_id,
-                         f"""Товар {product.name} раскупили! 🦊✅\nПосмотрите наши другие товары\n⬇️⬇️⬇️
+                         f"""Товар {product.name} раскупили! 🦊✅\nПосмотрите другие товары\n⬇️⬇️⬇️
                                         """
                          )
 
@@ -63,5 +64,6 @@ def start_checkout_order(bot_manager, bot, chat_id, markup):
     else:
         user_order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
                                                           status=OrderStatus.CREATED)
-        order_msg = user_order.create_order_msg()
+        order_msg = user_order.create_order_msg(item_cart_class=OrderWearItem)
         bot.send_message(chat_id, order_msg, reply_markup=markup)
+
