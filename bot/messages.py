@@ -1,5 +1,6 @@
 from bot.bot_manager import BotManager
 from store.models import Wear
+from sales.models import OrderWearItem
 
 unknown_command = 'Неизвестная команда'
 
@@ -32,7 +33,9 @@ def create_wear_obj_txt(obj: Wear):
     return obj_msg
 
 
-def create_wear_obj_txt_in_cart(obj: Wear):
+def create_wear_obj_txt_in_cart(obj: Wear, order):
+    item_in_cart = OrderWearItem.objects.filter(order=order,
+                                                wear=obj).first()
 
     obj_msg = (
                 f"""
@@ -43,8 +46,8 @@ def create_wear_obj_txt_in_cart(obj: Wear):
 Пол: {obj.sex}
 Возраст: {obj.age}
 Марка: {obj.brand}
-Количество: ???? шт.
-Цена: {obj.price}
+Цена за 1 шт.: {obj.price} 
+Количество: {item_in_cart.quantity} - {item_in_cart.total_price} р.
 Описание: {obj.description}
                 """)
     return obj_msg
