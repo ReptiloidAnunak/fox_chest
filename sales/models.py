@@ -137,8 +137,10 @@ class Order(DatesModelMixin):
                             """)
             goods_lst.append(obj_str)
         goods_lst = "\n".join(goods_lst)
+        created = self.created.strftime("%Y-%m-%d %H:%M")
         result = (f"\n  ВАШ ЗАКАЗ\n"
-                  f"\n\nНомер заказа:  {self.id}\n{self.created}"
+                  f"\n\nНомер заказа:  {self.id}"
+                  f"\nВремя оформления: {created}"
                   f"\n\nФИО получателя: {self.receiver}"
                   f"\n\nТелефон получателя: {self.phone_receiver}"
                   f"\n\nАдрес доставки: {self.address}"
