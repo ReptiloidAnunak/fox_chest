@@ -81,8 +81,9 @@ class Order(DatesModelMixin):
         order_items = OrderWearItem.objects.filter(order=self)
         result = 0
         for item in order_items:
-            result += item.get_total_price()
-        return result
+            result += int(item.get_total_price())
+        self.total_price = result
+        self.save()
 
 
 
@@ -122,16 +123,13 @@ class Order(DatesModelMixin):
             goods_lst.append(obj_str)
 
         goods_lst = "\n".join(goods_lst)
-        p = int(self.get_order_price())
-        self.total_price = p
-        self.save()
-
+        self.get_order_price()
         created = self.created.strftime("%Y-%m-%d %H:%M")
         result = (f"\n  ВАШ ЗАКАЗ\n\n"
                   f"Номер заказа:  {self.id}"
                   f"\nВремя оформления: {created}"
                   f"\n{goods_lst}\n\n"
-                  f"\nВсего: {p} руб.\n"
+                  f"\nВсего: {self.total_price} руб.\n"
                   f"\nСкидка: {self.discount}\n"
                   f"\n\nВсего к оплате: {self.final_price} руб."
                   f"️⬇️ Выберите способ доставки ️⬇️")
@@ -151,6 +149,7 @@ class Order(DatesModelMixin):
             goods_lst.append(obj_str)
         goods_lst = "\n".join(goods_lst)
         created = self.created.strftime("%Y-%m-%d %H:%M")
+        self.get_order_price()
         result = (f"\n  ВАШ ЗАКАЗ\n"
                   f"\n\nНомер заказа:  {self.id}"
                   f"\nВремя оформления: {created}"
