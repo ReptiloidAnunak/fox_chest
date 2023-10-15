@@ -84,10 +84,15 @@ class TgUserAction:
             start_checkout_order(bot_manager, bot, chat_id, create_delivery_ways_menu())
 
         # Выбрать способ доставки
+
         elif self.action_code == self.get_delivery:
             order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                          status=OrderStatus.CREATED).first()
             print('способ ' + order.delivery_method)
+
+            # Это надо перенести в отдельную функцию маршрутизации доставки
+
+
 
             if order.delivery_method == DeliveryMethods.UNKNOWN:
                 print('хуй знает')
@@ -112,6 +117,7 @@ class TgUserAction:
                                     code_send_rec_address=self.send_receiver_address,
                                     markup=create_receiver_info_menu()
                                     )
+
 
 
         # Выбор параметров заказа для изменения
