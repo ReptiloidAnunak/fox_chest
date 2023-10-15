@@ -9,7 +9,8 @@ def get_customer_info(bot, chat_id, message, bot_manager):
         bot_manager.tg_user.phone = phone
         bot_manager.tg_user.save()
         # Сделать нормальную валидацию телефона
-        bot.send_message(chat_id, 'Ваш телефон сохранен')
+        bot.send_message(chat_id, 'Ваш телефон сохранен',
+                         reply_markup=create_continue_checkout_menu())
         return True
 
     # Получение ФИО получателя

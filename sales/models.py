@@ -114,8 +114,10 @@ class Order(DatesModelMixin):
             goods_lst.append(obj_str)
         goods_lst = "\n".join(goods_lst)
         self.apply_discount_by_quantity()
+        created = self.created.strftime("%Y-%m-%d %H:%M")
         result = (f"\n  ВАШ ЗАКАЗ\n\n"
-                  f"Номер заказа:  {self.id}\n{self.created}"
+                  f"Номер заказа:  {self.id}"
+                  f"\nВремя оформления: {created}"
                   f"\n{goods_lst}\n\n"
                   f"\nВсего: {self.total_price} руб.\n"
                   f"\nСкидка: {self.discount}\n"
