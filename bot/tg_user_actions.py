@@ -20,7 +20,8 @@ class TgUserAction:
     delete_from_favorite = 'fav_del'
 
     checkout_order = 'checkout_order'
-    submit_order = 'submit_order'
+    submit_order_1 = 'submit_order_1'
+    submit_order_2 = 'submit_order_2'
 
     edit_order = 'edit_order'
     edit_delivery = 'edit_delivery'
@@ -46,12 +47,12 @@ class TgUserAction:
         prod_id = product.id
         markup = types.InlineKeyboardMarkup()
         btn1 = types.InlineKeyboardButton(text="Оформить заказ",
-                                          callback_data=f'{self.MARKER}{self.checkout_order}:order')
+                                          callback_data=f'{self.MARKER}{self.get_delivery}:order')
         markup.add(btn1)
         return markup
 
     def route(self, bot_manager, bot, chat_id):
-        print(self.action_code)
+        print("код действия " + self.action_code)
         if self.action_code == self.add_to_cart:
             product = bot_manager.wear_cat.objects.get(id=self.product_id)
             add_to_cart(bot, chat_id, bot_manager, product, action=self)
@@ -64,7 +65,6 @@ class TgUserAction:
 
         elif self.action_code == self.add_to_favorite:
             product = bot_manager.wear_cat.objects.get(id=self.product_id)
-            print(product.name)
             add_to_favorite(bot_manager, product)
             bot.send_message(chat_id, f"""Товар {product.name} добавлен в избранное! 🦊❤️\nВ любой момент вы можете посмотреть список заинтересовавших товаров с помощью команды /favorite в Меню
                                             """)
@@ -81,27 +81,38 @@ class TgUserAction:
 
         # Оформить заказ
         elif self.action_code == self.checkout_order:
-            if check_receiver_info(chat_id, bot, bot_manager,
-                                       order=bot_manager.current_order,
-                                       code_rec_phone=self.send_receiver_phone,
-                                       code_edit_rec_name=self.send_receiver_name,
-                                       code_send_rec_address=self.send_receiver_address,
-                                       markup=create_receiver_info_menu()
-                                       ):
-                start_checkout_order(bot_manager, bot, chat_id, create_delivery_ways_menu())
+            start_checkout_order(bot_manager, bot, chat_id, create_delivery_ways_menu())
 
         # Выбрать способ доставки
         elif self.action_code == self.get_delivery:
             order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                          status=OrderStatus.CREATED).first()
-            order.delivery_method = self.product_id
-            order.save()
+            print('способ ' + order.delivery_method)
 
-            if order.delivery_method != DeliveryMethods.PICKUP:
-                bot.send_message(chat_id, f'Напишите ФИО получателя в формате {self.send_receiver_name} Фамилия Имя Отчество')
-            else:
+            if order.delivery_method == DeliveryMethods.UNKNOWN:
+                print('хуй знает')
+                bot.send_message(chat_id,
+                                 text=f'Выберите способ доставки',
+                                 reply_markup=create_delivery_ways_menu())
+
+            elif order.delivery_method == DeliveryMethods.PICKUP:
+                print('Самовывоз')
+
                 bot.send_message(chat_id, f'Вы получите товар по адресу:\n{OFFICE_ADDRESS}. '
                                           f'\nДля подтверждения заказа с вами свяжутся в ближайшее время в телеграм или по телефону {bot_manager.tg_user.phone}')
+
+            elif order.delivery_method in [DeliveryMethods.POST_OF_RUSSIA, DeliveryMethods.SDEK,
+                                           DeliveryMethods.AVITO, DeliveryMethods.BOXBERRY]:
+                print('дистанционный')
+                check_receiver_info(chat_id, bot,
+                                    bot_manager,
+                                    order=bot_manager.current_order,
+                                    code_rec_phone=self.send_receiver_phone,
+                                    code_edit_rec_name=self.send_receiver_name,
+                                    code_send_rec_address=self.send_receiver_address,
+                                    markup=create_receiver_info_menu()
+                                    )
+
 
         # Выбор параметров заказа для изменения
         elif self.action_code == self.edit_order and bot_manager.is_rec_info_submit is False:
@@ -126,8 +137,12 @@ class TgUserAction:
             bot.send_message(chat_id, f'Вы получите товар по адресу:\n{OFFICE_ADDRESS}. '
                                       f'\nДля подтверждения заказа с вами свяжутся в ближайшее время в телеграм или по телефону {bot_manager.tg_user.phone}')
 
-        #Оставить заказ без изменений
-        elif self.action_code == self.submit_order:
+        #Оставить заказ без изменений 1 и выбрать способ доставки
+        elif self.action_code == self.submit_order_1:
+            bot.send_message(chat_id, text="Выберите способ доставки",
+                             reply_markup=create_delivery_ways_menu())
+        # Последнее подтверждение заказа
+        elif self.action_code == self.submit_order_2:
             bot.send_message(chat_id,
                              f'\n{bot_manager.tg_user.first_name}, спасибо за заказ! С Вами свяжется наш менеджер в ближайшее время в телеграм или по телефону {bot_manager.tg_user.phone}')
 
@@ -157,7 +172,7 @@ def create_delivery_ways_menu():
 def create_submit_order_menu():
     markup = types.InlineKeyboardMarkup()
     btn_submit = types.InlineKeyboardButton(text='✅ Подтвердить заказ',
-                                            callback_data=f'{TgUserAction.MARKER}{TgUserAction.submit_order}:order')
+                                            callback_data=f'{TgUserAction.MARKER}{TgUserAction.submit_order_1}:order')
     btn_edit = types.InlineKeyboardButton(text="✏️ Изменить заказ",
                                           callback_data=
                                           f'{TgUserAction.MARKER}{TgUserAction.edit_order}:order')
