@@ -71,8 +71,7 @@ class Wear(models.Model):
         pass
 
     def create_str_in_order(self, number, item_in_cart):
-        item_in_cart.total_price = self.price * item_in_cart.quantity
-        item_in_cart.save()
+        item_in_cart.total_price = item_in_cart.get_total_price()
         str_in_order = f"""
 {number}.  {self.name} - {self.brand} - {self.size} - {item_in_cart.quantity} шт. - {item_in_cart.total_price} р.
                         """

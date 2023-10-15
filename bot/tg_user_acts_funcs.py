@@ -11,7 +11,7 @@ def add_to_cart(bot, chat_id, bot_manager, product, action):
 
         wear_item, created = OrderWearItem.objects.get_or_create(order=order,
                                                         wear=product)
-
+        order.total_units_quantity += 1
         wear_item.quantity += 1
         wear_item.save()
 
@@ -39,6 +39,7 @@ def delete_from_cart(bot_manager, product): # Команда выполняет�
     order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                  status=OrderStatus.CREATED).first()
     order.goods.remove(product)
+    order.total_units_quantity -= 1
     order.save()
 
 
@@ -56,7 +57,6 @@ def delete_from_favorite(bot_manager, product):
 
 def start_checkout_order(bot_manager, bot, chat_id, markup):
     tg_user = bot_manager.tg_user
-    order = bot_manager.current_order
     if tg_user.phone is None:
         bot.send_message(chat_id,
                          "Введите свой телефон для связи в формате tel-ВАШ-НОМЕР-ТЕЛЕФОНА")  # Придумать правильный формат

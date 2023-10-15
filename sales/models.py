@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils import timezone
 
-from .constants import OrderStatus, DeliveryMethods
+from sales.constants import OrderStatus, DeliveryMethods
+
+
 from bot.models import TgUser
 from store.models import Wear
 from core.models import User
@@ -72,54 +74,64 @@ class Order(DatesModelMixin):
     discount = models.CharField(max_length=100,
                                 verbose_name='Скидка',
                                 default='Нет')
+    total_units_quantity = models.PositiveIntegerField(default=0)
 
-    def get_total_price(self):
-        goods = self.goods.all()
+
+    def get_order_price(self):
+        order_items = OrderWearItem.objects.filter(order=self)
         result = 0
-        for obj in goods:
-            result += obj.price
+        for item in order_items:
+            result += item.get_total_price()
         return result
+
+
+
+
+
+
+
+
 
     def apply_discount_by_quantity(self):
         """3 вещи: -7%
         От 3-х: -10%"""
         discount = 0
-        if len(list(self.goods.all())) == 3:
+        if self.total_units_quantity == 3:
             self.discount = "3 вещи: -7%"
             discount = self.total_price * 0.07
-        elif len(list(self.goods.all())) > 3:
+        elif self.total_units_quantity > 3:
             self.discount = "От 3-х вещи: -10%"
             discount = self.total_price * 0.1
         else:
             self.discount = "Нет"
-            self.final_price = self.get_total_price()
-
-        self.final_price -= discount
         self.save()
         return discount
+
 
     def create_order_msg(self, item_cart_class):
         goods_lst = []
         goods = self.goods.all()
         count = 0
-        self.save()
+
         for obj in goods:
             item_in_cart = item_cart_class.objects.filter(order=self,
                                                           wear=obj).first()
             count += 1
             obj_str = obj.create_str_in_order(number=count,
                                               item_in_cart=item_in_cart)
-            self.total_price += item_in_cart.total_price
-            self.save()
             goods_lst.append(obj_str)
+
         goods_lst = "\n".join(goods_lst)
-        self.apply_discount_by_quantity()
+        p = int(self.get_order_price())
+        self.total_price = p
+        self.save()
+
         created = self.created.strftime("%Y-%m-%d %H:%M")
         result = (f"\n  ВАШ ЗАКАЗ\n\n"
                   f"Номер заказа:  {self.id}"
                   f"\nВремя оформления: {created}"
                   f"\n{goods_lst}\n\n"
-                  f"\nВсего: {self.total_price} руб.\n"
+                  f"\nВсего: {p} руб.\n"
                   f"\nСкидка: {self.discount}\n"
                   f"\n\nВсего к оплате: {self.final_price} руб."
                   f"️⬇️ Выберите способ доставки ️⬇️")
@@ -131,10 +143,11 @@ class Order(DatesModelMixin):
         count = 0
         for obj in goods:
             count += 1
-            obj_str = (
-                f"""
-            {count}.  {obj.name} - {obj.brand} - {obj.size} - {obj.age} лет- {obj.price} р.
-                            """)
+            order_item = OrderWearItem.objects.filter(order=self,
+                                                       wear=obj).first()
+
+            obj_str = obj.create_str_in_order(number=count,
+                                              item_in_cart=order_item)
             goods_lst.append(obj_str)
         goods_lst = "\n".join(goods_lst)
         created = self.created.strftime("%Y-%m-%d %H:%M")
@@ -172,3 +185,10 @@ class OrderWearItem(models.Model):
     wear = models.ForeignKey(Wear, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     total_price = models.PositiveIntegerField(default=0)
+
+    def get_total_price(self):
+        unit_price = int(self.wear.price)
+        self.total_price = int(self.quantity) * unit_price
+        self.save()
+        result = int(self.total_price)
+        return result
