@@ -120,10 +120,10 @@ class TgUserAction:
 
             elif order.delivery_method == DeliveryMethods.PICKUP:
                 print('Самовывоз')
-
-                bot.send_message(chat_id, f'\nСпособ доставки: {order.delivery_method}'
-                                          f'Вы получите товар по адресу:\n{OFFICE_ADDRESS}. '
-                                          f'\nДля подтверждения заказа с вами свяжутся в ближайшее время в телеграм или по телефону {bot_manager.tg_user.phone}')
+                order.phone_receiver = bot_manager.tg_user.phone
+                order.delivery_method = DeliveryMethods.PICKUP
+                self.save_delivery_method(order)
+                bot.send_message(chat_id, text=order.create_order_msg_pickup())
 
             elif (order.delivery_method in [DeliveryMethods.POST_OF_RUSSIA, DeliveryMethods.SDEK,
                                            DeliveryMethods.AVITO, DeliveryMethods.BOXBERRY]):
@@ -140,8 +140,6 @@ class TgUserAction:
 
 
         # ============================================= В отдельную функцию =================================
-
-        # ========================ЛОГИКА ЭТОЙ ФУНКЦИИ АБСОЛЮТНО ПАРАШНАЯ НАДО ПЕРЕСМОТРЕТЬ==================================================================
         # Выбор параметров заказа для изменения
 
         elif self.action_code == self.edit_order and bot_manager.is_rec_info_submit is False:

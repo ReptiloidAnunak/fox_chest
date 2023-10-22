@@ -1,8 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-from sales.constants import OrderStatus, DeliveryMethods
-
+from sales.constants import OrderStatus, DeliveryMethods, OFFICE_ADDRESS
 
 from bot.models import TgUser
 from store.models import Wear
@@ -165,6 +164,37 @@ class Order(DatesModelMixin):
                   f"Всего: {self.total_price} руб.\n"
                   f"\nСкидка: {self.discount}"
                   f"\n\nВсего к оплате: {self.final_price} руб.")
+        return result
+
+    def create_order_msg_pickup(self):
+        goods_lst = []
+        goods = self.goods.all()
+        count = 0
+        for obj in goods:
+            count += 1
+            order_item = OrderWearItem.objects.filter(order=self,
+                                                      wear=obj).first()
+
+            obj_str = obj.create_str_in_order(number=count,
+                                              item_in_cart=order_item)
+            goods_lst.append(obj_str)
+        goods_lst = "\n".join(goods_lst)
+        created = self.created.strftime("%Y-%m-%d %H:%M")
+
+        self.get_order_price()
+        self.apply_discount_by_quantity()
+
+        result = (f'Вы получите товар по адресу:\n{OFFICE_ADDRESS}.\n'
+                  f"\n  ВАШ ЗАКАЗ\n"
+                  f"\n\nНомер заказа:  {self.id}"
+                  f"\nВремя оформления: {created}"
+                  f"\n\nТелефон получателя: {self.phone_receiver}"
+                  f"\n\nСпособ доставки: {self.delivery_method}"
+                  f"\n\nТовары: \n\n{goods_lst}\n"
+                  f"Всего: {self.total_price} руб.\n"
+                  f"\nСкидка: {self.discount}"
+                  f"\n\nВсего к оплате: {self.final_price} руб."
+                  f'\nДля подтверждения заказа с вами свяжутся в ближайшее время в телеграм или по телефону {self.phone_receiver}')
         return result
 
     def __str__(self):

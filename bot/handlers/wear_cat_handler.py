@@ -110,7 +110,8 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
 def accept_order_main_menu(bot, chat_id, bot_manager):
     order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
                                               status=OrderStatus.CREATED)
-    if not order.goods:
+    goods = list(order.goods.all())
+    if not goods:
         bot.send_message(chat_id, text=cart_is_empty)
     else:
         bot.send_message(chat_id, text=order.create_final_order_msg(),
