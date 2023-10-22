@@ -185,7 +185,7 @@ class Order(DatesModelMixin):
         self.apply_discount_by_quantity()
 
         result = (f'Вы получите товар по адресу:\n{OFFICE_ADDRESS}.\n'
-                  f"\n  ВАШ ЗАКАЗ\n"
+                  f"\n  ВАШ ЗАКАЗ"
                   f"\n\nНомер заказа:  {self.id}"
                   f"\nВремя оформления: {created}"
                   f"\n\nТелефон получателя: {self.phone_receiver}"
@@ -194,7 +194,7 @@ class Order(DatesModelMixin):
                   f"Всего: {self.total_price} руб.\n"
                   f"\nСкидка: {self.discount}"
                   f"\n\nВсего к оплате: {self.final_price} руб."
-                  f'\nДля подтверждения заказа с вами свяжутся в ближайшее время в телеграм или по телефону {self.phone_receiver}')
+                  f'\n\nДля подтверждения заказа с вами свяжутся в ближайшее время в телеграм или по телефону {self.phone_receiver}')
         return result
 
     def __str__(self):

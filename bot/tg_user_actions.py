@@ -122,6 +122,7 @@ class TgUserAction:
                 print('Самовывоз')
                 order.phone_receiver = bot_manager.tg_user.phone
                 order.delivery_method = DeliveryMethods.PICKUP
+                order.status = OrderStatus.IN_PROGRESS
                 self.save_delivery_method(order)
                 bot.send_message(chat_id, text=order.create_order_msg_pickup())
 
