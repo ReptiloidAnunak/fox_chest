@@ -6,13 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="37b14f68-3e67-4c36-92b9-2e65aaa91f9a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/handlers/handlers_funcs.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/handlers/handlers_funcs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/handlers/tg_user_info_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/handlers/tg_user_info_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/handlers/wear_cat_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/handlers/wear_cat_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/interface/constructors.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/interface/constructors.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/tg_user_actions.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/tg_user_actions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/tg_user_acts_funcs.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/tg_user_acts_funcs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sales/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/sales/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,6 +197,11 @@
           <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
           <line>221</line>
           <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
+          <line>149</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
