@@ -5,8 +5,8 @@ import logging
 from telebot import TeleBot
 
 from fox_shop.settings import BOT_TOKEN
-
-from bot.handlers.wear_cat_handler import handle_wear_cat_request, accept_order
+# accept_order
+from bot.handlers.wear_cat_handler import handle_wear_cat_request
 from bot.handlers.tg_user_info_handler import get_customer_info
 from bot.handlers.commands_handler import route_commands
 from bot.handlers.wear_search_handler import handle_wear_search
@@ -46,7 +46,6 @@ class Command(BaseCommand):
                 handle_wear_cat_request(bot, chat_id, message, bot_manager)
                 handle_wear_search(bot, chat_id, message, bot_manager)
                 get_customer_info(bot, chat_id, message, bot_manager)
-                accept_order(bot, chat_id, message, bot_manager)
             except:
                 bot.send_message(chat_id, 'Неизвестная команда')
 

@@ -1,12 +1,13 @@
 import typing
 
+from bot.bot_manager import check_tg_user
 from bot.interface.constructors import create_cat_wear_keyboard, create_wear_request_menu
 from bot.interface.buttons import MainMenu, ChildWearMenu, SearchWearMenu
 from bot.interface.menu_btns_functions import back_to_main_menu, back_to_wear_cat_menu
-
-from bot.messages import WearPresentations
-from bot.tg_user_acts_funcs import start_checkout_order
+from bot.messages import WearPresentations, cart_is_empty
 from bot.tg_user_actions import create_delivery_ways_menu
+from bot.bot_manager import get_current_order
+from sales.models import Order, OrderStatus
 
 from store import models as wear_models
 
@@ -84,21 +85,35 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
                                  chat_id=chat_id,
                                  msg_text=WearPresentations.sweatshirt)
 
+    elif message == MainMenu.checkout_order.text:
+        print('e')
+        # order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
+        #                                                   status=OrderStatus.CREATED)
+        accept_order_main_menu(bot, chat_id, bot_manager)
+
+
+    # Выход
     elif message == SearchWearMenu.back_cat_menu.text:
         back_to_wear_cat_menu(bot, chat_id)
 
-    elif message in [ChildWearMenu.back.text, SearchWearMenu.back_main_menu.text]:
+
+    elif message == ChildWearMenu.back.text:
         back_to_main_menu(bot, chat_id)
+
+
+
         return True
     else:
         return False
 
 
-def accept_order(bot, chat_id, message, bot_manager):
-    print('accept_order')
-    if message == MainMenu.checkout_order.text:
-        start_checkout_order(bot_manager, bot, chat_id,
-                             markup=create_delivery_ways_menu())
-
+def accept_order_main_menu(bot, chat_id, bot_manager):
+    order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
+                                              status=OrderStatus.CREATED)
+    if not order.goods:
+        bot.send_message(chat_id, text=cart_is_empty)
     else:
-        return False
+        bot.send_message(chat_id, text=order.create_final_order_msg(),
+                         reply_markup=create_delivery_ways_menu())
+
+    return True

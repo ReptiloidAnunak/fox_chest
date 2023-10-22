@@ -25,7 +25,7 @@ class ChildWearMenu:
     underwear = types.KeyboardButton("Нижнее белье")
     socks_tights = types.KeyboardButton("Носки/колготки")
     sweatshirt = types.KeyboardButton("Cвитшоты")
-    back = types.KeyboardButton("Назад")
+    back = types.KeyboardButton("Главное меню")
 
 
 class SearchWearMenu:
@@ -34,7 +34,7 @@ class SearchWearMenu:
     color_selection = types.KeyboardButton("Подобрать по цвету")
     sex_selection = types.KeyboardButton("Мальчик/девочка")
     brand_selection = types.KeyboardButton("Подобрать по бренду")
-    back_cat_menu = types.KeyboardButton("Назад")
+    back_cat_menu = types.KeyboardButton("Назад в категории одежды")
     back_main_menu = types.KeyboardButton("Главное меню")
 
 

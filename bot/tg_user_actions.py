@@ -4,7 +4,7 @@ from store.models import Wear
 from sales.constants import OrderStatus, DeliveryMethods, OFFICE_ADDRESS
 from sales.models import Order, OrderStatus
 
-from bot.tg_user_acts_funcs import (start_checkout_order, add_to_cart, delete_from_cart, add_to_favorite,
+from bot.tg_user_acts_funcs import (add_to_cart, delete_from_cart, add_to_favorite,
                                     delete_from_favorite)
 from bot.handlers.handlers_funcs import check_receiver_info
 
@@ -60,10 +60,10 @@ class TgUserAction:
 
 
     def route(self, bot_manager, bot, chat_id):
-        print("\naction_code " + self.action_code)
-        print('product_id ' + self.product_id)
-
-        print("заказ подтвержден - " + str(bot_manager.is_rec_info_submit) + "\n")
+        # print("\naction_code " + self.action_code)
+        # print('product_id ' + self.product_id)
+        #
+        # print("заказ подтвержден - " + str(bot_manager.is_rec_info_submit) + "\n")
 
         if self.action_code == self.add_to_cart:
             product = bot_manager.wear_cat.objects.get(id=self.product_id)
@@ -93,7 +93,6 @@ class TgUserAction:
 
         # Оформить заказ
         elif self.action_code == self.checkout_order:
-            # start_checkout_order(bot_manager, bot, chat_id, create_delivery_ways_menu())
             check_receiver_info(chat_id, bot,
                                 bot_manager,
                                 order=bot_manager.current_order,
@@ -144,12 +143,14 @@ class TgUserAction:
 
         # ========================ЛОГИКА ЭТОЙ ФУНКЦИИ АБСОЛЮТНО ПАРАШНАЯ НАДО ПЕРЕСМОТРЕТЬ==================================================================
         # Выбор параметров заказа для изменения
-        elif self.action_code == self.edit_order and bot_manager.is_rec_info_submit is False:
-            bot.send_message(chat_id, text="Какой параметр вашего заказа хотите изменить?",
-                             reply_markup=create_edit_order_menu())
 
+        elif self.action_code == self.edit_order and bot_manager.is_rec_info_submit is False:
+            if self.product_id == 'order':
+                print("В начале изменения заказа" + self.product_id)
+                bot.send_message(chat_id, text="Какой параметр вашего заказа хотите изменить?",
+                                 reply_markup=create_edit_order_menu())
             # Обработка изменений в заказе
-            if self.product_id == self.edit_receiver_name:
+            elif self.product_id == self.edit_receiver_name:
                 print("edit name")
                 bot.send_message(chat_id,
                                  f'Напишите ФИО получателя в формате: {self.send_receiver_name} Фамилия Имя Отчество')
