@@ -104,6 +104,7 @@ class Order(DatesModelMixin):
 
 
     def create_order_msg(self, item_cart_class):
+        print("create_order_msg")
         goods_lst = []
         goods = self.goods.all()
         count = 0
@@ -125,11 +126,14 @@ class Order(DatesModelMixin):
         result = (f"\n  ВАШ ЗАКАЗ\n\n"
                   f"Номер заказа:  {self.id}"
                   f"\nВремя оформления: {created}"
+                  f"\n\nФИО получателя: {self.receiver}"
+                  f"\n\nТелефон получателя: {self.phone_receiver}"
+                  f"\n\nСпособ доставки: {self.delivery_method}"
+                  f"\n\nАдрес доставки: {self.address}"
                   f"\n{goods_lst}\n\n"
                   f"\nВсего: {self.total_price} руб.\n"
                   f"\nСкидка: {self.discount}\n"
-                  f"\n\nВсего к оплате: {self.final_price} руб."
-                  f"️⬇️ Выберите способ доставки ️⬇️")
+                  f"\n\nВсего к оплате: {self.final_price} руб.")
         return result
 
     def create_final_order_msg(self):
@@ -155,6 +159,7 @@ class Order(DatesModelMixin):
                   f"\nВремя оформления: {created}"
                   f"\n\nФИО получателя: {self.receiver}"
                   f"\n\nТелефон получателя: {self.phone_receiver}"
+                  f"\n\nСпособ доставки: {self.delivery_method}"
                   f"\n\nАдрес доставки: {self.address}"
                   f"\n\nТовары: \n\n{goods_lst}\n"         
                   f"Всего: {self.total_price} руб.\n"

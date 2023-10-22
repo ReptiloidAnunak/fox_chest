@@ -1,3 +1,5 @@
+from sales.constants import DeliveryMethods
+
 
 def check_availability(chat_id, bot, lst: list):
     if not lst:
@@ -13,6 +15,7 @@ def check_receiver_info(chat_id, bot, bot_manager,
                         code_edit_rec_name,
                         code_send_rec_address,
                         markup):
+    print('check_receiver_info')
     if not order.phone_receiver:
         bot.send_message(chat_id, f'Напишите телефон получателя в формате: {code_rec_phone}ТЕЛЕФОН')
         return False
@@ -23,10 +26,13 @@ def check_receiver_info(chat_id, bot, bot_manager,
         bot.send_message(chat_id,
                          f'Напишите адрес доставки в формате: {code_send_rec_address}город, улица, дом, квартира, индекс')
         return False
+    elif order.delivery_method == DeliveryMethods.UNKNOWN:
+        return False
     else:
         if bot_manager.is_rec_info_submit == False:
             bot.send_message(chat_id,
                              f'Проверьте сохраненные данные из вашего заказа\n'
+                             f'\nCпособ доставки: {order.delivery_method}'
                              f'\nИмя получателя: {order.receiver}'
                              f'\nТелефон получателя: {order.phone_receiver}'
                              f'\nАдрес получателя: {order.address}'

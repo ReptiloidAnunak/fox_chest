@@ -7,6 +7,8 @@ from bot.bot_manager import BotManager
 from store.models import Wear, Brand
 from store.constants import WearSize, WearColor
 
+from sales.constants import DeliveryMethods
+
 
 def create_start_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -73,6 +75,7 @@ def create_product_menu(product: Wear):
                                       callback_data=f'{TgUserAction.MARKER}delete:{prod_id}')
     markup.add(btn1, btn2, btn3)
     return markup
+
 
 def create_obj_menu_in_favorite(product: Wear, bot_manager: BotManager):
     prod_id = product.id
@@ -179,5 +182,4 @@ def create_color_menu(bot, chat_id, row_len: int):
         markup.row(*row_buttons)
     bot.send_message(chat_id, text="Выберите цвет",
                      reply_markup=markup)
-
 

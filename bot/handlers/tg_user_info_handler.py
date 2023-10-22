@@ -1,8 +1,11 @@
-from bot.tg_user_actions import TgUserAction, create_submit_order_menu
+from bot.tg_user_actions import TgUserAction, create_submit_order_menu, create_receiver_info_menu, create_delivery_ways_menu
 from bot.interface.constructors import create_continue_checkout_menu
+
+from sales.constants import DeliveryMethods, OFFICE_ADDRESS
 
 
 def get_customer_info(bot, chat_id, message, bot_manager):
+    print('get_customer_info')
     #  Получение телефона пользователя
     if message.startswith(TgUserAction.phone_msg):
         phone = message.lstrip("tel-")

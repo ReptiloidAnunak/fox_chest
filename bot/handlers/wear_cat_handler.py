@@ -1,3 +1,5 @@
+import typing
+
 from bot.interface.constructors import create_cat_wear_keyboard, create_wear_request_menu
 from bot.interface.buttons import MainMenu, ChildWearMenu, SearchWearMenu
 from bot.interface.menu_btns_functions import back_to_main_menu, back_to_wear_cat_menu
@@ -5,6 +7,7 @@ from bot.interface.menu_btns_functions import back_to_main_menu, back_to_wear_ca
 from bot.messages import WearPresentations
 from bot.tg_user_acts_funcs import start_checkout_order
 from bot.tg_user_actions import create_delivery_ways_menu
+
 from store import models as wear_models
 
 
@@ -92,8 +95,10 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
 
 
 def accept_order(bot, chat_id, message, bot_manager):
+    print('accept_order')
     if message == MainMenu.checkout_order.text:
         start_checkout_order(bot_manager, bot, chat_id,
                              markup=create_delivery_ways_menu())
+
     else:
         return False

@@ -32,7 +32,7 @@ def add_to_cart(bot, chat_id, bot_manager, product, action):
                          )
 
 
-def delete_from_cart(bot_manager, product): # Команда выполняется только когда я нажимаю "/start". Надо ИСПРВИТЬ!
+def delete_from_cart(bot_manager, product):
     product.quantity += 1
     product.save()
 
@@ -55,15 +55,15 @@ def delete_from_favorite(bot_manager, product):
     favorite_list.save()
 
 
-def start_checkout_order(bot_manager, bot, chat_id, markup):
+def start_checkout_order(bot_manager, bot, chat_id):
     tg_user = bot_manager.tg_user
     if tg_user.phone is None:
         bot.send_message(chat_id,
-                         "Введите свой телефон для связи в формате tel-ВАШ-НОМЕР-ТЕЛЕФОНА")  # Придумать правильный формат
+                         "Введите ваш телефон для связи в формате tel-ВАШ-НОМЕР-ТЕЛЕФОНА")  # Придумать правильный формат
 
     else:
         user_order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
                                                           status=OrderStatus.CREATED)
         order_msg = user_order.create_order_msg(item_cart_class=OrderWearItem)
-        bot.send_message(chat_id, order_msg, reply_markup=markup)
+        bot.send_message(chat_id, order_msg)
 
