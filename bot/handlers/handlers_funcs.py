@@ -30,6 +30,8 @@ def check_receiver_info(chat_id, bot, bot_manager,
         return False
     else:
         if bot_manager.is_rec_info_submit == False:
+            order = bot_manager.current_order
+            print("способ менеджер - " + bot_manager.current_order.delivery_method)
             bot.send_message(chat_id,
                              f'Проверьте сохраненные данные из вашего заказа\n'
                              f'\nCпособ доставки: {order.delivery_method}'

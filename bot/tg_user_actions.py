@@ -1,7 +1,7 @@
 from telebot import types
 
 from store.models import Wear
-from sales.constants import OrderStatus, DeliveryMethods, OFFICE_ADDRESS
+from sales.constants import DeliveryMethods
 from sales.models import Order, OrderStatus
 
 from bot.tg_user_acts_funcs import (add_to_cart, delete_from_cart, add_to_favorite,
@@ -44,20 +44,20 @@ class TgUserAction:
         self.action_code = self.action_data[1].split(':')[0]
         self.product_id = self.action_data[1].split(':')[1]
 
-    def create_checkout_order_btn(self, product):
-        prod_id = product.id
+    def create_checkout_order_btn(self):
         markup = types.InlineKeyboardMarkup()
         btn1 = types.InlineKeyboardButton(text="Оформить заказ",
                                           callback_data=f'{self.MARKER}{self.get_delivery}:order')
         markup.add(btn1)
         return markup
 
-    def save_delivery_method(self, order):
+    def save_delivery_method(self, order, bot_manager):
         if self.product_id in [DeliveryMethods.POST_OF_RUSSIA, DeliveryMethods.SDEK,
                                DeliveryMethods.AVITO, DeliveryMethods.BOXBERRY, DeliveryMethods.PICKUP]:
             order.delivery_method = self.product_id
+            bot_manager.current_order = order
             order.save()
-
+            return order.delivery_method
 
     def route(self, bot_manager, bot, chat_id):
         print("\naction_code " + self.action_code)
@@ -109,7 +109,7 @@ class TgUserAction:
             order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                          status=OrderStatus.CREATED).first()
 
-            self.save_delivery_method(order)
+            # self.save_delivery_method(order)
 
 
             if order.delivery_method == DeliveryMethods.UNKNOWN:
@@ -128,7 +128,7 @@ class TgUserAction:
 
             elif (order.delivery_method in [DeliveryMethods.POST_OF_RUSSIA, DeliveryMethods.SDEK,
                                            DeliveryMethods.AVITO, DeliveryMethods.BOXBERRY]):
-                self.save_delivery_method(order)
+                self.save_delivery_method(order, bot_manager)
                 print('дистанционный')
                 check_receiver_info(chat_id, bot,
                                     bot_manager,
@@ -146,6 +146,9 @@ class TgUserAction:
         elif self.action_code == self.edit_order and bot_manager.is_rec_info_submit is False:
             bot_manager.current_order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                          status=OrderStatus.CREATED).first()
+
+
+
             print(bot_manager.current_order)
             if self.product_id == 'order':
                 print("В начале изменения заказа" + self.product_id)
@@ -171,7 +174,6 @@ class TgUserAction:
                                  f'Напишите адрес доставки в формате: {self.edit_receiver_address}-город, улица, дом, квартира, индекс')
 
             elif self.product_id == self.edit_delivery:
-                self.save_delivery_method(bot_manager.current_order)
                 bot.send_message(chat_id,
                                  text=f'Выберите способ доставки',
                                  reply_markup=create_delivery_ways_menu())
