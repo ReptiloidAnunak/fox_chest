@@ -31,6 +31,8 @@ class TgUser(models.Model):
                                          null=True,
                                          verbose_name="Верифицационный код")
 
+
+
     def __str__(self):
         return f"""{self.username}"""
 

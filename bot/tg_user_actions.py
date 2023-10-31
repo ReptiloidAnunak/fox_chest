@@ -60,8 +60,8 @@ class TgUserAction:
 
 
     def route(self, bot_manager, bot, chat_id):
-        # print("\naction_code " + self.action_code)
-        # print('product_id ' + self.product_id)
+        print("\naction_code " + self.action_code)
+        print('product_id ' + self.product_id)
         #
         # print("заказ подтвержден - " + str(bot_manager.is_rec_info_submit) + "\n")
 
@@ -144,6 +144,9 @@ class TgUserAction:
         # Выбор параметров заказа для изменения
 
         elif self.action_code == self.edit_order and bot_manager.is_rec_info_submit is False:
+            bot_manager.current_order = Order.objects.filter(tg_user=bot_manager.tg_user,
+                                         status=OrderStatus.CREATED).first()
+            print(bot_manager.current_order)
             if self.product_id == 'order':
                 print("В начале изменения заказа" + self.product_id)
                 bot.send_message(chat_id, text="Какой параметр вашего заказа хотите изменить?",
@@ -154,6 +157,10 @@ class TgUserAction:
                 bot.send_message(chat_id,
                                  f'Напишите ФИО получателя в формате: {self.send_receiver_name} Фамилия Имя Отчество')
 
+            elif self.product_id == self.edit_receiver_phone:
+                print("другой телефон")
+                bot.send_message(chat_id, f'Напишите телефон получателя в формате: {self.edit_receiver_phone}-ТЕЛЕФОН')
+
             elif self.product_id == self.send_receiver_phone:
                 print('edit phone')
                 bot.send_message(chat_id, f'Напишите телефон получателя в формате: {self.send_receiver_phone}ТЕЛЕФОН')
@@ -161,7 +168,13 @@ class TgUserAction:
             elif self.product_id == self.edit_receiver_address:
                 print('edit address')
                 bot.send_message(chat_id,
-                                 f'Напишите адрес доставки в формате: {self.edit_receiver_address}город, улица, дом, квартира, индекс')
+                                 f'Напишите адрес доставки в формате: {self.edit_receiver_address}-город, улица, дом, квартира, индекс')
+
+            elif self.product_id == self.edit_delivery:
+                self.save_delivery_method(bot_manager.current_order)
+                bot.send_message(chat_id,
+                                 text=f'Выберите способ доставки',
+                                 reply_markup=create_delivery_ways_menu())
 
         elif self.action_code == self.edit_order and bot_manager.is_rec_info_submit is True:
             bot.send_message(chat_id, text="Наш менеджер свяжется с Вами для уточнения деталей заказа")
@@ -247,10 +260,16 @@ def create_receiver_info_menu():
                                                       callback_data=
                                                       f'{TgUserAction.MARKER}{TgUserAction.edit_order}:{TgUserAction.edit_receiver_address}'
                                                       )
+    btn_delivery = types.InlineKeyboardButton('Изменить способ доставки',
+                                              callback_data=
+                                              f'{TgUserAction.MARKER}{TgUserAction.edit_order}:{TgUserAction.edit_delivery}'
+                                              )
+
     markup.row(btn_submit_info)
     markup.row(btn_receiver_name)
     markup.row(btn_receiver_phone)
     markup.row(btn_receiver_address)
+    markup.row(btn_delivery)
     return markup
 
 
