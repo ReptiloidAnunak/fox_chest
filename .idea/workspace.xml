@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="37b14f68-3e67-4c36-92b9-2e65aaa91f9a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/handlers/commands_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/handlers/commands_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/tg_user_actions.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/tg_user_actions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/tg_user_acts_funcs.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/tg_user_acts_funcs.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +173,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
-          <line>107</line>
+          <line>113</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -191,18 +192,33 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
-          <line>223</line>
+          <line>248</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
-          <line>151</line>
+          <line>167</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bot/management/commands/runbot.py</url>
           <line>2</line>
           <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
+          <line>185</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
+          <line>188</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
+          <line>54</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

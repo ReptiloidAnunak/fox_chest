@@ -7,6 +7,7 @@ from sales.models import Order, OrderStatus
 from bot.tg_user_acts_funcs import (add_to_cart, delete_from_cart, add_to_favorite,
                                     delete_from_favorite)
 from bot.handlers.handlers_funcs import check_receiver_info
+from bot.bot_manager import get_current_order
 
 
 class TgUserAction:
@@ -54,14 +55,19 @@ class TgUserAction:
     def save_delivery_method(self, order, bot_manager):
         if self.product_id in [DeliveryMethods.POST_OF_RUSSIA, DeliveryMethods.SDEK,
                                DeliveryMethods.AVITO, DeliveryMethods.BOXBERRY, DeliveryMethods.PICKUP]:
+
+            print("Сохранение доставки - " + self.product_id)
+            bot_manager.current_order.delivery_method = self.product_id
             order.delivery_method = self.product_id
-            bot_manager.current_order = order
             order.save()
-            return order.delivery_method
+            print("Сохраненный метод - " + order.delivery_method)
+
 
     def route(self, bot_manager, bot, chat_id):
+        get_current_order(bot_manager)
         print("\naction_code " + self.action_code)
         print('product_id ' + self.product_id)
+        # print(bot_manager.current_order.delivery_method)
         #
         # print("заказ подтвержден - " + str(bot_manager.is_rec_info_submit) + "\n")
 
@@ -108,9 +114,11 @@ class TgUserAction:
         elif self.action_code == self.get_delivery:
             order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                          status=OrderStatus.CREATED).first()
-
-            # self.save_delivery_method(order)
-
+            # order = bot_manager.current_order
+            # bot_manager.current_order.delivery_method = self.product_id
+            # order.delivery_method = self.product_id
+            # order.save()
+            self.save_delivery_method(order, bot_manager)
 
             if order.delivery_method == DeliveryMethods.UNKNOWN:
                 bot.send_message(chat_id,
@@ -123,11 +131,13 @@ class TgUserAction:
                 order.phone_receiver = bot_manager.tg_user.phone
                 order.delivery_method = DeliveryMethods.PICKUP
                 order.status = OrderStatus.IN_PROGRESS
-                self.save_delivery_method(order)
+                self.save_delivery_method(order, bot_manager)
                 bot.send_message(chat_id, text=order.create_order_msg_pickup())
 
-            elif (order.delivery_method in [DeliveryMethods.POST_OF_RUSSIA, DeliveryMethods.SDEK,
-                                           DeliveryMethods.AVITO, DeliveryMethods.BOXBERRY]):
+            elif order.delivery_method in [DeliveryMethods.POST_OF_RUSSIA, DeliveryMethods.SDEK,
+                                           DeliveryMethods.AVITO, DeliveryMethods.BOXBERRY]:
+                print("yes")
+
                 self.save_delivery_method(order, bot_manager)
                 print('дистанционный')
                 check_receiver_info(chat_id, bot,

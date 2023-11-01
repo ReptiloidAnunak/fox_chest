@@ -22,7 +22,7 @@ def add_to_cart(bot, chat_id, bot_manager, product, action):
                          f"""Товар {product.name} (1 ед. - {product.price} р.) добавлен в корзину! Всего в корзине {wear_item.quantity} шт.
                          \n🦊✅\nХотите оформить заказ или добавите что-то ещё?
                                         """,
-                         reply_markup=action.create_checkout_order_btn(product)
+                         reply_markup=action.create_checkout_order_btn()
                          )
 
     else:
