@@ -9,8 +9,9 @@ from bot.tg_user_actions import TgUserAction
 class MainMenu:
     child_wear_cats = types.KeyboardButton("Детская одежда")
     macrame_doll = types.KeyboardButton("Куклы макраме")
-    question = types.KeyboardButton("❓ Задать вопрос")
+    my_orders = types.KeyboardButton('Мои заказы')
     checkout_order = types.InlineKeyboardButton('Оформить заказ')
+    question = types.KeyboardButton("❓ Задать вопрос")
 
 
 class ChildWearMenu:

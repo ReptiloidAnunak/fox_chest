@@ -38,6 +38,7 @@ def route_commands(bot, message, bot_manager):
             bot.send_message(chat_id, text="Хотите оформить заказ?", reply_markup=create_order_menu())
 
     elif command == '/favorite':
+        print('es')
         chat_id = message.chat.id
         check_tg_user(message, bot_manager)
         fav_lst, created = Favorite.objects.get_or_create(tg_user=bot_manager.tg_user)
@@ -52,10 +53,3 @@ def route_commands(bot, message, bot_manager):
                 bot.send_photo(chat_id, obj.image,
                                caption=messages.create_wear_obj_txt(obj),
                                reply_markup=create_obj_menu_in_favorite(obj, bot_manager))
-
-    elif command == '/current_orders':
-        chat_id = message.chat.id
-        check_tg_user(message, bot_manager)
-
-        user_orders = Order.objects.filter(tg_user=bot_manager.tg_user)
-        bot.send_message(chat_id, text="Ваши актуальные заказы: ")

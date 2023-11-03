@@ -226,3 +226,6 @@ class OrderWearItem(models.Model):
         self.save()
         result = int(self.total_price)
         return result
+
+    def create_str_in_my_ord_msg(self):
+        return f'{self.wear.name}({self.quantity})'

@@ -14,9 +14,10 @@ def create_start_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = MainMenu.child_wear_cats
     btn2 = MainMenu.macrame_doll
-    btn3 = MainMenu.question
+    btn3 = MainMenu.my_orders
     btn4 = MainMenu.checkout_order
-    markup.add(btn1, btn2, btn3, btn4)
+    btn5 = MainMenu.question
+    markup.add(btn1, btn2, btn3, btn4, btn5)
     return markup
 
 

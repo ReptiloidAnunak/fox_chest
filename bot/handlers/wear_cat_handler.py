@@ -6,9 +6,9 @@ from bot.interface.buttons import MainMenu, ChildWearMenu, SearchWearMenu
 from bot.interface.menu_btns_functions import back_to_main_menu, back_to_wear_cat_menu
 from bot.messages import WearPresentations, cart_is_empty
 from bot.tg_user_actions import create_delivery_ways_menu
-from bot.bot_manager import get_current_order
-from sales.models import Order, OrderStatus
-
+from sales.models import OrderWearItem
+from sales.models import Order
+from sales.constants import OrderStatus
 from store import models as wear_models
 
 
@@ -86,9 +86,6 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
                                  msg_text=WearPresentations.sweatshirt)
 
     elif message == MainMenu.checkout_order.text:
-        print('e')
-        # order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
-        #                                                   status=OrderStatus.CREATED)
         accept_order_main_menu(bot, chat_id, bot_manager)
 
 
@@ -100,12 +97,37 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
     elif message == ChildWearMenu.back.text:
         back_to_main_menu(bot, chat_id)
 
+    elif message == MainMenu.my_orders.text:
+        orders = Order.objects.filter(tg_user=bot_manager.tg_user).exclude(status=OrderStatus.CREATED).order_by('status')
+        # print(orders)
+        if orders:
+            bot.send_message(chat_id, text='Ваши заказы:')
+            for order in orders:
+                goods = OrderWearItem.objects.filter(order=order)
+                print(goods)
+                goods_lst_msg = []
+                for item in goods:
+                    goods_lst_msg.append(item.create_str_in_my_ord_msg())
+                goods_lst = ", ".join(goods_lst_msg)
+                print(goods_lst)
 
+                bot.send_message(chat_id, text=
+                    f'\nЗаказ № {order.id}'
+                    f'\n\nСтатус: {order.status}'
+                    f'\n\nДата оформления: {order.created}'
+                    f'\nСпособ доставки: {order.delivery_method}'
+                    f'\nАдрес доставки: {order.address}'
+                    f'\nПолучатель: {order.receiver}'
+                    f'\nТелефон получателя: {order.phone_receiver}'
+                    f'\nТовары: {goods_lst}'
+                    f'\nВсего: {order.final_price} p.')
+            return True
+        else:
+            bot.send_message(chat_id, text='У вас нет актуальных заказов')
 
         return True
     else:
         return False
-
 
 def accept_order_main_menu(bot, chat_id, bot_manager):
     order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
