@@ -114,7 +114,7 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
                 bot.send_message(chat_id, text=
                     f'\nЗаказ № {order.id}'
                     f'\n\nСтатус: {order.status}'
-                    f'\n\nДата оформления: {order.created}'
+                    f'\n\nДата оформления: {order.created.strftime("%Y-%m-%d")}'
                     f'\nСпособ доставки: {order.delivery_method}'
                     f'\nАдрес доставки: {order.address}'
                     f'\nПолучатель: {order.receiver}'
