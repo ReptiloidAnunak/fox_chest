@@ -1,7 +1,7 @@
 from telebot import types
 
 from store.models import Wear
-from sales.constants import DeliveryMethods
+from sales.constants import DeliveryMethods, OFFICE_ADDRESS
 from sales.models import Order, OrderStatus
 
 from bot.tg_user_acts_funcs import (add_to_cart, delete_from_cart, add_to_favorite,
@@ -27,9 +27,9 @@ class TgUserAction:
 
     edit_order = 'edit_order'
     edit_delivery = 'edit_delivery'
-    edit_receiver_name = 'edit_receiver_name'
-    edit_receiver_phone = 'edit_receiver_phone'
-    edit_receiver_address = 'edit_receiver_adrs'
+    edit_receiver_name = 'ern' #'edit_receiver_name'
+    edit_receiver_phone = 'erph' #'edit_receiver_phone'
+    edit_receiver_address = 'erad' #'edit_receiver_adrs'
     submit_receiver_info = 'rec_info_ok'
     edit_cart = 'edit_cart'
 
@@ -93,19 +93,25 @@ class TgUserAction:
             bot.send_message(chat_id, f"""Товар {product.name} удален из избранного! 🦊❌️\n Воспользуйтесь Меню, если хотите посмотреть другие товары\n⬇️⬇️⬇️
                                             """)
 
-        elif self.action_code == self.see_cart:
-            user_order = Order.objects.filter(tg_user=bot_manager.tg_user,
-                                              status=OrderStatus.CREATED).first()
 
         # Оформить заказ
         elif self.action_code == self.checkout_order:
+            order = Order.objects.filter(tg_user=bot_manager.tg_user,
+                                         status=OrderStatus.CREATED).first()
+
+            markup = create_receiver_info_menu()
+
+            if order.delivery_method == DeliveryMethods.UNKNOWN:
+                bot.send_message(chat_id, "Выберите способ доставки",
+                                 reply_markup=create_delivery_ways_menu())
+
             check_receiver_info(chat_id, bot,
                                 bot_manager,
                                 order=bot_manager.current_order,
                                 code_rec_phone=self.send_receiver_phone,
                                 code_edit_rec_name=self.send_receiver_name,
                                 code_send_rec_address=self.send_receiver_address,
-                                markup=create_receiver_info_menu()
+                                markup=markup
                                 )
 
 
@@ -114,25 +120,28 @@ class TgUserAction:
         elif self.action_code == self.get_delivery:
             order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                          status=OrderStatus.CREATED).first()
-            # order = bot_manager.current_order
-            # bot_manager.current_order.delivery_method = self.product_id
-            # order.delivery_method = self.product_id
-            # order.save()
             self.save_delivery_method(order, bot_manager)
 
-            if order.delivery_method == DeliveryMethods.UNKNOWN:
+            if order.delivery_method == DeliveryMethods.UNKNOWN and bot_manager.tg_user.phone:
                 bot.send_message(chat_id,
                                  text=f'Выберите способ доставки',
                                  reply_markup=create_delivery_ways_menu())
 
 
             elif order.delivery_method == DeliveryMethods.PICKUP:
-                print('Самовывоз')
-                order.phone_receiver = bot_manager.tg_user.phone
-                order.delivery_method = DeliveryMethods.PICKUP
-                order.status = OrderStatus.IN_PROGRESS
-                self.save_delivery_method(order, bot_manager)
-                bot.send_message(chat_id, text=order.create_order_msg_pickup())
+                if bot_manager.tg_user.phone:
+                    order.phone_receiver = bot_manager.tg_user.phone
+                    order.delivery_method = DeliveryMethods.PICKUP
+                    order.status = OrderStatus.IN_PROGRESS
+                    order.receiver = bot_manager.tg_user.first_name + " " + bot_manager.tg_user.last_name
+                    self.save_delivery_method(order, bot_manager)
+                    order.address = OFFICE_ADDRESS
+                    order.save()
+                    bot.send_message(chat_id, text=order.create_order_msg_pickup())
+
+                else:
+                    bot.send_message(chat_id, f'Напишите ваш телефон для связи в формате:\ntel-ТЕЛЕФОН'
+                                              f'\nПРИМЕР: tel-8916*******')
 
             elif order.delivery_method in [DeliveryMethods.POST_OF_RUSSIA, DeliveryMethods.SDEK,
                                            DeliveryMethods.AVITO, DeliveryMethods.BOXBERRY]:
@@ -168,25 +177,30 @@ class TgUserAction:
             elif self.product_id == self.edit_receiver_name:
                 print("edit name")
                 bot.send_message(chat_id,
-                                 f'Напишите ФИО получателя в формате: {self.send_receiver_name} Фамилия Имя Отчество')
+                                 f'Напишите ФИО получателя в формате:\n{self.send_receiver_name} Фамилия Имя Отчество'
+                                 f'\nПРИМЕР: {self.send_receiver_name} Иванов Иван Иванович')
 
             elif self.product_id == self.edit_receiver_phone:
                 print("другой телефон")
-                bot.send_message(chat_id, f'Напишите телефон получателя в формате: {self.edit_receiver_phone}-ТЕЛЕФОН')
+                bot.send_message(chat_id, f'Напишите телефон получателя в формате:\n{self.edit_receiver_phone}-ТЕЛЕФОН'
+                                          f'\nПРИМЕР: {self.edit_receiver_phone}-8916*******')
 
             elif self.product_id == self.send_receiver_phone:
                 print('edit phone')
-                bot.send_message(chat_id, f'Напишите телефон получателя в формате: {self.send_receiver_phone}ТЕЛЕФОН')
+                bot.send_message(chat_id, f'Напишите телефон получателя в формате:\n{self.send_receiver_phone}ТЕЛЕФОН'
+                                          f'\nПРИМЕР: {self.send_receiver_phone}8916*******')
 
             elif self.product_id == self.edit_receiver_address:
                 print('edit address')
                 bot.send_message(chat_id,
-                                 f'Напишите адрес доставки в формате: {self.edit_receiver_address}-город, улица, дом, квартира, индекс')
+                                 f'Напишите адрес доставки в формате:\n{self.edit_receiver_address}город, улица, дом, квартира, индекс'
+                                 f'\nПРИМЕР: {self.edit_receiver_address}-Москва, ул. Пушкина, д.5 к.1, кв. 197, 111111')
 
             elif self.product_id == self.edit_delivery:
                 bot.send_message(chat_id,
                                  text=f'Выберите способ доставки',
                                  reply_markup=create_delivery_ways_menu())
+
 
         elif self.action_code == self.edit_order and bot_manager.is_rec_info_submit is True:
             bot.send_message(chat_id, text="Наш менеджер свяжется с Вами для уточнения деталей заказа")
@@ -223,7 +237,6 @@ class TgUserAction:
 
 
 def create_delivery_ways_menu():
-    "Понять, куда девать эту функцию"
     markup = types.InlineKeyboardMarkup()
     btn1 = types.InlineKeyboardButton(text=DeliveryMethods.PICKUP,
                                       callback_data=

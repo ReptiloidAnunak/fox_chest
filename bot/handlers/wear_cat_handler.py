@@ -123,7 +123,7 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
                     f'\nВсего: {order.final_price} p.')
             return True
         else:
-            bot.send_message(chat_id, text='У вас нет актуальных заказов')
+            bot.send_message(chat_id, text='У вас нет оформленных заказов')
 
         return True
     else:

@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="37b14f68-3e67-4c36-92b9-2e65aaa91f9a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/handlers/handlers_funcs.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/handlers/handlers_funcs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/handlers/tg_user_info_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/handlers/tg_user_info_handler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/handlers/wear_cat_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/handlers/wear_cat_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/interface/constructors.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/interface/constructors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/management/commands/runbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/management/commands/runbot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/tg_user_actions.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/tg_user_actions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sales/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/sales/constants.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +28,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="SOFT" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -137,10 +144,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.docker-compose.yml.db: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose.yml.migrations: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose.yml.api: Compose Deployment" />
-        <item itemvalue="Docker.Dockerfile" />
         <item itemvalue="Python.buttons" />
       </list>
     </recent_temporary>
@@ -171,11 +174,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
-          <line>113</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bot/interface/constructors.py</url>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
@@ -185,19 +183,9 @@
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bot/interface/constructors.py</url>
-          <line>60</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
-          <line>248</line>
+          <line>261</line>
           <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
-          <line>167</line>
-          <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bot/management/commands/runbot.py</url>
@@ -206,18 +194,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
-          <line>185</line>
-          <option name="timeStamp" value="17" />
+          <line>230</line>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
-          <line>188</line>
-          <option name="timeStamp" value="18" />
+          <line>144</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/bot/tg_user_actions.py</url>
-          <line>54</line>
-          <option name="timeStamp" value="19" />
+          <line>124</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

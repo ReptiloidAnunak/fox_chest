@@ -34,4 +34,4 @@ class DeliveryMethods:
     )
 
 
-OFFICE_ADDRESS = 'м. Сходненская'
+OFFICE_ADDRESS = 'г. Москва, м. Сходненская'

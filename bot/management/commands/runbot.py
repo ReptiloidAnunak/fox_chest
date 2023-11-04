@@ -47,7 +47,7 @@ class Command(BaseCommand):
                 handle_wear_search(bot, chat_id, message, bot_manager)
                 get_customer_info(bot, chat_id, message, bot_manager)
             except:
-                bot.send_message(chat_id, 'Неизвестная команда')
+                print('Ошибка в фунции')
 
         # Обработка коллбеков
         @bot.callback_query_handler(func=lambda call: True)

@@ -51,10 +51,9 @@ def create_cat_wear_keyboard(bot, chat_id, msg_text):
 
 def create_order_menu():
     markup = types.InlineKeyboardMarkup()
-    btn1 = OrderMenu.my_cart
     btn2 = OrderMenu.checkout_order
     btn3 = OrderMenu.clear_cart
-    markup.add(btn1, btn2, btn3)
+    markup.add(btn2, btn3)
     return markup
 
 

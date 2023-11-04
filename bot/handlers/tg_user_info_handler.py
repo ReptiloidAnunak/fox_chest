@@ -1,7 +1,7 @@
 from bot.tg_user_actions import TgUserAction, create_submit_order_menu, create_receiver_info_menu, create_delivery_ways_menu
 from bot.interface.constructors import create_continue_checkout_menu
 
-from sales.constants import DeliveryMethods, OFFICE_ADDRESS
+from sales.constants import DeliveryMethods
 
 
 def get_customer_info(bot, chat_id, message, bot_manager):
@@ -9,12 +9,18 @@ def get_customer_info(bot, chat_id, message, bot_manager):
     #  Получение телефона пользователя
     if message.startswith(TgUserAction.phone_msg):
         phone = message.lstrip("tel-")
-        bot_manager.tg_user.phone = phone
-        bot_manager.tg_user.save()
+        user = bot_manager.tg_user
+        user.phone = phone
+        user.save()
         # Сделать нормальную валидацию телефона
         bot.send_message(chat_id, 'Ваш телефон сохранен',
                          reply_markup=create_continue_checkout_menu())
         return True
+
+    # elif bot_manager.current_order.delivery_method == DeliveryMethods.UNKNOWN and bot_manager.current_order.goods:
+    #     bot.send_message(chat_id, 'Выберите способ доставки',
+    #                      reply_markup=create_delivery_ways_menu())
+    #     return True
 
     # Получение ФИО получателя
     elif message.startswith(TgUserAction.send_receiver_name):
