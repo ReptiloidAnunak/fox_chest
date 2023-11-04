@@ -22,7 +22,6 @@ def check_receiver_info(chat_id, bot, bot_manager,
                                   f'\nПРИМЕР: tel-8916*******')
         return False
 
-
     elif (not order.phone_receiver and bot_manager.current_order.delivery_method not in
           [DeliveryMethods.PICKUP, DeliveryMethods.UNKNOWN]):
         bot.send_message(chat_id, f'Напишите телефон получателя в формате:\n{code_rec_phone}ТЕЛЕФОН'

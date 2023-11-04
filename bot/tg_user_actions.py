@@ -2,7 +2,7 @@ from telebot import types
 
 from store.models import Wear
 from sales.constants import DeliveryMethods, OFFICE_ADDRESS
-from sales.models import Order, OrderStatus
+from sales.models import Order, OrderStatus, OrderWearItem
 
 from bot.tg_user_acts_funcs import (add_to_cart, delete_from_cart, add_to_favorite,
                                     delete_from_favorite)
@@ -158,14 +158,27 @@ class TgUserAction:
                                     markup=create_receiver_info_menu()
                                     )
 
+        elif self.action_code == self.empty_cart:
+            order = bot_manager.current_order
+            goods_in_cart = list(order.goods.all())
+            wear_items_in_cart_db = OrderWearItem.objects.all()
+            for item in goods_in_cart:
+                wear_unit_db = wear_items_in_cart_db.get(wear=item)
+                print("Количество на складе"+str(item.quantity))
+                print("Количество в корзине"+str(wear_unit_db.quantity))
+                item.quantity += wear_unit_db.quantity
+                item.save()
+            order.goods.clear()
+            order.save()
+            bot.send_message(chat_id, text="Ваша корзина очищена")
 
-        # ============================================= В отдельную функцию =================================
         # Выбор параметров заказа для изменения
 
         elif self.action_code == self.edit_order and bot_manager.is_rec_info_submit is False:
             bot_manager.current_order = Order.objects.filter(tg_user=bot_manager.tg_user,
                                          status=OrderStatus.CREATED).first()
-
+            bot.send_message(chat_id, text="Какой параметр вашего заказа хотите изменить?",
+                             reply_markup=create_edit_order_menu())
 
 
             print(bot_manager.current_order)
@@ -218,7 +231,6 @@ class TgUserAction:
 
         #Оставить заказ без изменений 1
         elif self.action_code == self.submit_order_1:
-            print("да 1")
             bot_manager.current_order.status = OrderStatus.IN_PROGRESS
             bot_manager.current_order.save()
             bot_manager.is_rec_info_submit = True
@@ -227,7 +239,6 @@ class TgUserAction:
 
         # Последнее подтверждение заказа
         elif self.action_code == self.submit_order_2:
-            print("да 2")
             bot_manager.current_order.status = OrderStatus.IN_PROGRESS
             bot_manager.current_order.save()
             bot_manager.is_rec_info_submit = True
