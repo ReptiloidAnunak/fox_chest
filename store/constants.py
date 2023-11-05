@@ -75,3 +75,17 @@ class BrandCountry:
         (NONE, NONE)
     )
 
+
+class UniqueItemStatus:
+    IN_STORE = 'На складе'
+    IN_STOCK = 'В наличии'
+    IN_CART = 'В корзине'
+    SOLD = 'Продана'
+
+    choices = (
+        (IN_STOCK, IN_STOCK),
+        (IN_CART, IN_CART),
+        (SOLD, SOLD),
+        (IN_STORE, IN_STORE)
+    )
+

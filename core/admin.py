@@ -93,20 +93,20 @@ class SweatshirtAdmin(admin.ModelAdmin):
 
 
 class DollAdmin(admin.ModelAdmin):
-    list_display = ('name', 'material', 'price', 'number_of_figures')
-    list_filter = ('name', 'material', 'price', 'number_of_figures')
+    list_display = ('name', 'status', 'price', 'number_of_figures')
+    list_filter = ('name', 'status', 'price', 'number_of_figures')
     list_per_page = 20
 
 
 class AngelAdmin(admin.ModelAdmin):
-    list_display = ('name', 'material', 'price', 'number_of_figures')
-    list_filter = ('name', 'material', 'price', 'number_of_figures')
+    list_display = ('name', 'status', 'price', 'number_of_figures')
+    list_filter = ('name', 'status', 'price', 'number_of_figures')
     list_per_page = 20
 
 
 class FamilyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'material', 'price', 'number_of_figures')
-    list_filter = ('name', 'material', 'price', 'number_of_figures')
+    list_display = ('name', 'status', 'price', 'number_of_figures')
+    list_filter = ('name', 'status', 'price', 'number_of_figures')
     list_per_page = 20
 
 

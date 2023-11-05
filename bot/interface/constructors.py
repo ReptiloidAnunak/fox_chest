@@ -112,6 +112,9 @@ def create_obj_menu_in_cart(product: Wear, bot_manager: BotManager):
     return markup
 
 
+
+
+
 def create_wear_request_menu(bot, chat_id, msg_text):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = SearchWearMenu.all

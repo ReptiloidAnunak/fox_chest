@@ -1,6 +1,6 @@
 from django.db import models
 
-from store.constants import WearSex, WearColor, BrandCountry, WearSize
+from store.constants import WearSex, WearColor, BrandCountry, WearSize, UniqueItemStatus
 # from sales.models import OrderWearItem
 
 
@@ -163,6 +163,7 @@ class Doll(models.Model):
                             verbose_name='Название')
     material = models.CharField(max_length=20,
                                 null=True,
+                                default='Макраме',
                                 verbose_name='Материал')
 
     number_of_figures = models.IntegerField(verbose_name='Количество фигур',
@@ -180,6 +181,11 @@ class Doll(models.Model):
         null=True,
         verbose_name='Фотография'
     )
+
+    status = models.CharField(max_length=40,
+                              choices=UniqueItemStatus.choices,
+                              verbose_name='Статус',
+                              default=UniqueItemStatus.IN_STOCK)
 
     def create_card_in_catalog(self):
         return (f'Название: {self.name}'

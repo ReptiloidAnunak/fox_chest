@@ -1,7 +1,7 @@
 
-from store.models import Wear, Brand
+from store.models import Wear, Brand, Doll
 from bot.models import TgUser
-from sales.models import Order, OrderStatus
+from sales.models import Order, OrderStatus, OrderDolls
 
 
 def get_brands_names_list():
@@ -16,8 +16,12 @@ class BotManager:
         self.wear_cat: Wear = None
         self.all_brands_names = get_brands_names_list()
 
+        self.doll_cat: Doll = None
+
         self.current_order = None
         self.order_total_price = 0
+
+        self.current_order_dolls = None
 
         self.is_rec_info_submit = False
 

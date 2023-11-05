@@ -12,7 +12,7 @@ contact_message = (f'По поводу заказов и качества раб
                    )
 
 
-doll_individual_message = (f'Напишите Ольге и подробно опишите, какая композиция кукол макраме вам нужна'
+doll_individual_message = (f'Если хотите композицию кукол макраме по индивидуальному заказу, пишите в личные сообщения'
                            f'\n{MAIN_TG_CONTACT}')
 
 def write_greetings(bot_manager: BotManager):
