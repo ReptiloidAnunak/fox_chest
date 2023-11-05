@@ -2,8 +2,9 @@
 from bot.interface.constructors import create_cat_wear_keyboard, create_wear_request_menu, create_dolls_menu
 from bot.interface.buttons import MainMenu, ChildWearMenu, SearchWearMenu, DollsMenu
 from bot.interface.menu_btns_functions import back_to_main_menu, back_to_wear_cat_menu
-from bot.messages import WearPresentations, cart_is_empty, contact_message
+from bot.messages import WearPresentations, cart_is_empty, contact_message, doll_individual_message
 from bot.tg_user_actions import create_delivery_ways_menu
+
 from sales.models import OrderWearItem
 from sales.models import Order
 from sales.constants import OrderStatus
@@ -148,6 +149,9 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
         families = wear_models.Family.objects.all()
         for family in families:
             bot.send_photo(chat_id, family.image, caption=family.create_card_in_catalog())
+
+    elif message == DollsMenu.intividual.text:
+        bot.send_message(chat_id, text=doll_individual_message)
     else:
         return False
 

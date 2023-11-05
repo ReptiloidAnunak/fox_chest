@@ -54,6 +54,7 @@ def create_dolls_menu(bot, chat_id):
     markup.row(DollsMenu.all_dolls)
     markup.row(DollsMenu.families, DollsMenu.angels)
     markup.row(DollsMenu.intividual)
+    markup.row(ChildWearMenu.back)
     bot.send_message(chat_id, text='Куклы макраме',
                      reply_markup=markup)
 
