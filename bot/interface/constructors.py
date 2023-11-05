@@ -1,6 +1,6 @@
 from telebot import types
 
-from bot.interface.buttons import MainMenu, SearchWearMenu, WearSexChoice, OrderMenu, ChildWearMenu, ContinueCheckoutOrder
+from bot.interface.buttons import MainMenu, SearchWearMenu, WearSexChoice, OrderMenu, ChildWearMenu, ContinueCheckoutOrder, DollsMenu
 from bot.tg_user_actions import TgUserAction
 from bot.bot_manager import BotManager
 
@@ -47,6 +47,14 @@ def create_cat_wear_keyboard(bot, chat_id, msg_text):
                      text=msg_text,
                      reply_markup=markup
                      )
+
+
+def create_dolls_menu(bot, chat_id):
+    markup = types.ReplyKeyboardMarkup()
+    markup.row(DollsMenu.all_dolls)
+    markup.row(DollsMenu.families, DollsMenu.angels)
+    bot.send_message(chat_id, text='Куклы макраме',
+                     reply_markup=markup)
 
 
 def create_order_menu():
@@ -182,4 +190,5 @@ def create_color_menu(bot, chat_id, row_len: int):
         markup.row(*row_buttons)
     bot.send_message(chat_id, text="Выберите цвет",
                      reply_markup=markup)
+
 

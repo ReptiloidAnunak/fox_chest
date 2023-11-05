@@ -1,5 +1,5 @@
 
-from bot.interface.constructors import create_cat_wear_keyboard, create_wear_request_menu
+from bot.interface.constructors import create_cat_wear_keyboard, create_wear_request_menu, create_dolls_menu
 from bot.interface.buttons import MainMenu, ChildWearMenu, SearchWearMenu
 from bot.interface.menu_btns_functions import back_to_main_menu, back_to_wear_cat_menu
 from bot.messages import WearPresentations, cart_is_empty, contact_message
@@ -125,7 +125,9 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
 
     elif message == MainMenu.question.text:
         bot.send_message(chat_id, text=contact_message)
-
+        return True
+    elif message == MainMenu.macrame_doll.text:
+        create_dolls_menu(bot, chat_id)
         return True
     else:
         return False

@@ -49,8 +49,8 @@ class Command(BaseCommand):
                 handle_wear_cat_request(bot, chat_id, message, bot_manager)
                 handle_wear_search(bot, chat_id, message, bot_manager)
                 get_customer_info(bot, chat_id, message, bot_manager)
-            except:
-                print('Ошибка в фунции')
+            except Exception as e:
+                print(e)
 
         # Обработка коллбеков
         @bot.callback_query_handler(func=lambda call: True)
