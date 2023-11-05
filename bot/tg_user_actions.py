@@ -157,18 +157,20 @@ class TgUserAction:
                                     code_send_rec_address=self.send_receiver_address,
                                     markup=create_receiver_info_menu()
                                     )
-
+        # Потом запилить отдельную функцию в менеджере корзины - повторение с bot/carts_manager.py
         elif self.action_code == self.empty_cart:
             order = bot_manager.current_order
             goods_in_cart = list(order.goods.all())
             wear_items_in_cart_db = OrderWearItem.objects.all()
             for item in goods_in_cart:
-                wear_unit_db = wear_items_in_cart_db.get(wear=item)
-                print("Количество на складе"+str(item.quantity))
-                print("Количество в корзине"+str(wear_unit_db.quantity))
+                wear_unit_db = wear_items_in_cart_db.get(wear=item,
+                                                         order=order)
+                print("Количество на складе " + str(item.quantity))
+                print("Количество в корзине " + str(wear_unit_db.quantity))
                 item.quantity += wear_unit_db.quantity
                 item.save()
             order.goods.clear()
+            order.total_units_quantity = 0
             order.save()
             bot.send_message(chat_id, text="Ваша корзина очищена")
 

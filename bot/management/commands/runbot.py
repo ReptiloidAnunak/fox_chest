@@ -13,7 +13,8 @@ from bot.handlers.wear_search_handler import handle_wear_search
 from bot.handlers.search_callback_handler import handle_user_callback
 from bot.tg_user_actions import TgUserAction
 from bot.bot_manager import (BotManager, check_tg_user, get_current_order)
-
+from bot.carts_manager import delete_outdated_orders
+from bot.constants import MIN_INTERVAL_AFTER_CART_UPT
 # python3 manage.py runbot
 
 """Сделать нормальную обработку ошибок!!!!!!"""
@@ -27,6 +28,7 @@ class Command(BaseCommand):
     help = "Run telegram-bot"
 
     def handle(self, *args, **options):
+        delete_outdated_orders(min_interval_after_upt=MIN_INTERVAL_AFTER_CART_UPT)
         logging.basicConfig(
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             level=logging.INFO

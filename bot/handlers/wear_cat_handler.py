@@ -1,6 +1,4 @@
-import typing
 
-from bot.bot_manager import check_tg_user
 from bot.interface.constructors import create_cat_wear_keyboard, create_wear_request_menu
 from bot.interface.buttons import MainMenu, ChildWearMenu, SearchWearMenu
 from bot.interface.menu_btns_functions import back_to_main_menu, back_to_wear_cat_menu

@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'core',
     'store',
-    'bot',
     'sales',
+    'bot',
+    'bot_management',
+
 
 ]
 
