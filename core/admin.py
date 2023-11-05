@@ -1,7 +1,10 @@
 from django.contrib import admin
 
 from core.models import User
+
 from bot.models import TgUser
+from bot_management.models import MessageToClient
+
 from store.models import (Brand, Bodysuit, TShort, Pants, Jacket, Overall, ClothingSet,
                           Robe, LongSleeve, Underwear, SocksTights, Sweatshirt, Doll, Angel, Family)
 from sales.models import Order, OrderDolls
@@ -10,6 +13,11 @@ from sales.models import Order, OrderDolls
 class TgUserAdmin(admin.ModelAdmin):
     list_display = ('username', 'last_name', 'first_name', 'tg_user_id')
     list_filter = ('username', 'last_name')
+
+
+class MessageToClientAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+    list_filter = ('title',)
 
 
 class BrandAdmin(admin.ModelAdmin):
@@ -116,6 +124,7 @@ class OrderDollsAdmin(admin.ModelAdmin):
 
 admin.site.register(User)
 admin.site.register(TgUser, TgUserAdmin)
+admin.site.register(MessageToClient, MessageToClientAdmin)
 
 admin.site.register(Brand, BrandAdmin)
 
