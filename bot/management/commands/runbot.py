@@ -36,6 +36,7 @@ class Command(BaseCommand):
 
         @bot.message_handler(commands=['start', 'cart', 'favorite'])
         def handle_commands(message):
+
             route_commands(bot, message, bot_manager)
 
         @bot.message_handler(content_types=['text'])
