@@ -181,6 +181,13 @@ class Doll(models.Model):
         verbose_name='Фотография'
     )
 
+    def create_card_in_catalog(self):
+        return (f'Название: {self.name}'
+                f'\nКол-во фигур: {self.number_of_figures}'
+                f'\nМатериал: {self.material}'
+                f'\nЦена: {self.price} р.'
+                f'\nOписание: {self.description}')
+
 
 class Angel(Doll):
     class Meta:

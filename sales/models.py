@@ -4,7 +4,7 @@ from django.utils import timezone
 from sales.constants import OrderStatus, DeliveryMethods, OFFICE_ADDRESS
 
 from bot.models import TgUser
-from store.models import Wear
+from store.models import Wear, Doll
 from core.models import User
 
 
@@ -24,8 +24,8 @@ class DatesModelMixin(models.Model):
 
 class Order(DatesModelMixin):
     class Meta:
-        verbose_name = "Заказ"
-        verbose_name_plural = "Заказы"
+        verbose_name = "Заказ одежды"
+        verbose_name_plural = "Заказы одежды"
 
     tg_user = models.ForeignKey(TgUser,
                                 on_delete=models.CASCADE,
@@ -229,3 +229,56 @@ class OrderWearItem(models.Model):
 
     def create_str_in_my_ord_msg(self):
         return f'{self.wear.name}({self.quantity})'
+
+
+class OrderDolls(DatesModelMixin):
+    class Meta:
+        verbose_name = "Заказ кукол"
+        verbose_name_plural = "Заказы кукол"
+
+    tg_user = models.ForeignKey(TgUser,
+                                on_delete=models.CASCADE,
+                                verbose_name='Пользователь Телеграм')
+    executor = models.ForeignKey(User,
+                                 on_delete=models.PROTECT,
+                                 verbose_name='Исполнитель',
+                                 blank=True,
+                                 null=True
+                                 )
+
+    goods = models.ManyToManyField(Doll,
+                                   blank=True,
+                                   verbose_name='Товары в корзине')
+
+    status = models.CharField(max_length=20,
+                              choices=OrderStatus.choices,
+                              default=OrderStatus.CREATED,
+                              verbose_name='Заказ')
+
+    delivery_method = models.CharField(
+        max_length=20,
+        choices=DeliveryMethods.choices,
+        default=DeliveryMethods.UNKNOWN,
+        verbose_name='Способ доставки'
+    )
+
+    receiver = models.CharField(max_length=50,
+                                verbose_name="Получатель",
+                                null=True)
+
+    phone_receiver = models.CharField(max_length=50,
+                                      verbose_name="Телефон получателя",
+                                      null=True)
+
+    address = models.CharField(max_length=200,
+                               verbose_name='Адрес',
+                               null=True)
+
+    total_price = models.IntegerField(default=0)
+
+    final_price = models.IntegerField(default=0)
+
+    discount = models.CharField(max_length=100,
+                                verbose_name='Скидка',
+                                default='Нет')
+    total_units_quantity = models.PositiveIntegerField(default=0)

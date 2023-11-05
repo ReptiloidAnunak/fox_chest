@@ -43,6 +43,7 @@ class DollsMenu:
     all_dolls = types.KeyboardButton('Все куклы')
     angels = types.KeyboardButton('Ангелы')
     families = types.KeyboardButton('Семьи кукол')
+    intividual = types.KeyboardButton('Индивидуальный заказ')
 
 
 # Inline buttons

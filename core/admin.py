@@ -4,7 +4,7 @@ from core.models import User
 from bot.models import TgUser
 from store.models import (Brand, Bodysuit, TShort, Pants, Jacket, Overall, ClothingSet,
                           Robe, LongSleeve, Underwear, SocksTights, Sweatshirt, Doll, Angel, Family)
-from sales.models import Order
+from sales.models import Order, OrderDolls
 
 
 class TgUserAdmin(admin.ModelAdmin):
@@ -108,6 +108,12 @@ class OrderAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+class OrderDollsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'tg_user', 'executor', 'status', 'created')
+    list_filter = ('tg_user', 'executor', 'status', 'created')
+    list_per_page = 20
+
+
 admin.site.register(User)
 admin.site.register(TgUser, TgUserAdmin)
 
@@ -131,5 +137,5 @@ admin.site.register(Angel, AngelAdmin)
 admin.site.register(Family, FamilyAdmin)
 
 admin.site.register(Order, OrderAdmin)
-
+admin.site.register(OrderDolls, OrderDollsAdmin)
 

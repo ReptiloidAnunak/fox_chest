@@ -1,6 +1,6 @@
 
 from bot.interface.constructors import create_cat_wear_keyboard, create_wear_request_menu, create_dolls_menu
-from bot.interface.buttons import MainMenu, ChildWearMenu, SearchWearMenu
+from bot.interface.buttons import MainMenu, ChildWearMenu, SearchWearMenu, DollsMenu
 from bot.interface.menu_btns_functions import back_to_main_menu, back_to_wear_cat_menu
 from bot.messages import WearPresentations, cart_is_empty, contact_message
 from bot.tg_user_actions import create_delivery_ways_menu
@@ -91,10 +91,11 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
     elif message == SearchWearMenu.back_cat_menu.text:
         back_to_wear_cat_menu(bot, chat_id)
 
-
+    # Назад
     elif message == ChildWearMenu.back.text:
         back_to_main_menu(bot, chat_id)
 
+    # Текущие заказы
     elif message == MainMenu.my_orders.text:
         orders = Order.objects.filter(tg_user=bot_manager.tg_user).exclude(status=OrderStatus.CREATED).order_by('status')
         # print(orders)
@@ -123,14 +124,33 @@ def handle_wear_cat_request(bot, chat_id, message, bot_manager):
         else:
             bot.send_message(chat_id, text='У вас нет оформленных заказов')
 
+    # Вопрос
     elif message == MainMenu.question.text:
         bot.send_message(chat_id, text=contact_message)
         return True
+
+    # Куклы
     elif message == MainMenu.macrame_doll.text:
         create_dolls_menu(bot, chat_id)
         return True
+
+    elif message == DollsMenu.all_dolls.text:
+        dolls = wear_models.Doll.objects.all()
+        for doll in dolls:
+            bot.send_photo(chat_id, doll.image, caption=doll.create_card_in_catalog())
+
+    elif message == DollsMenu.angels.text:
+        angels = wear_models.Angel.objects.all()
+        for angel in angels:
+            bot.send_photo(chat_id, angel.image, caption=angel.create_card_in_catalog())
+
+    elif message == DollsMenu.families.text:
+        families = wear_models.Family.objects.all()
+        for family in families:
+            bot.send_photo(chat_id, family.image, caption=family.create_card_in_catalog())
     else:
         return False
+
 
 def accept_order_main_menu(bot, chat_id, bot_manager):
     order, created = Order.objects.get_or_create(tg_user=bot_manager.tg_user,
