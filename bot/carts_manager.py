@@ -9,13 +9,10 @@ from sales.constants import OrderStatus
 
 def delete_outdated_orders(min_interval_after_upt):
     t_after_upt = timedelta(minutes=min_interval_after_upt)
-    print(t_after_upt)
     time_now = timezone.now()
-    print(time_now)
     orders_to_delete = Order.objects.filter(status=OrderStatus.CREATED)
-    # print(orders_to_delete)
     for order in orders_to_delete:
-        if order.created < (order.created + t_after_upt):
+        if t_after_upt < (time_now - order.updated):
             goods_in_cart = list(order.goods.all())
             wear_items_in_cart_db = OrderWearItem.objects.all()
             for item in goods_in_cart:
