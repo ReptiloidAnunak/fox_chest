@@ -1,22 +1,22 @@
 class WearSize:
-    sizes = ((50, 50),
-             (56, 56),
-             (62, 62),
-             (68, 68),
-             (74, 74),
-             (80, 90),
-             (86, 80),
-             (92, 92),
-             (98, 98),
-             (104, 104),
-             (110, 110),
-             (116, 116),
-             (122, 122),
-             (128, 128),
-             (134, 134),
-             (140, 140),
-             (146, 146),
-             (152, 152)
+    sizes = (("50", "50"),
+             ("56", "56"),
+             ("62", "62"),
+             ("68", "68"),
+             ("74", "74"),
+             ("80", "90"),
+             ("86", "80"),
+             ("92", "92"),
+             ("98", "98"),
+             ("104", "104"),
+             ("110", "110"),
+             ("116", "116"),
+             ("122", "122"),
+             ("128", "128"),
+             ("134", "134"),
+             ("140", "140"),
+             ("146", "146"),
+             ("152", "152")
              )
     choices = sizes
 
@@ -28,13 +28,23 @@ class WearColor:
     YELLOW = 'Желтый'
     GREEN = 'Зеленый'
     BLUE = 'Синий'
+    BROWN = 'Коричневый'
+    ORANGE = 'Оранжевый'
+    VIOLET = 'Фиолетовый'
+    GRAY = 'Серый'
+    PINK = 'Розовый'
     choices = (
         (WHITE, WHITE),
         (BLACK, BLACK),
         (YELLOW, YELLOW),
         (GREEN, GREEN),
         (BLUE, BLUE),
-        (NONE, NONE)
+        (BROWN, BROWN),
+        (ORANGE, ORANGE),
+        (VIOLET, VIOLET),
+        (GRAY, GRAY),
+        (PINK, PINK),
+        (NONE, NONE),
     )
 
 
@@ -64,3 +74,18 @@ class BrandCountry:
         (CHINA, CHINA),
         (NONE, NONE)
     )
+
+
+class UniqueItemStatus:
+    IN_STORE = 'На складе'
+    IN_STOCK = 'В наличии'
+    IN_CART = 'В корзине'
+    SOLD = 'Продана'
+
+    choices = (
+        (IN_STOCK, IN_STOCK),
+        (IN_CART, IN_CART),
+        (SOLD, SOLD),
+        (IN_STORE, IN_STORE)
+    )
+
