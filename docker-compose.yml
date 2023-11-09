@@ -1,39 +1,61 @@
 version: "3.9"
 
 services:
-  api:
+  bot:
     build: .
-    ports:
-      - "8000:8000"
+    env_file: .env
+    environment:
+      DB_HOST: postgres_db
     depends_on:
-      db:
+      postgres_db:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
-    command: python3 manage.py runserver
+    volumes:
+      - /var/lib/fox_chest/bot
+    command:
+      - python3
+      - manage.py
+      - runbot
+
+  api:
+    build: .
+    env_file: .env
+    environment:
+      DB_HOST: postgres
+    ports:
+      - '8000:8000'
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
 
   migrations:
-    build:
-      context: .
-    depends_on:
-      db:
-        condition: service_healthy
-  db:
-    build:
-      context: .
-
-    image: postgres:latest
-    restart: always
+    build: .
+    env_file: .env
     environment:
-      POSTGRES_DB: postgres
+      DB_HOST: postgres_db
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    command: python manage.py migrate
+
+  postgres_db:
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: postgres
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres -d postgres" ]
       interval: 5s
       timeout: 5s
       retries: 10
     volumes:
-      - ./postgres_db:/var/lib/postgresql/data
+      - /var/lib/postgresql/data
+
+volumes:
+  pg_data:
