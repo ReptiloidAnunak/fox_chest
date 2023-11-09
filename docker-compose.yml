@@ -7,7 +7,7 @@ services:
       - "8000:8000"
     depends_on:
       db:
-        condition: service_completed_successfully
+        condition: service_healthy
       migrations:
         condition: service_completed_successfully
     command: python3 manage.py runserver

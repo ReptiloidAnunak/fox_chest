@@ -1,7 +1,8 @@
 from django.db import models
 
+from bot.constants import MAIN_TG_CONTACT
 from store.constants import WearSex, WearColor, BrandCountry, WearSize, UniqueItemStatus
-# from sales.models import OrderWearItem
+
 
 
 # ############################### Brand ##################################################
@@ -192,7 +193,9 @@ class Doll(models.Model):
                 f'\nКол-во фигур: {self.number_of_figures}'
                 f'\nМатериал: {self.material}'
                 f'\nЦена: {self.price} р.'
-                f'\nOписание: {self.description}')
+                f'\nOписание: {self.description}'
+                f'\n\nДля заказа пишите в личные сообщения Ольге:'
+                f'\n{MAIN_TG_CONTACT}')
 
 
 class Angel(Doll):

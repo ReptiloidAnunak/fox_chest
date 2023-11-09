@@ -18,6 +18,10 @@ class TgUserAction:
     see_cart = 'cart'
     empty_cart = 'empty_cart'
 
+    add_doll_to_cart = 'add_doll'
+    delete_doll_from_cart = 'delete_doll_from_cart'
+    see_doll_cart = 'doll_cart'
+
     add_to_favorite = 'favorite'
     delete_from_favorite = 'fav_del'
 
