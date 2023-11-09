@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="37b14f68-3e67-4c36-92b9-2e65aaa91f9a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/bot_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/bot_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/interface/constructors.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/interface/constructors.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/messages.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot/messages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/store/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/store/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

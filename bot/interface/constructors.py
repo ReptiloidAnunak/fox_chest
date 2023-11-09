@@ -78,11 +78,11 @@ def create_product_menu(product: Wear):
     prod_id = product.id
     markup = types.InlineKeyboardMarkup()
     btn1 = types.InlineKeyboardButton(text="✅🛒",
-                                      callback_data=f'{TgUserAction.MARKER}add:{prod_id}')
+                                      callback_data=f'{TgUserAction.MARKER}{TgUserAction.add_to_cart}:{prod_id}')
     btn2 = types.InlineKeyboardButton(text="❤️",
-                                      callback_data=f'{TgUserAction.MARKER}favorite:{prod_id}')
+                                      callback_data=f'{TgUserAction.MARKER}{TgUserAction.add_to_favorite}:{prod_id}')
     btn3 = types.InlineKeyboardButton(text="❌",
-                                      callback_data=f'{TgUserAction.MARKER}delete:{prod_id}')
+                                      callback_data=f'{TgUserAction.MARKER}{TgUserAction.delete_from_cart}:{prod_id}')
     markup.add(btn1, btn2, btn3)
     return markup
 
