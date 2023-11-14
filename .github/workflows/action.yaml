@@ -48,3 +48,12 @@ jobs:
           script: |
             cd fox_chest_ci
             echo ${{ secrets.FOX_SERVER_PASSWORD }} | sudo -S docker-compose up -d
+      - name: Cleanup
+        if: always()
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.FOX_SERVER_HOST }}
+          username: ${{ secrets.FOX_SERVER_USERNAME }}
+          password: ${{ secrets.FOX_SERVER_PASSWORD }}
+          script: |
+            docker system prune -a -f
