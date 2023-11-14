@@ -30,6 +30,8 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+    volumes:
+      - /var/lib/fox_chest/api
 
   migrations:
     image: amanitocornholio/bot_fox_chest:$GITHUB_REF_NAME-$GITHUB_RUN_ID
