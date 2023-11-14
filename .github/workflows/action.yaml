@@ -15,4 +15,4 @@ jobs:
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 #     # Отправляем образ в Docker hub
       - name: docker push
-        run: docker push amanitocornholio/fox_chest:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+        run: docker push amanitocornholio/bot_fox_chest:$GITHUB_REF_NAME-$GITHUB_RUN_ID
