@@ -60,7 +60,7 @@ class Wear(models.Model):
         upload_to='wear/',
         blank=True,
         null=True,
-        default='media/wear/майка.png',
+        default=None,
         verbose_name='Фотография'
     )
 
