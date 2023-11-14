@@ -7,6 +7,12 @@ jobs:
       # Копируем код из репозитория в runner
       - name: clone code
         uses: actions/checkout@v2
-      # Собираем доке-образ
+      # Собираем докер-образ
       - name: docker build
         run: docker build -t  amanitocornholio/bot_fox_chest:$GITHUB_REF_NAME-$GITHUB_RUN_ID .
+      # Пуш в Docker hub
+      - name: docker login
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+#     # Отправляем образ в Docker hub
+      - name: docker push
+        run: docker push amanitocornholio/fox_chest:$GITHUB_REF_NAME-$GITHUB_RUN_ID
