@@ -6,5 +6,5 @@ import store
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('wear/', include('store.urls'))
+    # path('wear/', include('store.urls'))
 ]
