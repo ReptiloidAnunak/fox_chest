@@ -13,6 +13,7 @@ services:
         condition: service_completed_successfully
     volumes:
       - /var/lib/fox_chest/bot
+      - ./media/:/media
     command:
       - python3
       - manage.py
@@ -32,6 +33,7 @@ services:
         condition: service_completed_successfully
     volumes:
       - /var/lib/fox_chest/api
+      - ./media/:/media
 
   migrations:
     image: amanitocornholio/bot_fox_chest:$GITHUB_REF_NAME-$GITHUB_RUN_ID
