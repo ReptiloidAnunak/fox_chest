@@ -41,6 +41,16 @@ jobs:
             "deploy/docker-compose.yml"
           target: "fox_chest_ci/"
           strip_components: 1
+
+      - name: debug ls on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.FOX_SERVER_HOST }}
+          username: ${{ secrets.FOX_SERVER_USERNAME }}
+          password: ${{ secrets.FOX_SERVER_PASSWORD }}
+          script: |
+            cd fox_chest_ci
+            ls -la
       - name: run docker-compose
         uses: appleboy/ssh-action@master
         with:
