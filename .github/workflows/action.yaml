@@ -48,7 +48,7 @@ jobs:
           script: |
             cd fox_chest_ci
             echo "Current directory: $(pwd)"
-            echo ${{ secrets.FOX_SERVER_PASSWORD }} | sudo -S docker-compose up -d
+            echo "${{ secrets.FOX_SERVER_PASSWORD }}" | sudo -S docker-compose up -d
 
       - name: Cleanup
         if: always()
