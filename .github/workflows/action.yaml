@@ -41,11 +41,11 @@ jobs:
 #            deploy/docker-compose.yml
 #          target: "fox_chest_ci/"
 #          strip_components: 1
-          script: |
-            cd fox_chest_ci
-            mkdir -p conf
-            scp -o StrictHostKeyChecking=no -r ${{ github.workspace }}/nginx.conf ${{ secrets.FOX_SERVER_USERNAME }}@${{ secrets.FOX_SERVER_HOST }}:fox_chest_ci/conf/
-            scp -o StrictHostKeyChecking=no -r ${{ github.workspace }}/deploy/docker-compose.yml ${{ secrets.FOX_SERVER_USERNAME }}@${{ secrets.FOX_SERVER_HOST }}:fox_chest_ci/
+#          script: |
+#            cd fox_chest_ci
+#            mkdir -p conf
+#            scp -o StrictHostKeyChecking=no -r ${{ github.workspace }}/nginx.conf ${{ secrets.FOX_SERVER_USERNAME }}@${{ secrets.FOX_SERVER_HOST }}:fox_chest_ci/conf/
+#            scp -o StrictHostKeyChecking=no -r ${{ github.workspace }}/deploy/docker-compose.yml ${{ secrets.FOX_SERVER_USERNAME }}@${{ secrets.FOX_SERVER_HOST }}:fox_chest_ci/
 
       - name: debug ls on server
         uses: appleboy/ssh-action@master
