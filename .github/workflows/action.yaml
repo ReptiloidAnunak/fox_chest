@@ -37,8 +37,8 @@ jobs:
           username: ${{ secrets.FOX_SERVER_USERNAME }}
           password: ${{ secrets.FOX_SERVER_PASSWORD }}
           source: |
-            "nginx.conf"
-            "deploy/docker-compose.yml"
+            nginx.conf
+            deploy/docker-compose.yml
           target: "fox_chest_ci/"
           strip_components: 1
 
