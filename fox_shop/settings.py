@@ -93,6 +93,9 @@ DATABASES = {
         'PASSWORD': env('DB_PASSWORD'),
         'HOST': env('DB_HOST', default='127.0.0.1'),
         'PORT': env.int('DB_PORT', default=5432),
+        'CONN_MAX_AGE': 600,
+        'ATOMIC_REQUESTS': True,
+
     }
 }
 
