@@ -30,13 +30,14 @@ jobs:
         run: |
           mkdir deploy
           cat docker-compose-ci.yml | envsubst > deploy/docker-compose.yml
+          cat nginx.conf | envsubst > deploy/nginx.conf
       - name: copy files to server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.FOX_SERVER_HOST }}
           username: ${{ secrets.FOX_SERVER_USERNAME }}
           password: ${{ secrets.FOX_SERVER_PASSWORD }}
-          source: "deploy/docker-compose.yml"
+          source: "deploy/docker-compose.yml deploy/nginx.conf"
           target: "fox_chest_ci/"
           strip_components: 1
       - name: run docker-compose
