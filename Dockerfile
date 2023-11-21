@@ -7,7 +7,7 @@ RUN pip install gunicorn
 COPY . .
 
 # Собираем статические файлы
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic
 
 # Запускаем Gunicorn
 CMD gunicorn fox_shop.wsgi:application -b 0.0.0.0:8000
