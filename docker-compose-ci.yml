@@ -8,7 +8,6 @@ services:
       - ./static:/static
       - ./media:/media
       - /home/***/fox_chest_ci/nginx.conf:/etc/nginx/conf.d/:ro
-
     ports:
       - 1337:80
       - 80:80
