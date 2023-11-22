@@ -1,4 +1,9 @@
 #!/usr/bin/bash
+
+FOX_SUPERUSER_NAME=$FOX_SUPERUSER_NAME
+FOX_SUPERUSER_EMAIL=$FOX_SUPERUSER_EMAIL
+FOX_SUPERUSER_PWD=$FOX_SUPERUSER_PWD
+
 python manage.py migrate --check
 status=$?
 if [[ status != 0 ]]; then
