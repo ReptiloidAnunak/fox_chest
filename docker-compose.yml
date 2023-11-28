@@ -26,7 +26,7 @@ services:
         condition: service_completed_successfully
     volumes:
       - /var/lib/fox_chest/bot
-      - media:./media:/media
+      - ./media:/media
     command:
       - python3
       - manage.py
@@ -46,8 +46,8 @@ services:
         condition: service_completed_successfully
     volumes:
       - /var/lib/fox_chest/api
-      - static:./static:/static
-      - media:./media:/media
+      - ./static:/static
+      - ./media:/media
     expose:
       - 8000
 
