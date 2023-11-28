@@ -5,8 +5,8 @@ services:
     image: nginx:latest
     restart: always
     volumes:
-      - static:./static:/static
-      - media:./media:/media
+      - ./static:/static
+      - ./media:/media
       - /home/***/fox_chest_ci/nginx.conf:/etc/nginx/conf.d/:ro
     ports:
       - 1337:80
@@ -80,5 +80,3 @@ services:
 
 volumes:
   pg_data:
-  static:
-  media:
