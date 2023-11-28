@@ -5,9 +5,8 @@ services:
     image: nginx:latest
     restart: always
     volumes:
-      - ./static:/static
+      - static:./static:/static
       - ./media:/media
-      - django_static:/usr/share/nginx/html/django_static
       - /home/***/fox_chest_ci/nginx.conf:/etc/nginx/conf.d/:ro
     ports:
       - 1337:80
@@ -27,7 +26,7 @@ services:
         condition: service_completed_successfully
     volumes:
       - /var/lib/fox_chest/bot
-      - ./media:/media
+      - media:./media:/media
     command:
       - python3
       - manage.py
@@ -47,8 +46,8 @@ services:
         condition: service_completed_successfully
     volumes:
       - /var/lib/fox_chest/api
-      - ./static:/static
-      - ./media:/media
+      - static:./static:/static
+      - media:./media:/media
     expose:
       - 8000
 
@@ -81,4 +80,5 @@ services:
 
 volumes:
   pg_data:
-  django_static: #Дoбавил
+  static:
+  media:
