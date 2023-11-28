@@ -64,6 +64,7 @@ services:
 
   postgres_db:
     image: postgres:latest
+    restart: always
     ports:
       - '5432:5432'
     environment:
@@ -76,8 +77,8 @@ services:
       timeout: 5s
       retries: 10
     volumes:
-      - /var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
 
 volumes:
   pg_data:
-  django_static: #Дабавил
+  django_static: #Дoбавил
