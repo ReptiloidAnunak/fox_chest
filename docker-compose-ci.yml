@@ -21,7 +21,7 @@ services:
       DB_HOST: postgres_db
     depends_on:
       postgres_db:
-        condition: service_healthy
+        condition: service_started
       migrations:
         condition: service_completed_successfully
     volumes:
@@ -41,7 +41,7 @@ services:
       - '8000:8000'
     depends_on:
       postgres_db:
-        condition: service_healthy
+        condition: service_started
       migrations:
         condition: service_completed_successfully
     volumes:
